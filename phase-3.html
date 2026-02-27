@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curriculum — OrthoBlueprint</title>
+<title>Phase 3 — Sub-I Readiness — OrthoBlueprint</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -81,41 +81,31 @@
     .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
   }
 
-  .phase-hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
-  .phub{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:14px;padding:2rem 1.75rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0.5rem;transition:all 0.3s;position:relative;overflow:hidden;}
-  .phub::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ph-accent);opacity:0;transition:opacity 0.3s;}
-  .phub:hover{transform:translateY(-3px);}
-  .phub:hover::before{opacity:1;}
-  .ph-num{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ph-color);}
-  .ph-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:800;line-height:1.2;margin-bottom:0.1rem;}
-  .ph-for{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--text-muted);}
-  .ph-desc{font-size:0.84rem;color:var(--text-muted);line-height:1.6;flex:1;margin-top:0.25rem;}
-  .ph-list{list-style:none;display:flex;flex-direction:column;gap:0.3rem;margin-top:0.5rem;}
-  .ph-list li{font-size:0.8rem;color:var(--text-mid);display:flex;align-items:center;gap:0.4rem;}
-  .ph-list li::before{content:'→';font-size:0.7rem;color:var(--ph-color);}
-  .ph-cta{margin-top:1rem;font-size:0.78rem;font-weight:600;color:var(--ph-color);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.07em;}
-  .ph-blue{--ph-accent:linear-gradient(90deg,var(--accent),var(--accent-bright));--ph-color:var(--accent-bright);}
-  .ph-gold{--ph-accent:linear-gradient(90deg,var(--gold),var(--gold-light));--ph-color:var(--gold-light);}
-  .ph-purple{--ph-accent:linear-gradient(90deg,var(--purple),var(--purple-bright));--ph-color:var(--purple-bright);}
-  .prog-overview{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:2rem;}
-  .po-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
-  .po-title{font-weight:600;font-size:0.92rem;}
-  .po-phases{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
-  .po-phase-label{font-family:'DM Mono',monospace;font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.3rem;}
-  .po-bar{height:5px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden;}
-  .po-fill{height:100%;border-radius:100px;}
-  .po-nums{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
-  @media(max-width:900px){.phase-hub-grid,.po-phases{grid-template-columns:1fr;}}
+  .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .mod-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;transition:all 0.25s;}
+  .mod-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-2px);}
+  .mod-icon{font-size:1.6rem;margin-bottom:0.6rem;}
+  .mod-title{font-weight:700;font-size:0.92rem;margin-bottom:0.3rem;}
+  .mod-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.6;flex:1;}
+  .mod-status{margin-top:0.75rem;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;color:var(--text-muted);}
+  .phase-goal{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+  .pg-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.5rem;}
+  .pg-text{font-size:0.9rem;color:var(--text-mid);line-height:1.7;border-left:2px solid var(--purple);padding-left:0.85rem;}
+  .pg-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;}
+  .pg-list li{font-size:0.85rem;color:var(--text-mid);display:flex;gap:0.4rem;}
+  .pg-list li::before{content:'→';color:var(--purple-bright);font-size:0.78rem;flex-shrink:0;}
+  .soon-notice{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;font-size:0.88rem;color:var(--gold-light);line-height:1.6;margin-top:1.25rem;}
+  @media(max-width:900px){.module-grid,.phase-goal{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
 <nav>
-  <a href="orthoblueprint.html" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
   </a>
   <span class="nav-sep">/</span>
-  <div class="breadcrumb"><span class="crumb-active">Curriculum</span></div>
+  <div class="breadcrumb"><a href="curriculum.html">Curriculum</a><span class="breadcrumb-arrow">›</span><span class="crumb-active">Phase 3</span></div>
   <div class="nav-right">
     <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
   </div>
@@ -125,19 +115,30 @@
     <div class="sb-section">
       <div class="sb-label">Curriculum</div>
       <ul class="sb-nav">
-        <li><a href="curriculum.html" class="on">Overview</a></li>
+        <li><a href="curriculum.html">Overview</a></li>
         <li><a href="phase-1.html" class="sub">Phase 1 — Foundations</a></li>
         <li><a href="phase-2.html" class="sub">Phase 2 — Clinical</a></li>
-        <li><a href="phase-3.html" class="sub">Phase 3 — Sub-I Prep</a></li>
+        <li><a href="phase-3.html" class="on sub">Phase 3 — Sub-I Prep</a></li>
+      </ul>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Phase 3 Modules</div>
+      <ul class="sb-nav">
+        <li><a href="#approaches" class="sub">Surgical Approaches</a></li>
+        <li><a href="#fixation" class="sub">Fixation Methods</a></li>
+        <li><a href="#splints" class="sub">Splints &amp; Casting</a></li>
+        <li><a href="#caseprep" class="sub">Case Prep Toolkit</a></li>
+        <li><a href="#procedures" class="sub">Common Procedures</a></li>
+        <li><a href="#match" class="sub">Interview &amp; Match</a></li>
       </ul>
     </div>
         <div class="sb-section">
       <div class="sb-label">Your Progress</div>
       <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
-        <strong style="color:var(--white);font-size:1.05rem;">Phase 1</strong> / active
+        <strong style="color:var(--white);font-size:1.05rem;">0</strong> / 6 modules
       </div>
-      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:33%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
-      <div class="sb-prog-label"><span>33%</span><span style="color:var(--gold);">MS2</span></div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-bright));"></div></div>
+      <div class="sb-prog-label"><span>0%</span><span style="color:var(--gold);">Locked</span></div>
     </div>
         <div class="sb-section">
       <div class="sb-label">Member Pages</div>
@@ -151,74 +152,39 @@
   </aside>
   <main class="main">
     <div class="page-header">
-      <div class="page-badge">Member Dashboard</div>
-      <h1 class="page-title">Curriculum</h1>
-      <p class="page-desc">Three phases — Foundations, Clinical Orthopaedics, and Sub-I Readiness. Work in order or jump to where you are right now.</p>
+      <div class="page-badge">Phase 3 · MS3 / MS4</div>
+      <h1 class="page-title">Sub-I Readiness</h1>
+      <p class="page-desc">Surgical approaches, OR prep, away rotation strategy, and interview preparation — everything to walk in and make a lasting impression.</p>
     </div>
-
-    <div class="prog-overview reveal">
-      <div class="po-row"><span class="po-title">📊 Your Progress</span><span style="font-size:0.8rem;color:var(--text-muted);font-family:'DM Mono',monospace;">Phase 1 active</span></div>
-      <div class="po-phases">
-        <div>
-          <div class="po-phase-label">Phase 1 — Foundations</div>
-          <div class="po-bar"><div class="po-fill" style="width:33%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
-          <div class="po-nums"><span>1 / 3 modules</span><span>33%</span></div>
-        </div>
-        <div>
-          <div class="po-phase-label">Phase 2 — Clinical Ortho</div>
-          <div class="po-bar"><div class="po-fill" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));"></div></div>
-          <div class="po-nums"><span>0 / 8 regions</span><span>0%</span></div>
-        </div>
-        <div>
-          <div class="po-phase-label">Phase 3 — Sub-I Prep</div>
-          <div class="po-bar"><div class="po-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-bright));"></div></div>
-          <div class="po-nums"><span>0 / 6 modules</span><span>0%</span></div>
-        </div>
+    <div class="phase-goal reveal">
+      <div>
+        <div class="pg-label">Phase Goal</div>
+        <div class="pg-text">Walk into your first away rotation knowing surgical approaches, how to pre-round, OR etiquette, and how to make a first impression that earns a strong letter.</div>
+      </div>
+      <div>
+        <div class="pg-label">What's Included</div>
+        <ul class="pg-list">
+          <li>30-Day Sub-I Bootcamp checklist</li>
+          <li>Splint reference card (print-ready PDF)</li>
+          <li>"First Day" rotation playbook</li>
+          <li>Thank you &amp; follow-up email templates</li>
+          <li>Interview prep packet</li>
+          <li>Rank list strategy &amp; couples match forum</li>
+        </ul>
       </div>
     </div>
-
-    <div class="sect-label">Choose Your Phase</div>
-    <div class="phase-hub-grid">
-      <a href="phase-1.html" class="phub ph-blue reveal d1">
-        <div class="ph-num">Phase 01</div>
-        <div class="ph-title">Foundations</div>
-        <div class="ph-for">MS1 / MS2</div>
-        <div class="ph-desc">Anatomy, imaging, and your CV — built before your first rotation.</div>
-        <ul class="ph-list">
-          <li>Bite-Sized Anatomy</li>
-          <li>X-Ray Fundamentals</li>
-          <li>CV Foundation</li>
-          <li>Phase 1 Anki Deck</li>
-        </ul>
-        <div class="ph-cta">Enter Phase 1 →</div>
-      </a>
-      <a href="phase-2.html" class="phub ph-gold reveal d2">
-        <div class="ph-num">Phase 02</div>
-        <div class="ph-title">Clinical Orthopaedics</div>
-        <div class="ph-for">MS3</div>
-        <div class="ph-desc">Eight regions, every major pathology, 4-step framework throughout.</div>
-        <ul class="ph-list">
-          <li>8 Anatomic Regions</li>
-          <li>80+ Topic Modules</li>
-          <li>Phase 2 Anki Deck</li>
-          <li>Case Teaching Nights</li>
-        </ul>
-        <div class="ph-cta">Enter Phase 2 →</div>
-      </a>
-      <a href="phase-3.html" class="phub ph-purple reveal d3">
-        <div class="ph-num">Phase 03</div>
-        <div class="ph-title">Sub-I Readiness</div>
-        <div class="ph-for">MS3 / MS4</div>
-        <div class="ph-desc">Surgical approaches, OR prep, interview strategy, rank list.</div>
-        <ul class="ph-list">
-          <li>Surgical Approaches</li>
-          <li>30-Day Sub-I Bootcamp</li>
-          <li>Interview Prep Packet</li>
-          <li>Rank List Strategy</li>
-        </ul>
-        <div class="ph-cta">Enter Phase 3 →</div>
-      </a>
+    <div class="sect-label" id="approaches">Modules</div>
+    <div class="module-grid">
+      <div class="mod-card reveal d1"><div class="mod-icon">🔪</div><div class="mod-title">Surgical Approaches</div><div class="mod-desc">Common exposures by region, structures at risk, patient positioning, and basic OR flow for the sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d2" id="fixation"><div class="mod-icon">🔩</div><div class="mod-title">Fixation Methods</div><div class="mod-desc">Plates, nails, screws, external fixation — indications and biomechanics at the level you need on rounds.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d3" id="splints"><div class="mod-icon">🩹</div><div class="mod-title">Splints &amp; Casting</div><div class="mod-desc">AO principles, splint types by indication, when to bivalve, and compartment syndrome watch points.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d1" id="caseprep"><div class="mod-icon">📋</div><div class="mod-title">Case Prep Toolkit</div><div class="mod-desc">Pre-rounding checklist, imaging review template, OR prep routine, and attending question bank.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d2" id="procedures"><div class="mod-icon">🏥</div><div class="mod-title">Common Procedures</div><div class="mod-desc">I&amp;D, closed reduction techniques, ORIF principles, and ED orthopaedic procedures you'll see as a sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d3" id="match"><div class="mod-icon">🎯</div><div class="mod-title">Interview &amp; Match</div><div class="mod-desc">Prep packet, program Q&amp;A database, ranking strategy, and couples match guidance from matched members.</div><div class="mod-status">⏳ Coming Soon</div></div>
     </div>
+    <div class="soon-notice reveal">⏳ Phase 3 is in active development. Members get access as each module goes live — watch the community announcements space.</div>
+    <div class="divider"></div>
+    <a href="phase-2.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;">← Back to Phase 2</a>
   </main>
 </div>
 <script>

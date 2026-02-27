@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phase 3 — Sub-I Readiness — OrthoBlueprint</title>
+<title>Phase 1 — Foundations — OrthoBlueprint</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -83,29 +83,36 @@
 
   .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
   .mod-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;transition:all 0.25s;}
-  .mod-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-2px);}
+  .mod-card:hover{border-color:rgba(45,125,210,0.35);transform:translateY(-2px);}
   .mod-icon{font-size:1.6rem;margin-bottom:0.6rem;}
   .mod-title{font-weight:700;font-size:0.92rem;margin-bottom:0.3rem;}
   .mod-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.6;flex:1;}
-  .mod-status{margin-top:0.75rem;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;color:var(--text-muted);}
+  .mod-status{margin-top:0.75rem;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;}
+  .ms-live{color:var(--green);}
   .phase-goal{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
   .pg-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.5rem;}
-  .pg-text{font-size:0.9rem;color:var(--text-mid);line-height:1.7;border-left:2px solid var(--purple);padding-left:0.85rem;}
+  .pg-text{font-size:0.9rem;color:var(--text-mid);line-height:1.7;border-left:2px solid var(--accent);padding-left:0.85rem;}
   .pg-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;}
   .pg-list li{font-size:0.85rem;color:var(--text-mid);display:flex;gap:0.4rem;}
-  .pg-list li::before{content:'→';color:var(--purple-bright);font-size:0.78rem;flex-shrink:0;}
-  .soon-notice{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;font-size:0.88rem;color:var(--gold-light);line-height:1.6;margin-top:1.25rem;}
-  @media(max-width:900px){.module-grid,.phase-goal{grid-template-columns:1fr;}}
+  .pg-list li::before{content:'→';color:var(--accent-bright);font-size:0.78rem;flex-shrink:0;}
+  .anki-box{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:1.5rem;}
+  .anki-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .anki-title{font-weight:700;font-size:0.92rem;}
+  .anki-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;}
+  .anki-stat{text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.75rem;}
+  .anki-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--accent-bright);}
+  .anki-lbl{font-size:0.63rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace;margin-top:0.1rem;}
+  @media(max-width:900px){.module-grid,.phase-goal,.anki-stats{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
 <nav>
-  <a href="orthoblueprint.html" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
   </a>
   <span class="nav-sep">/</span>
-  <div class="breadcrumb"><a href="curriculum.html">Curriculum</a><span class="breadcrumb-arrow">›</span><span class="crumb-active">Phase 3</span></div>
+  <div class="breadcrumb"><a href="curriculum.html">Curriculum</a><span class="breadcrumb-arrow">›</span><span class="crumb-active">Phase 1</span></div>
   <div class="nav-right">
     <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
   </div>
@@ -116,29 +123,27 @@
       <div class="sb-label">Curriculum</div>
       <ul class="sb-nav">
         <li><a href="curriculum.html">Overview</a></li>
-        <li><a href="phase-1.html" class="sub">Phase 1 — Foundations</a></li>
+        <li><a href="phase-1.html" class="on">Phase 1 — Foundations</a></li>
         <li><a href="phase-2.html" class="sub">Phase 2 — Clinical</a></li>
-        <li><a href="phase-3.html" class="on sub">Phase 3 — Sub-I Prep</a></li>
+        <li><a href="phase-3.html" class="sub">Phase 3 — Sub-I Prep</a></li>
       </ul>
     </div>
     <div class="sb-section">
-      <div class="sb-label">Phase 3 Modules</div>
+      <div class="sb-label">Phase 1 Modules</div>
       <ul class="sb-nav">
-        <li><a href="#approaches" class="sub">Surgical Approaches</a></li>
-        <li><a href="#fixation" class="sub">Fixation Methods</a></li>
-        <li><a href="#splints" class="sub">Splints &amp; Casting</a></li>
-        <li><a href="#caseprep" class="sub">Case Prep Toolkit</a></li>
-        <li><a href="#procedures" class="sub">Common Procedures</a></li>
-        <li><a href="#match" class="sub">Interview &amp; Match</a></li>
+        <li><a href="#anatomy" class="sub">Bite-Sized Anatomy</a></li>
+        <li><a href="#xray" class="sub">X-Ray Fundamentals</a></li>
+        <li><a href="#cv" class="sub">CV Foundation</a></li>
+        <li><a href="#anki" class="sub">Phase 1 Anki Deck</a></li>
       </ul>
     </div>
         <div class="sb-section">
       <div class="sb-label">Your Progress</div>
       <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
-        <strong style="color:var(--white);font-size:1.05rem;">0</strong> / 6 modules
+        <strong style="color:var(--white);font-size:1.05rem;">1</strong> / 3 modules
       </div>
-      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-bright));"></div></div>
-      <div class="sb-prog-label"><span>0%</span><span style="color:var(--gold);">Locked</span></div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:33%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
+      <div class="sb-prog-label"><span>33%</span><span style="color:var(--gold);">MS1/MS2</span></div>
     </div>
         <div class="sb-section">
       <div class="sb-label">Member Pages</div>
@@ -152,39 +157,61 @@
   </aside>
   <main class="main">
     <div class="page-header">
-      <div class="page-badge">Phase 3 · MS3 / MS4</div>
-      <h1 class="page-title">Sub-I Readiness</h1>
-      <p class="page-desc">Surgical approaches, OR prep, away rotation strategy, and interview preparation — everything to walk in and make a lasting impression.</p>
+      <div class="page-badge">Phase 1 · MS1 / MS2</div>
+      <h1 class="page-title">Foundations</h1>
+      <p class="page-desc">Build your orthopaedic base before you ever step on a rotation. Anatomy, imaging, and your CV — done right from day one.</p>
     </div>
     <div class="phase-goal reveal">
       <div>
         <div class="pg-label">Phase Goal</div>
-        <div class="pg-text">Walk into your first away rotation knowing surgical approaches, how to pre-round, OR etiquette, and how to make a first impression that earns a strong letter.</div>
+        <div class="pg-text">Be comfortable labeling basic osseous anatomy and identifying obvious fractures on plain films before you ever step on a clinical rotation.</div>
       </div>
       <div>
         <div class="pg-label">What's Included</div>
         <ul class="pg-list">
-          <li>30-Day Sub-I Bootcamp checklist</li>
-          <li>Splint reference card (print-ready PDF)</li>
-          <li>"First Day" rotation playbook</li>
-          <li>Thank you &amp; follow-up email templates</li>
-          <li>Interview prep packet</li>
-          <li>Rank list strategy &amp; couples match forum</li>
+          <li>Phase 1 Anki Deck — anatomy-focused (600+ cards)</li>
+          <li>Netter's Atlas — included with membership</li>
+          <li>ERAS-ready CV template download</li>
+          <li>X-Ray fundamentals video modules</li>
+          <li>Research &amp; mentorship forum access</li>
+          <li>Annual 1:1 CV audit (Blueprint plan+)</li>
         </ul>
       </div>
     </div>
-    <div class="sect-label" id="approaches">Modules</div>
+    <div class="sect-label" id="anatomy">Modules</div>
     <div class="module-grid">
-      <div class="mod-card reveal d1"><div class="mod-icon">🔪</div><div class="mod-title">Surgical Approaches</div><div class="mod-desc">Common exposures by region, structures at risk, patient positioning, and basic OR flow for the sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
-      <div class="mod-card reveal d2" id="fixation"><div class="mod-icon">🔩</div><div class="mod-title">Fixation Methods</div><div class="mod-desc">Plates, nails, screws, external fixation — indications and biomechanics at the level you need on rounds.</div><div class="mod-status">⏳ Coming Soon</div></div>
-      <div class="mod-card reveal d3" id="splints"><div class="mod-icon">🩹</div><div class="mod-title">Splints &amp; Casting</div><div class="mod-desc">AO principles, splint types by indication, when to bivalve, and compartment syndrome watch points.</div><div class="mod-status">⏳ Coming Soon</div></div>
-      <div class="mod-card reveal d1" id="caseprep"><div class="mod-icon">📋</div><div class="mod-title">Case Prep Toolkit</div><div class="mod-desc">Pre-rounding checklist, imaging review template, OR prep routine, and attending question bank.</div><div class="mod-status">⏳ Coming Soon</div></div>
-      <div class="mod-card reveal d2" id="procedures"><div class="mod-icon">🏥</div><div class="mod-title">Common Procedures</div><div class="mod-desc">I&amp;D, closed reduction techniques, ORIF principles, and ED orthopaedic procedures you'll see as a sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
-      <div class="mod-card reveal d3" id="match"><div class="mod-icon">🎯</div><div class="mod-title">Interview &amp; Match</div><div class="mod-desc">Prep packet, program Q&amp;A database, ranking strategy, and couples match guidance from matched members.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d1">
+        <div class="mod-icon">🦴</div>
+        <div class="mod-title">Bite-Sized Anatomy</div>
+        <div class="mod-desc">Bones, origins, insertions, neurovascular anatomy, and joint biomechanics — organized to stack directly on your MS1/MS2 MSK block.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
+      <div class="mod-card reveal d2" id="xray">
+        <div class="mod-icon">🩻</div>
+        <div class="mod-title">X-Ray Fundamentals</div>
+        <div class="mod-desc">Standard views by region, systematic reading approach, normal anatomy before pathology, and introduction to fracture pattern recognition.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
+      <div class="mod-card reveal d3" id="cv">
+        <div class="mod-icon">📄</div>
+        <div class="mod-title">CV Foundation</div>
+        <div class="mod-desc">ERAS-aligned CV template with 4-year longitudinal updating strategy and example bullets for research, presentations, and leadership.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
     </div>
-    <div class="soon-notice reveal">⏳ Phase 3 is in active development. Members get access as each module goes live — watch the community announcements space.</div>
+    <div class="anki-box reveal" id="anki">
+      <div class="anki-header">
+        <div class="anki-title">🃏 Phase 1 Anki Deck</div>
+        <span style="font-size:0.75rem;color:var(--green);font-family:'DM Mono',monospace;font-weight:600;">✓ Downloaded</span>
+      </div>
+      <div class="anki-stats">
+        <div class="anki-stat"><div class="anki-num">300+</div><div class="anki-lbl">Origins &amp; Insertions</div></div>
+        <div class="anki-stat"><div class="anki-num">200+</div><div class="anki-lbl">Innervations</div></div>
+        <div class="anki-stat"><div class="anki-num">100+</div><div class="anki-lbl">Imaging Cards</div></div>
+      </div>
+    </div>
     <div class="divider"></div>
-    <a href="phase-2.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;">← Back to Phase 2</a>
+    <a href="phase-2.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;">Continue to Phase 2 →</a>
   </main>
 </div>
 <script>
