@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrthoBlueprint — Match Ortho — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy-mid:#122040; --navy-card:#0f1c35;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#7a8fa8; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.15);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.12);
+    --purple:#7c3aed; --purple-bright:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .nav-sep{color:var(--text-muted);font-size:0.9rem;}
+  .breadcrumb{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--text-muted);}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--white);}
+  .breadcrumb .crumb-active{color:var(--accent-bright);font-weight:500;}
+  .breadcrumb-arrow{font-size:0.75rem;color:var(--text-muted);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.85rem;color:var(--text-muted);}
+
+  /* ── SCROLL PROGRESS ── */
+  .progress-bar{position:fixed;top:60px;left:0;right:0;height:2px;z-index:99;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
+
+  /* ── LAYOUT ── */
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;padding-top:60px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--navy-card);border-right:1px solid var(--border);padding:2rem 1.5rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sb-section{margin-bottom:2rem;}
+  .sb-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .sb-nav{list-style:none;display:flex;flex-direction:column;gap:0.2rem;}
+  .sb-nav li a{display:block;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;}
+  .sb-nav li a:hover{background:rgba(45,125,210,0.08);color:var(--white);border-left-color:var(--accent);}
+  .sb-nav li a.on{background:rgba(45,125,210,0.12);color:var(--accent-bright);border-left-color:var(--accent-bright);font-weight:500;}
+  .sb-nav li a.sub{padding-left:1.25rem;font-size:0.82rem;}
+  .sb-prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:100px;margin-top:0.5rem;overflow:hidden;}
+  .sb-prog-fill{height:100%;border-radius:100px;}
+  .sb-prog-label{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
+
+  /* ── MAIN ── */
+  .main{padding:3rem 4rem;max-width:960px;}
+
+  /* ── PAGE HEADER ── */
+  .page-header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);animation:fadeUp 0.6s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.25rem 0.8rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.08em;font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  h1.page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .page-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.7;max-width:620px;}
+
+  /* ── SECTION LABEL ── */
+  .sect-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1.25rem;margin-top:2rem;display:flex;align-items:center;gap:0.6rem;}
+  .sect-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.3),transparent);}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.5rem 0;}
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s;} .d2{transition-delay:0.12s;} .d3{transition-delay:0.18s;} .d4{transition-delay:0.24s;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
+  }
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(45,125,210,0.12),transparent);}
+  .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.25);border-radius:100px;padding:0.4rem 1.1rem;font-size:0.75rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.1em;font-family:'DM Mono',monospace;margin-bottom:2rem;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.25rem;max-width:800px;}
+  .hero h1 span{color:var(--gold);}
+  .hero-sub{font-size:1.1rem;color:var(--text-mid);line-height:1.75;max-width:560px;margin:0 auto 2.5rem;}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),#1a5faa);color:var(--white);padding:0.9rem 2.2rem;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 20px rgba(45,125,210,0.3);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,125,210,0.45);}
+  .btn-secondary{background:rgba(255,255,255,0.04);color:var(--text-mid);padding:0.9rem 2.2rem;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1px solid var(--border);transition:all 0.25s;}
+  .btn-secondary:hover{color:var(--white);border-color:rgba(255,255,255,0.2);}
+
+  /* LANDING NAV */
+  .landing-nav{padding:1.2rem 3rem;display:flex;align-items:center;}
+  .landing-nav-links{margin-left:auto;display:flex;gap:0.25rem;}
+  .landing-nav-links a{padding:0.45rem 1rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
+  .landing-nav-links a:hover{color:var(--white);background:rgba(255,255,255,0.05);}
+  .landing-nav-links a.cta{background:rgba(45,125,210,0.12);border:1px solid rgba(45,125,210,0.3);color:var(--accent-bright);font-weight:600;}
+  .landing-nav-links a.cta:hover{background:rgba(45,125,210,0.2);}
+
+  /* PHASE SECTION */
+  .section{padding:5rem 3rem;max-width:1100px;margin:0 auto;}
+  .section-badge{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:0.75rem;}
+  .section h2{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;letter-spacing:-0.02em;margin-bottom:0.75rem;}
+  .section-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.75;max-width:560px;margin-bottom:3rem;}
+
+  .phases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+  .phase-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden;transition:all 0.3s;}
+  .phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc-accent);}
+  .phase-card:hover{transform:translateY(-4px);}
+  .pc-num{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pc-color);margin-bottom:0.5rem;}
+  .pc-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:0.3rem;}
+  .pc-for{font-size:0.75rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  .pc-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.65;margin-bottom:1.25rem;}
+  .pc-topics{list-style:none;display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1.5rem;}
+  .pc-topics li{font-size:0.82rem;color:var(--text-mid);display:flex;align-items:center;gap:0.4rem;}
+  .pc-topics li::before{content:'→';color:var(--pc-color);font-size:0.72rem;}
+  .pc-link{font-size:0.8rem;font-weight:600;color:var(--pc-color);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.07em;text-decoration:none;}
+  .pc-link:hover{text-decoration:underline;}
+  .card-blue{--pc-accent:linear-gradient(90deg,var(--accent),var(--accent-bright));--pc-color:var(--accent-bright);}
+  .card-gold{--pc-accent:linear-gradient(90deg,var(--gold),var(--gold-light));--pc-color:var(--gold-light);}
+  .card-purple{--pc-accent:linear-gradient(90deg,var(--purple),var(--purple-bright));--pc-color:var(--purple-bright);}
+
+  /* REGION PREVIEW */
+  .regions-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;}
+  .rp-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;text-decoration:none;color:inherit;transition:all 0.2s;}
+  .rp-card:hover{border-color:rgba(45,125,210,0.35);background:rgba(45,125,210,0.05);transform:translateY(-2px);}
+  .rp-card.live{border-color:rgba(76,175,134,0.2);}
+  .rp-num{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--text-muted);margin-bottom:0.25rem;}
+  .rp-name{font-weight:700;font-size:0.84rem;margin-bottom:0.2rem;}
+  .rp-count{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .rp-live{font-size:0.65rem;color:var(--green);font-family:'DM Mono',monospace;font-weight:600;margin-top:0.2rem;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);}
+  footer a{color:var(--text-muted);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+
+  @media(max-width:900px){.phases-grid,.regions-preview{grid-template-columns:1fr 1fr;} .section{padding:3rem 1.5rem;}}
+  @media(max-width:600px){.phases-grid,.regions-preview{grid-template-columns:1fr;} .hero{padding:7rem 1.5rem 3rem;}}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+<nav class="landing-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);">
+  <a href="orthoblueprint.html" class="nav-logo"><div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span></a>
+  <div class="landing-nav-links">
+    <a href="phase-2.html">Curriculum</a>
+    <a href="resources.html">Resources</a>
+    <a href="community.html">Community</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="curriculum.html" class="cta">Member Dashboard →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">🦴 For Orthopaedic Surgery Applicants</div>
+  <h1>The Blueprint for<br><span>Matching Ortho</span></h1>
+  <p class="hero-sub">Anatomy foundations, region-by-region clinical orthopaedics, sub-I readiness, and near-peer coaching — built for medical students at every stage.</p>
+  <div class="hero-actions">
+    <a href="curriculum.html" class="btn-primary">Explore the Curriculum →</a>
+    <a href="community.html" class="btn-secondary">Join the Community</a>
+  </div>
+</section>
+
+<div class="section" id="phases">
+  <div class="section-badge">The Curriculum</div>
+  <h2>Three Phases. One Match.</h2>
+  <p class="section-desc">Work through the curriculum in order or jump to what you need now. Every phase is designed for the specific stage you're in.</p>
+  <div class="phases-grid">
+    <div class="phase-card card-blue reveal d1">
+      <div class="pc-num">Phase 01</div>
+      <div class="pc-title">Foundations</div>
+      <div class="pc-for">MS1 / MS2</div>
+      <div class="pc-desc">Build your orthopaedic base before you ever step on a rotation. Anatomy, X-rays, and your CV — done right from day one.</div>
+      <ul class="pc-topics">
+        <li>Bite-Sized Anatomy</li>
+        <li>X-Ray Fundamentals</li>
+        <li>CV Foundation</li>
+        <li>Phase 1 Anki Deck (600+ cards)</li>
+      </ul>
+      <a href="phase-1.html" class="pc-link">Enter Phase 1 →</a>
+    </div>
+    <div class="phase-card card-gold reveal d2">
+      <div class="pc-num">Phase 02</div>
+      <div class="pc-title">Clinical Orthopaedics</div>
+      <div class="pc-for">MS3</div>
+      <div class="pc-desc">Eight anatomic regions, every major pathology. The 4-step framework — Overview, Case, Imaging, Pocket Pimped.</div>
+      <ul class="pc-topics">
+        <li>8 Anatomic Regions</li>
+        <li>80+ Topic Modules</li>
+        <li>Phase 2 Anki Deck</li>
+        <li>Live Case Teaching Nights</li>
+      </ul>
+      <a href="phase-2.html" class="pc-link">Enter Phase 2 →</a>
+    </div>
+    <div class="phase-card card-purple reveal d3">
+      <div class="pc-num">Phase 03</div>
+      <div class="pc-title">Sub-I Readiness</div>
+      <div class="pc-for">MS3 / MS4</div>
+      <div class="pc-desc">Surgical approaches, OR prep, away rotation strategy, interview prep — everything to make a lasting impression.</div>
+      <ul class="pc-topics">
+        <li>Surgical Approaches</li>
+        <li>30-Day Sub-I Bootcamp</li>
+        <li>Interview Prep Packet</li>
+        <li>Rank List Strategy</li>
+      </ul>
+      <a href="phase-3.html" class="pc-link">Enter Phase 3 →</a>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="regions" style="border-top:1px solid var(--border);">
+  <div class="section-badge">Phase 2 Regions</div>
+  <h2>Eight Anatomic Regions</h2>
+  <p class="section-desc">Every major region covered with the same 4-step framework. Knee is live now — all regions releasing through 2025.</p>
+  <div class="regions-preview">
+    <a href="spine/spine.html" class="rp-card reveal d1"><div class="rp-num">01</div><div class="rp-name">Spine</div><div class="rp-count">10 topics</div></a>
+    <a href="shoulder-elbow/shoulder-elbow.html" class="rp-card reveal d2"><div class="rp-num">02</div><div class="rp-name">Shoulder &amp; Elbow</div><div class="rp-count">13 topics</div></a>
+    <a href="hand-wrist/hand-wrist.html" class="rp-card reveal d3"><div class="rp-num">03</div><div class="rp-name">Hand &amp; Wrist</div><div class="rp-count">10 topics</div></a>
+    <a href="pelvis-hip/pelvis-hip.html" class="rp-card reveal d4"><div class="rp-num">04</div><div class="rp-name">Pelvis &amp; Hip</div><div class="rp-count">14 topics</div></a>
+    <a href="knee/knee.html" class="rp-card live reveal d1"><div class="rp-num">05</div><div class="rp-name">Knee</div><div class="rp-count">15 topics</div><div class="rp-live">✓ Live</div></a>
+    <a href="foot-ankle/foot-ankle.html" class="rp-card reveal d2"><div class="rp-num">06</div><div class="rp-name">Foot &amp; Ankle</div><div class="rp-count">10 topics</div></a>
+    <a href="pediatric/pediatric.html" class="rp-card reveal d3"><div class="rp-num">07</div><div class="rp-name">Pediatric Ortho</div><div class="rp-count">10 topics</div></a>
+    <a href="tumor/tumor.html" class="rp-card reveal d4"><div class="rp-num">08</div><div class="rp-name">Tumor</div><div class="rp-count">9 topics</div></a>
+  </div>
+</div>
+
+<footer>
+  <a href="orthoblueprint.html" class="nav-logo"><div class="nav-logo-icon" style="width:22px;height:22px;font-size:0.7rem;">🦴</div>Ortho<span style="color:var(--gold);">Blueprint</span></a>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="curriculum.html">Curriculum</a>
+    <a href="resources.html">Resources</a>
+    <a href="community.html">Community</a>
+    <a href="coaching.html">Coaching</a>
+  </div>
+</footer>
+<script>
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  });
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  }),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

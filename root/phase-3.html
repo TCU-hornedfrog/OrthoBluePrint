@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 3 — Sub-I Readiness — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy-mid:#122040; --navy-card:#0f1c35;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#7a8fa8; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.15);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.12);
+    --purple:#7c3aed; --purple-bright:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .nav-sep{color:var(--text-muted);font-size:0.9rem;}
+  .breadcrumb{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--text-muted);}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--white);}
+  .breadcrumb .crumb-active{color:var(--accent-bright);font-weight:500;}
+  .breadcrumb-arrow{font-size:0.75rem;color:var(--text-muted);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.85rem;color:var(--text-muted);}
+
+  /* ── SCROLL PROGRESS ── */
+  .progress-bar{position:fixed;top:60px;left:0;right:0;height:2px;z-index:99;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
+
+  /* ── LAYOUT ── */
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;padding-top:60px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--navy-card);border-right:1px solid var(--border);padding:2rem 1.5rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sb-section{margin-bottom:2rem;}
+  .sb-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .sb-nav{list-style:none;display:flex;flex-direction:column;gap:0.2rem;}
+  .sb-nav li a{display:block;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;}
+  .sb-nav li a:hover{background:rgba(45,125,210,0.08);color:var(--white);border-left-color:var(--accent);}
+  .sb-nav li a.on{background:rgba(45,125,210,0.12);color:var(--accent-bright);border-left-color:var(--accent-bright);font-weight:500;}
+  .sb-nav li a.sub{padding-left:1.25rem;font-size:0.82rem;}
+  .sb-prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:100px;margin-top:0.5rem;overflow:hidden;}
+  .sb-prog-fill{height:100%;border-radius:100px;}
+  .sb-prog-label{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
+
+  /* ── MAIN ── */
+  .main{padding:3rem 4rem;max-width:960px;}
+
+  /* ── PAGE HEADER ── */
+  .page-header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);animation:fadeUp 0.6s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.25rem 0.8rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.08em;font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  h1.page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .page-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.7;max-width:620px;}
+
+  /* ── SECTION LABEL ── */
+  .sect-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1.25rem;margin-top:2rem;display:flex;align-items:center;gap:0.6rem;}
+  .sect-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.3),transparent);}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.5rem 0;}
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s;} .d2{transition-delay:0.12s;} .d3{transition-delay:0.18s;} .d4{transition-delay:0.24s;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
+  }
+
+  .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .mod-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;transition:all 0.25s;}
+  .mod-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-2px);}
+  .mod-icon{font-size:1.6rem;margin-bottom:0.6rem;}
+  .mod-title{font-weight:700;font-size:0.92rem;margin-bottom:0.3rem;}
+  .mod-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.6;flex:1;}
+  .mod-status{margin-top:0.75rem;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;color:var(--text-muted);}
+  .phase-goal{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+  .pg-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.5rem;}
+  .pg-text{font-size:0.9rem;color:var(--text-mid);line-height:1.7;border-left:2px solid var(--purple);padding-left:0.85rem;}
+  .pg-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;}
+  .pg-list li{font-size:0.85rem;color:var(--text-mid);display:flex;gap:0.4rem;}
+  .pg-list li::before{content:'→';color:var(--purple-bright);font-size:0.78rem;flex-shrink:0;}
+  .soon-notice{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;font-size:0.88rem;color:var(--gold-light);line-height:1.6;margin-top:1.25rem;}
+  @media(max-width:900px){.module-grid,.phase-goal{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+<nav>
+  <a href="orthoblueprint.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb"><a href="curriculum.html">Curriculum</a><span class="breadcrumb-arrow">›</span><span class="crumb-active">Phase 3</span></div>
+  <div class="nav-right">
+    <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Curriculum</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html">Overview</a></li>
+        <li><a href="phase-1.html" class="sub">Phase 1 — Foundations</a></li>
+        <li><a href="phase-2.html" class="sub">Phase 2 — Clinical</a></li>
+        <li><a href="phase-3.html" class="on sub">Phase 3 — Sub-I Prep</a></li>
+      </ul>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Phase 3 Modules</div>
+      <ul class="sb-nav">
+        <li><a href="#approaches" class="sub">Surgical Approaches</a></li>
+        <li><a href="#fixation" class="sub">Fixation Methods</a></li>
+        <li><a href="#splints" class="sub">Splints &amp; Casting</a></li>
+        <li><a href="#caseprep" class="sub">Case Prep Toolkit</a></li>
+        <li><a href="#procedures" class="sub">Common Procedures</a></li>
+        <li><a href="#match" class="sub">Interview &amp; Match</a></li>
+      </ul>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Your Progress</div>
+      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
+        <strong style="color:var(--white);font-size:1.05rem;">0</strong> / 6 modules
+      </div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:0%;background:linear-gradient(90deg,var(--purple),var(--purple-bright));"></div></div>
+      <div class="sb-prog-label"><span>0%</span><span style="color:var(--gold);">Locked</span></div>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Member Pages</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html" class="on">Curriculum</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-badge">Phase 3 · MS3 / MS4</div>
+      <h1 class="page-title">Sub-I Readiness</h1>
+      <p class="page-desc">Surgical approaches, OR prep, away rotation strategy, and interview preparation — everything to walk in and make a lasting impression.</p>
+    </div>
+    <div class="phase-goal reveal">
+      <div>
+        <div class="pg-label">Phase Goal</div>
+        <div class="pg-text">Walk into your first away rotation knowing surgical approaches, how to pre-round, OR etiquette, and how to make a first impression that earns a strong letter.</div>
+      </div>
+      <div>
+        <div class="pg-label">What's Included</div>
+        <ul class="pg-list">
+          <li>30-Day Sub-I Bootcamp checklist</li>
+          <li>Splint reference card (print-ready PDF)</li>
+          <li>"First Day" rotation playbook</li>
+          <li>Thank you &amp; follow-up email templates</li>
+          <li>Interview prep packet</li>
+          <li>Rank list strategy &amp; couples match forum</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sect-label" id="approaches">Modules</div>
+    <div class="module-grid">
+      <div class="mod-card reveal d1"><div class="mod-icon">🔪</div><div class="mod-title">Surgical Approaches</div><div class="mod-desc">Common exposures by region, structures at risk, patient positioning, and basic OR flow for the sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d2" id="fixation"><div class="mod-icon">🔩</div><div class="mod-title">Fixation Methods</div><div class="mod-desc">Plates, nails, screws, external fixation — indications and biomechanics at the level you need on rounds.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d3" id="splints"><div class="mod-icon">🩹</div><div class="mod-title">Splints &amp; Casting</div><div class="mod-desc">AO principles, splint types by indication, when to bivalve, and compartment syndrome watch points.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d1" id="caseprep"><div class="mod-icon">📋</div><div class="mod-title">Case Prep Toolkit</div><div class="mod-desc">Pre-rounding checklist, imaging review template, OR prep routine, and attending question bank.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d2" id="procedures"><div class="mod-icon">🏥</div><div class="mod-title">Common Procedures</div><div class="mod-desc">I&amp;D, closed reduction techniques, ORIF principles, and ED orthopaedic procedures you'll see as a sub-I.</div><div class="mod-status">⏳ Coming Soon</div></div>
+      <div class="mod-card reveal d3" id="match"><div class="mod-icon">🎯</div><div class="mod-title">Interview &amp; Match</div><div class="mod-desc">Prep packet, program Q&amp;A database, ranking strategy, and couples match guidance from matched members.</div><div class="mod-status">⏳ Coming Soon</div></div>
+    </div>
+    <div class="soon-notice reveal">⏳ Phase 3 is in active development. Members get access as each module goes live — watch the community announcements space.</div>
+    <div class="divider"></div>
+    <a href="phase-2.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;">← Back to Phase 2</a>
+  </main>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  });
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  }),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

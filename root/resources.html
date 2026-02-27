@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy-mid:#122040; --navy-card:#0f1c35;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#7a8fa8; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.15);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.12);
+    --purple:#7c3aed; --purple-bright:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .nav-sep{color:var(--text-muted);font-size:0.9rem;}
+  .breadcrumb{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--text-muted);}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--white);}
+  .breadcrumb .crumb-active{color:var(--accent-bright);font-weight:500;}
+  .breadcrumb-arrow{font-size:0.75rem;color:var(--text-muted);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.85rem;color:var(--text-muted);}
+
+  /* ── SCROLL PROGRESS ── */
+  .progress-bar{position:fixed;top:60px;left:0;right:0;height:2px;z-index:99;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
+
+  /* ── LAYOUT ── */
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;padding-top:60px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--navy-card);border-right:1px solid var(--border);padding:2rem 1.5rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sb-section{margin-bottom:2rem;}
+  .sb-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .sb-nav{list-style:none;display:flex;flex-direction:column;gap:0.2rem;}
+  .sb-nav li a{display:block;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;}
+  .sb-nav li a:hover{background:rgba(45,125,210,0.08);color:var(--white);border-left-color:var(--accent);}
+  .sb-nav li a.on{background:rgba(45,125,210,0.12);color:var(--accent-bright);border-left-color:var(--accent-bright);font-weight:500;}
+  .sb-nav li a.sub{padding-left:1.25rem;font-size:0.82rem;}
+  .sb-prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:100px;margin-top:0.5rem;overflow:hidden;}
+  .sb-prog-fill{height:100%;border-radius:100px;}
+  .sb-prog-label{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
+
+  /* ── MAIN ── */
+  .main{padding:3rem 4rem;max-width:960px;}
+
+  /* ── PAGE HEADER ── */
+  .page-header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);animation:fadeUp 0.6s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.25rem 0.8rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.08em;font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  h1.page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .page-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.7;max-width:620px;}
+
+  /* ── SECTION LABEL ── */
+  .sect-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1.25rem;margin-top:2rem;display:flex;align-items:center;gap:0.6rem;}
+  .sect-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.3),transparent);}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.5rem 0;}
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s;} .d2{transition-delay:0.12s;} .d3{transition-delay:0.18s;} .d4{transition-delay:0.24s;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
+  }
+
+  .filter-tabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem;}
+  .ftab{padding:0.4rem 1rem;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,0.02);color:var(--text-muted);transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+  .ftab:hover{color:var(--white);border-color:rgba(45,125,210,0.3);}
+  .ftab.on{background:rgba(45,125,210,0.12);border-color:rgba(45,125,210,0.4);color:var(--accent-bright);}
+  .featured{background:rgba(255,255,255,0.025);border:1px solid rgba(45,125,210,0.3);border-radius:14px;padding:2rem;margin-bottom:1.25rem;display:grid;grid-template-columns:auto 1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;}
+  .featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--gold));}
+  .feat-icon{font-size:3rem;}
+  .feat-tag{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:0.3rem;}
+  .feat-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:800;margin-bottom:0.4rem;}
+  .feat-desc{font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;}
+  .feat-pills{display:flex;gap:0.5rem;flex-wrap:wrap;}
+  .feat-pill{font-size:0.65rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);color:var(--accent-bright);padding:0.2rem 0.55rem;border-radius:100px;font-family:'DM Mono',monospace;font-weight:600;}
+  .feat-stats{display:flex;flex-direction:column;gap:0.75rem;min-width:110px;}
+  .feat-stat{text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.75rem;}
+  .feat-stat-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--accent-bright);}
+  .feat-stat-lbl{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace;}
+  .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .res-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;transition:all 0.25s;}
+  .res-card:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-2px);}
+  .rc-phase{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.5rem;}
+  .rc-header{display:flex;gap:0.85rem;margin-bottom:0.75rem;}
+  .rc-icon{font-size:1.6rem;flex-shrink:0;}
+  .rc-title{font-weight:700;font-size:0.92rem;margin-bottom:0.15rem;}
+  .rc-sub{font-size:0.75rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .rc-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.6;flex:1;margin-bottom:1rem;}
+  .rc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+  .status-ok{font-size:0.68rem;font-weight:600;color:var(--green);font-family:'DM Mono',monospace;text-transform:uppercase;}
+  .status-locked{font-size:0.68rem;font-weight:600;color:var(--text-muted);font-family:'DM Mono',monospace;text-transform:uppercase;}
+  .btn-dl{font-size:0.75rem;font-weight:600;color:var(--accent-bright);background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.25);padding:0.35rem 0.9rem;border-radius:6px;cursor:pointer;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;}
+  .btn-dl:hover{background:rgba(45,125,210,0.2);}
+  .btn-dl:disabled{opacity:0.35;cursor:not-allowed;}
+  .books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .book{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;gap:1rem;transition:all 0.25s;}
+  .book:hover{border-color:rgba(45,125,210,0.3);transform:translateY(-2px);}
+  .book-spine{width:44px;height:70px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .bs-1{background:linear-gradient(160deg,#1a3a6b,var(--accent));}
+  .bs-2{background:linear-gradient(160deg,#3b1f6b,var(--purple));}
+  .bs-3{background:linear-gradient(160deg,#0d3d2b,var(--green));}
+  .book-title{font-weight:700;font-size:0.86rem;line-height:1.35;margin-bottom:0.2rem;}
+  .book-author{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:0.4rem;}
+  .book-desc{font-size:0.8rem;color:var(--text-muted);line-height:1.5;margin-bottom:0.5rem;}
+  .book-badge{font-size:0.62rem;font-weight:600;font-family:'DM Mono',monospace;}
+  .badge-included{color:var(--green);}
+  .badge-link{color:var(--accent-bright);text-decoration:none;}
+  .toast{position:fixed;bottom:2rem;right:2rem;background:var(--navy-mid);border:1px solid var(--green);border-radius:10px;padding:0.85rem 1.25rem;font-size:0.85rem;color:var(--green);transform:translateY(100px);opacity:0;transition:all 0.3s;z-index:999;font-family:'DM Mono',monospace;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media(max-width:900px){.featured{grid-template-columns:1fr;} .res-grid,.books-grid{grid-template-columns:1fr;} .feat-stats{flex-direction:row;}}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+<nav>
+  <a href="orthoblueprint.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb"><span class="crumb-active">Resources</span></div>
+  <div class="nav-right">
+    <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Resources</div>
+      <ul class="sb-nav">
+        <li><a href="#anki" class="on">Anki Decks</a></li>
+        <li><a href="#downloads">Downloads</a></li>
+        <li><a href="#books">Recommended Books</a></li>
+      </ul>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">By Phase</div>
+      <ul class="sb-nav">
+        <li><a href="#" onclick="filter('phase1',this);return false;" class="sub">Phase 1 Resources</a></li>
+        <li><a href="#" onclick="filter('phase2',this);return false;" class="sub">Phase 2 Resources</a></li>
+        <li><a href="#" onclick="filter('phase3',this);return false;" class="sub">Phase 3 Resources</a></li>
+      </ul>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Your Progress</div>
+      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
+        <strong style="color:var(--white);font-size:1.05rem;">1</strong> / 24 modules
+      </div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:4%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
+      <div class="sb-prog-label"><span>4%</span><span style="color:var(--gold);">MS2</span></div>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Member Pages</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="resources.html" class="on">Resources</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-badge">Member Platform</div>
+      <h1 class="page-title">Resources</h1>
+      <p class="page-desc">Anki decks, downloads, and reference books — organized by the phase when you need them.</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="ftab on" onclick="filter('all',this)">All Resources</button>
+      <button class="ftab" onclick="filter('phase1',this)">Phase 1</button>
+      <button class="ftab" onclick="filter('phase2',this)">Phase 2</button>
+      <button class="ftab" onclick="filter('phase3',this)">Phase 3</button>
+    </div>
+    <div class="sect-label" id="anki">Anki Decks</div>
+    <div class="featured reveal" data-cat="phase1">
+      <div class="feat-icon">🃏</div>
+      <div>
+        <div class="feat-tag">Phase 1 · Anatomy</div>
+        <div class="feat-title">Phase 1 Anki Deck</div>
+        <div class="feat-desc">Origins, insertions, innervations, actions, and imaging basics. Designed to stack on your MS1/MS2 MSK block.</div>
+        <div class="feat-pills"><span class="feat-pill">600+ Cards</span><span class="feat-pill">MS1/MS2</span><span class="feat-pill">Anatomy-First</span></div>
+      </div>
+      <div class="feat-stats">
+        <div class="feat-stat"><div class="feat-stat-num">300+</div><div class="feat-stat-lbl">Origins</div></div>
+        <div class="feat-stat"><div class="feat-stat-num">200+</div><div class="feat-stat-lbl">Innervations</div></div>
+        <button class="btn-dl" style="margin-top:0.25rem;" onclick="dl(this,'Phase 1 Anki Deck')">↓ Download</button>
+      </div>
+    </div>
+    <div class="featured reveal" data-cat="phase2" style="margin-top:1rem;">
+      <div class="feat-icon">🃏</div>
+      <div>
+        <div class="feat-tag">Phase 2 · Pathology by Region</div>
+        <div class="feat-title">Phase 2 Anki Deck</div>
+        <div class="feat-desc">Region-by-region pathology cards, unlocking progressively as you complete each region module.</div>
+        <div class="feat-pills"><span class="feat-pill">8 Regions</span><span class="feat-pill">MS3</span><span class="feat-pill">Progressive Unlock</span></div>
+      </div>
+      <div class="feat-stats">
+        <div class="feat-stat"><div class="feat-stat-num">8</div><div class="feat-stat-lbl">Regions</div></div>
+        <div class="feat-stat"><div class="feat-stat-num">1/8</div><div class="feat-stat-lbl">Unlocked</div></div>
+        <button class="btn-dl" style="margin-top:0.25rem;" onclick="dl(this,'Phase 2 Deck — Knee')">↓ Download</button>
+      </div>
+    </div>
+    <div class="sect-label" id="downloads">Downloads</div>
+    <div class="res-grid">
+      <div class="res-card reveal" data-cat="phase1"><div class="rc-phase">Phase 1 · MS1/MS2</div><div class="rc-header"><span class="rc-icon">📄</span><div><div class="rc-title">ERAS-Ready CV Template</div><div class="rc-sub">.docx — Editable</div></div></div><div class="rc-desc">ERAS-aligned formatting with 4-year longitudinal updating strategy and example bullets for research, presentations, and leadership.</div><div class="rc-footer"><span class="status-ok">✓ Unlocked</span><button class="btn-dl" onclick="dl(this,'CV Template')">↓ Download</button></div></div>
+      <div class="res-card reveal" data-cat="phase3"><div class="rc-phase">Phase 3 · MS3/MS4</div><div class="rc-header"><span class="rc-icon">🩹</span><div><div class="rc-title">Splint Reference Card</div><div class="rc-sub">.pdf — Print-ready</div></div></div><div class="rc-desc">AO principles, splint types by indication, padding technique, bivalving, and compartment syndrome watch points.</div><div class="rc-footer"><span class="status-locked">🔒 Phase 3</span><button class="btn-dl" disabled>Locked</button></div></div>
+      <div class="res-card reveal" data-cat="phase3"><div class="rc-phase">Phase 3 · MS3/MS4</div><div class="rc-header"><span class="rc-icon">📋</span><div><div class="rc-title">30-Day Sub-I Bootcamp</div><div class="rc-sub">.pdf — Checklist</div></div></div><div class="rc-desc">Day-by-day preparation checklist for the month before your first away rotation. Surgical sprint, pimp review, OR etiquette.</div><div class="rc-footer"><span class="status-locked">🔒 Phase 3</span><button class="btn-dl" disabled>Locked</button></div></div>
+      <div class="res-card reveal" data-cat="phase3"><div class="rc-phase">Phase 3 · MS3/MS4</div><div class="rc-header"><span class="rc-icon">✉️</span><div><div class="rc-title">Email Templates</div><div class="rc-sub">.docx — Editable</div></div></div><div class="rc-desc">Thank you notes, follow-up emails post-interview, cold emails to research mentors, and program director outreach.</div><div class="rc-footer"><span class="status-locked">🔒 Phase 3</span><button class="btn-dl" disabled>Locked</button></div></div>
+      <div class="res-card reveal" data-cat="phase3"><div class="rc-phase">Phase 3 · MS3/MS4</div><div class="rc-header"><span class="rc-icon">📖</span><div><div class="rc-title">"First Day" Rotation Playbook</div><div class="rc-sub">.pdf — Guide</div></div></div><div class="rc-desc">Exactly what to do on day one — introductions, what to carry, pre-rounding, presenting, making a first impression.</div><div class="rc-footer"><span class="status-locked">🔒 Phase 3</span><button class="btn-dl" disabled>Locked</button></div></div>
+      <div class="res-card reveal" data-cat="phase3"><div class="rc-phase">Phase 3 · MS3/MS4</div><div class="rc-header"><span class="rc-icon">🎯</span><div><div class="rc-title">Interview Prep Packet</div><div class="rc-sub">.pdf — Guide</div></div></div><div class="rc-desc">Common ortho interview questions, how to answer "why ortho," program-specific Q&amp;A from OrthoBlueprint members who matched.</div><div class="rc-footer"><span class="status-locked">🔒 Phase 3</span><button class="btn-dl" disabled>Locked</button></div></div>
+    </div>
+    <div class="sect-label" id="books">Recommended Books</div>
+    <div class="books-grid">
+      <div class="book reveal d1" data-cat="phase1"><div class="book-spine bs-1">📘</div><div><div class="book-title">Netter's Atlas of Human Anatomy</div><div class="book-author">Frank H. Netter</div><div class="book-desc">Gold standard visual anatomy reference. Essential for Phase 1 and ongoing reference throughout.</div><span class="book-badge badge-included">✓ Included with membership</span></div></div>
+      <div class="book reveal d2" data-cat="phase2"><div class="book-spine bs-2">📗</div><div><div class="book-title">Netter's Concise Orthopaedic Anatomy</div><div class="book-author">Jon C. Thompson</div><div class="book-desc">Surgical approaches, landmark anatomy, and regional orthopaedics. Essential for Phase 2 and Sub-I prep.</div><a href="#" class="book-badge badge-link">View on Amazon →</a></div></div>
+      <div class="book reveal d3" data-cat="phase2"><div class="book-spine bs-3">📙</div><div><div class="book-title">Handbook of Fractures</div><div class="book-author">Kenneth Egol et al.</div><div class="book-desc">Classic pocket reference for fracture classification and management principles. Pairs with Phase 2 modules.</div><a href="#" class="book-badge badge-link">View on Amazon →</a></div></div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast">✓ Downloading…</div>
+<script>
+  function filter(cat,btn){
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));
+    if(btn) btn.classList.add('on');
+    document.querySelectorAll('[data-cat]').forEach(c=>{
+      c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+    });
+  }
+  function dl(btn,name){
+    btn.textContent='↓ Downloading…';
+    setTimeout(()=>{
+      btn.textContent='✓ Downloaded'; btn.style.color='var(--green)';
+      const t=document.getElementById('toast'); t.textContent='✓ '+name+' downloaded';
+      t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
+    },900);
+  }
+</script>
+<script>
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  });
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  }),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

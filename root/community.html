@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy-mid:#122040; --navy-card:#0f1c35;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#7a8fa8; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.15);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.12);
+    --purple:#7c3aed; --purple-bright:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .nav-sep{color:var(--text-muted);font-size:0.9rem;}
+  .breadcrumb{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--text-muted);}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--white);}
+  .breadcrumb .crumb-active{color:var(--accent-bright);font-weight:500;}
+  .breadcrumb-arrow{font-size:0.75rem;color:var(--text-muted);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.85rem;color:var(--text-muted);}
+
+  /* ── SCROLL PROGRESS ── */
+  .progress-bar{position:fixed;top:60px;left:0;right:0;height:2px;z-index:99;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
+
+  /* ── LAYOUT ── */
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;padding-top:60px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--navy-card);border-right:1px solid var(--border);padding:2rem 1.5rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sb-section{margin-bottom:2rem;}
+  .sb-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .sb-nav{list-style:none;display:flex;flex-direction:column;gap:0.2rem;}
+  .sb-nav li a{display:block;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;}
+  .sb-nav li a:hover{background:rgba(45,125,210,0.08);color:var(--white);border-left-color:var(--accent);}
+  .sb-nav li a.on{background:rgba(45,125,210,0.12);color:var(--accent-bright);border-left-color:var(--accent-bright);font-weight:500;}
+  .sb-nav li a.sub{padding-left:1.25rem;font-size:0.82rem;}
+  .sb-prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:100px;margin-top:0.5rem;overflow:hidden;}
+  .sb-prog-fill{height:100%;border-radius:100px;}
+  .sb-prog-label{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
+
+  /* ── MAIN ── */
+  .main{padding:3rem 4rem;max-width:960px;}
+
+  /* ── PAGE HEADER ── */
+  .page-header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);animation:fadeUp 0.6s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.25rem 0.8rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.08em;font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  h1.page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .page-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.7;max-width:620px;}
+
+  /* ── SECTION LABEL ── */
+  .sect-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1.25rem;margin-top:2rem;display:flex;align-items:center;gap:0.6rem;}
+  .sect-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.3),transparent);}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.5rem 0;}
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s;} .d2{transition-delay:0.12s;} .d3{transition-delay:0.18s;} .d4{transition-delay:0.24s;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
+  }
+
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+  .stat-box{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:10px;padding:1.25rem;text-align:center;transition:all 0.25s;}
+  .stat-box:hover{border-color:rgba(45,125,210,0.3);}
+  .stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:800;color:var(--accent-bright);}
+  .stat-lbl{font-size:0.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace;margin-top:0.15rem;}
+  .live-dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:0.3rem;animation:blink 2s infinite;}
+  @keyframes blink{0%,100%{{opacity:1}}50%{{opacity:0.35}}}
+  .space{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:14px;margin-bottom:1.25rem;overflow:hidden;transition:border-color 0.25s;}
+  .space:hover{border-color:rgba(45,125,210,0.3);}
+  .space-head{padding:1.1rem 1.5rem;display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+  .space-icon{font-size:1.2rem;flex-shrink:0;}
+  .space-name{font-weight:700;font-size:0.94rem;}
+  .space-meta{font-size:0.75rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .space-toggle{margin-left:auto;font-size:0.78rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .space-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+  .space-body.open{max-height:900px;}
+  .compose{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:0.85rem 1.25rem;display:flex;align-items:center;gap:0.85rem;cursor:pointer;transition:all 0.2s;}
+  .compose:hover{border-color:rgba(45,125,210,0.3);background:rgba(45,125,210,0.04);}
+  .c-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;}
+  .c-placeholder{font-size:0.86rem;color:var(--text-muted);}
+  .c-btn{margin-left:auto;font-size:0.72rem;font-weight:600;color:var(--accent-bright);background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.25);padding:0.3rem 0.8rem;border-radius:6px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;}
+  .post-list{list-style:none;}
+  .post{padding:0.9rem 1.5rem;border-bottom:1px solid rgba(45,125,210,0.06);display:flex;gap:0.9rem;cursor:pointer;transition:background 0.15s;}
+  .post:last-child{border-bottom:none;}
+  .post:hover{background:rgba(45,125,210,0.04);}
+  .p-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;}
+  .av1{background:rgba(45,125,210,0.2);color:var(--accent-bright);}
+  .av2{background:rgba(201,168,76,0.2);color:var(--gold-light);}
+  .av3{background:rgba(76,175,134,0.2);color:var(--green);}
+  .av4{background:rgba(124,58,237,0.2);color:var(--purple-bright);}
+  .av-anon{background:rgba(255,255,255,0.06);color:var(--text-muted);}
+  .p-content{flex:1;}
+  .p-title{font-size:0.88rem;font-weight:500;line-height:1.4;margin-bottom:0.2rem;}
+  .p-preview{font-size:0.78rem;color:var(--text-muted);line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .p-meta{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-top:0.3rem;}
+  .p-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;}
+  .p-replies{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .p-tag{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace;padding:0.15rem 0.45rem;border-radius:4px;}
+  .tag-pinned{background:rgba(201,168,76,0.15);color:var(--gold);}
+  .tag-hot{background:rgba(224,92,92,0.15);color:#e05c5c;}
+  .events-list{display:flex;flex-direction:column;gap:1rem;}
+  .event{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:flex;gap:1.25rem;align-items:center;transition:all 0.25s;}
+  .event:hover{border-color:rgba(45,125,210,0.35);transform:translateX(3px);}
+  .event-date{width:52px;height:52px;flex-shrink:0;background:rgba(45,125,210,0.1);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ev-month{font-family:'DM Mono',monospace;font-size:0.58rem;font-weight:600;text-transform:uppercase;color:var(--accent-bright);letter-spacing:0.06em;}
+  .ev-day{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;line-height:1;}
+  .ev-info{flex:1;}
+  .ev-type{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:0.2rem;}
+  .ev-title{font-weight:700;font-size:0.92rem;margin-bottom:0.2rem;}
+  .ev-desc{font-size:0.82rem;color:var(--text-muted);line-height:1.5;}
+  .btn-rsvp{font-size:0.74rem;font-weight:600;color:var(--accent-bright);background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.25);padding:0.4rem 1rem;border-radius:6px;cursor:pointer;transition:all 0.2s;font-family:'DM Mono',monospace;text-transform:uppercase;flex-shrink:0;}
+  .btn-rsvp:hover{background:rgba(45,125,210,0.2);}
+  .btn-rsvp.done{color:var(--green);background:var(--green-soft);border-color:rgba(76,175,134,0.3);}
+  @media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr);} .event{flex-wrap:wrap;}}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+<nav>
+  <a href="orthoblueprint.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb"><span class="crumb-active">Community</span></div>
+  <div class="nav-right">
+    <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Spaces</div>
+      <ul class="sb-nav">
+        <li><a href="#spaces" class="on">📢 All Spaces</a></li>
+        <li><a href="#spaces" class="sub">🎓 MS1/MS2 Foundations</a></li>
+        <li><a href="#spaces" class="sub">🗺️ Away Rotation Strategy</a></li>
+        <li><a href="#spaces" class="sub">🏥 Sub-I Experiences</a></li>
+        <li><a href="#spaces" class="sub">🎯 Interview Season</a></li>
+        <li><a href="#spaces" class="sub">📊 Ranking Strategy</a></li>
+      </ul>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Events</div>
+      <ul class="sb-nav">
+        <li><a href="#events" class="sub">Teaching Nights</a></li>
+        <li><a href="#events" class="sub">Interview Prep Sessions</a></li>
+      </ul>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Your Progress</div>
+      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
+        <strong style="color:var(--white);font-size:1.05rem;">1</strong> / 24 modules
+      </div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:4%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
+      <div class="sb-prog-label"><span>4%</span><span style="color:var(--gold);">MS2</span></div>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Member Pages</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html">Curriculum</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="community.html" class="on">Community</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-badge"><span class="live-dot"></span>Community — Live</div>
+      <h1 class="page-title">Community</h1>
+      <p class="page-desc">Real conversations from students navigating the same process. Post anonymously when you need to, openly when you're ready.</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box reveal d1"><div class="stat-num">340</div><div class="stat-lbl">Active Members</div></div>
+      <div class="stat-box reveal d2"><div class="stat-num">12</div><div class="stat-lbl">Med Schools</div></div>
+      <div class="stat-box reveal d3"><div class="stat-num">47</div><div class="stat-lbl">Programs Represented</div></div>
+      <div class="stat-box reveal d4"><div class="stat-num">24</div><div class="stat-lbl">Teaching Nights</div></div>
+    </div>
+    <div class="sect-label" id="spaces">Forum Spaces</div>
+    <div class="space reveal">
+      <div class="space-head" onclick="toggleSpace(this)"><span class="space-icon">🎓</span><div><div class="space-name">MS1/MS2 — Foundations</div><div class="space-meta">Mentors · Research · Summer planning · CV building</div></div><span class="space-toggle">▼ 3 posts</span></div>
+      <div class="space-body open">
+        <div class="compose" onclick="openCompose('MS1/MS2 — Foundations')"><div class="c-avatar">JS</div><div class="c-placeholder">Ask a question or share something useful…</div><span class="c-btn">Post</span></div>
+        <ul class="post-list">
+          <li class="post"><div class="p-av av2">SR</div><div class="p-content"><div class="p-title">Best way to reach out to attendings for research as an MS1?</div><div class="p-preview">I'm about to finish my first semester and I want to start building research experience in ortho. Should I cold email, or is there a better approach?</div><div class="p-meta">SRamirez · 2 days ago</div></div><div class="p-right"><span class="p-replies">💬 14</span></div></li>
+          <li class="post"><div class="p-av av3">TN</div><div class="p-content"><div class="p-title">What should I actually be doing the summer between M1 and M2?</div><div class="p-preview">I've heard research, I've heard shadow, I've heard do nothing and relax. Genuinely unsure what makes the most impact this early.</div><div class="p-meta">TNguyen · 5 days ago</div></div><div class="p-right"><span class="p-replies">💬 22</span></div></li>
+          <li class="post"><div class="p-av av1">JK</div><div class="p-content"><div class="p-title">How early should I start thinking about my application narrative?</div><div class="p-preview">I know ERAS is years away but I want to be intentional. When did people start actively thinking about what their personal statement would say?</div><div class="p-meta">JKim · 1 week ago</div></div><div class="p-right"><span class="p-replies">💬 9</span></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="space reveal">
+      <div class="space-head" onclick="toggleSpace(this)"><span class="space-icon">🗺️</span><div><div class="space-name">Away Rotation Strategy</div><div class="space-meta">Geography vs fit · LOR timing · How many rotations</div></div><span class="space-toggle">▼ 3 posts</span></div>
+      <div class="space-body open">
+        <div class="compose" onclick="openCompose('Away Rotation Strategy')"><div class="c-avatar">JS</div><div class="c-placeholder">Share your strategy or ask a question…</div><span class="c-btn">Post</span></div>
+        <ul class="post-list">
+          <li class="post"><div class="p-av av4">MB</div><div class="p-content"><div class="p-title">How many away rotations are people doing this cycle?</div><div class="p-preview">I've heard 2, I've heard 4, I've heard as many as you can. Trying to figure out the right number. I'm at a non-ortho-heavy school.</div><div class="p-meta">MBrown · 1 day ago</div></div><div class="p-right"><span class="p-tag tag-hot">🔥 Hot</span><span class="p-replies">💬 31</span></div></li>
+          <li class="post"><div class="p-av av1">AC</div><div class="p-content"><div class="p-title">Asking for LOR after a 2-week sub-I — too soon?</div><div class="p-preview">I did a great rotation, the attending seemed to like me, but it was only 2 weeks. Is it appropriate to ask for a letter that quickly?</div><div class="p-meta">AChen · 3 days ago</div></div><div class="p-right"><span class="p-replies">💬 18</span></div></li>
+          <li class="post"><div class="p-av av2">PL</div><div class="p-content"><div class="p-title">Geographic spread strategy — how many different regions?</div><div class="p-preview">I'm from the northeast but want to match somewhere in the south or midwest. How much does where you rotate actually affect where you match?</div><div class="p-meta">PLee · 1 week ago</div></div><div class="p-right"><span class="p-replies">💬 26</span></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="space reveal">
+      <div class="space-head" onclick="toggleSpace(this)"><span class="space-icon">🏥</span><div><div class="space-name">Sub-I Experiences</div><div class="space-meta">Anonymous · Program impressions · Culture · Red flags</div></div><span class="space-toggle">▶ Click to expand</span></div>
+      <div class="space-body">
+        <div class="compose" onclick="openCompose('Sub-I Experiences')"><div class="c-avatar">JS</div><div class="c-placeholder">Post anonymously — your identity is protected here…</div><span class="c-btn">Post Anon</span></div>
+        <ul class="post-list">
+          <li class="post"><div class="p-av av-anon">?</div><div class="p-content"><div class="p-title">[Anonymous] Midwest program — small volume but excellent culture</div><div class="p-preview">Did a 4-week rotation here last month. Volume wasn't huge but the residents were incredibly welcoming and teaching was outstanding.</div><div class="p-meta">Anonymous · 4 days ago</div></div><div class="p-right"><span class="p-replies">💬 7</span></div></li>
+          <li class="post"><div class="p-av av-anon">?</div><div class="p-content"><div class="p-title">[Anonymous] Red flags I noticed on my last rotation — trust your gut</div><div class="p-preview">I don't want to name the program but I want to share what I observed because I wish someone had warned me.</div><div class="p-meta">Anonymous · 6 days ago</div></div><div class="p-right"><span class="p-tag tag-hot">🔥 Hot</span><span class="p-replies">💬 44</span></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="space reveal">
+      <div class="space-head" onclick="toggleSpace(this)"><span class="space-icon">🎯</span><div><div class="space-name">Interview Season</div><div class="space-meta">Invite data · Ranking strategy · Couples match</div></div><span class="space-toggle">▶ Click to expand</span></div>
+      <div class="space-body">
+        <div class="compose" onclick="openCompose('Interview Season')"><div class="c-avatar">JS</div><div class="c-placeholder">Share invite data, ask about programs…</div><span class="c-btn">Post</span></div>
+        <ul class="post-list">
+          <li class="post"><div class="p-av av2">DW</div><div class="p-content"><div class="p-title">📌 Interview invite tracker — share your data here</div><div class="p-preview">Pinned thread for sharing invite information across programs. Please include: program name, invite date, step scores if comfortable, number of aways.</div><div class="p-meta">DWilson · Pinned</div></div><div class="p-right"><span class="p-tag tag-pinned">📌 Pinned</span><span class="p-replies">💬 112</span></div></li>
+          <li class="post"><div class="p-av av3">EM</div><div class="p-content"><div class="p-title">Couples match + ortho — anyone navigated this successfully?</div><div class="p-preview">My partner is applying IM this cycle and we're trying to figure out the couples match logistics. The ortho rank list timing feels very different.</div><div class="p-meta">EMartinez · 2 days ago</div></div><div class="p-right"><span class="p-replies">💬 19</span></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sect-label" id="events">Upcoming Events</div>
+    <div class="events-list">
+      <div class="event reveal d1"><div class="event-date"><div class="ev-month">Mar</div><div class="ev-day">04</div></div><div class="ev-info"><div class="ev-type">Case-Based Teaching Night</div><div class="ev-title">Knee Trauma — Tibial Plateau &amp; Distal Femur</div><div class="ev-desc">Live case walkthrough with a PGY-3. Imaging interpretation, classification, management. Open Q&amp;A follows.</div></div><button class="btn-rsvp" onclick="rsvp(this)">RSVP →</button></div>
+      <div class="event reveal d2"><div class="event-date"><div class="ev-month">Mar</div><div class="ev-day">18</div></div><div class="ev-info"><div class="ev-type">Interview Prep Session</div><div class="ev-title">Orthopaedic Interview Q&amp;A — Mock Scenarios</div><div class="ev-desc">Practice common ortho interview questions with peer feedback. Hosted by a member who matched this cycle.</div></div><button class="btn-rsvp" onclick="rsvp(this)">RSVP →</button></div>
+      <div class="event reveal d3"><div class="event-date"><div class="ev-month">Apr</div><div class="ev-day">01</div></div><div class="ev-info"><div class="ev-type">Case-Based Teaching Night</div><div class="ev-title">Hand &amp; Wrist — Scaphoid Fractures &amp; DISI</div><div class="ev-desc">Deep dive with a hand surgery fellow. Vascular anatomy, fixation principles, pimp question review.</div></div><button class="btn-rsvp" onclick="rsvp(this)">RSVP →</button></div>
+    </div>
+  </main>
+</div>
+<div id="compose-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:16px;padding:2rem;width:90%;max-width:560px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;"><div style="font-weight:700;">New Post — <span id="compose-space-name" style="color:var(--accent-bright);"></span></div><button onclick="closeCompose()" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;">✕</button></div>
+    <input id="compose-title-inp" type="text" placeholder="Post title…" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.9rem;margin-bottom:0.75rem;outline:none;">
+    <textarea rows="5" placeholder="Write your post…" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;color:var(--white);font-family:'DM Sans',sans-serif;font-size:0.9rem;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;gap:0.75rem;margin-top:1rem;align-items:center;"><label style="display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;color:var(--text-muted);cursor:pointer;"><input type="checkbox" style="accent-color:var(--accent);"> Post anonymously</label><button onclick="closeCompose()" style="margin-left:auto;background:linear-gradient(135deg,var(--accent),#1d5fa8);color:var(--white);border:none;padding:0.65rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;cursor:pointer;">Post →</button></div>
+  </div>
+</div>
+<script>
+  function toggleSpace(h){const b=h.nextElementSibling,t=h.querySelector('.space-toggle'),o=b.classList.toggle('open');t.textContent=o?'▼ '+b.querySelectorAll('.post').length+' posts':'▶ Click to expand';}
+  function rsvp(b){b.textContent='✓ RSVP\'d';b.classList.add('done');}
+  function openCompose(s){document.getElementById('compose-space-name').textContent=s;const m=document.getElementById('compose-modal');m.style.display='flex';}
+  function closeCompose(){document.getElementById('compose-modal').style.display='none';}
+</script>
+<script>
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  });
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  }),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

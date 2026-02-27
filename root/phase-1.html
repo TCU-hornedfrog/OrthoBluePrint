@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 — Foundations — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0a1628; --navy-mid:#122040; --navy-card:#0f1c35;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#7a8fa8; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.15);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.12);
+    --purple:#7c3aed; --purple-bright:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;gap:1rem;background:rgba(10,22,40,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;}
+  .nav-sep{color:var(--text-muted);font-size:0.9rem;}
+  .breadcrumb{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--text-muted);}
+  .breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  .breadcrumb a:hover{color:var(--white);}
+  .breadcrumb .crumb-active{color:var(--accent-bright);font-weight:500;}
+  .breadcrumb-arrow{font-size:0.75rem;color:var(--text-muted);}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.75rem;}
+  .nav-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:var(--white);flex-shrink:0;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.85rem;color:var(--text-muted);}
+
+  /* ── SCROLL PROGRESS ── */
+  .progress-bar{position:fixed;top:60px;left:0;right:0;height:2px;z-index:99;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
+
+  /* ── LAYOUT ── */
+  .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;padding-top:60px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{background:var(--navy-card);border-right:1px solid var(--border);padding:2rem 1.5rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+  .sb-section{margin-bottom:2rem;}
+  .sb-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .sb-nav{list-style:none;display:flex;flex-direction:column;gap:0.2rem;}
+  .sb-nav li a{display:block;padding:0.5rem 0.75rem;border-radius:6px;font-size:0.85rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;border-left:2px solid transparent;}
+  .sb-nav li a:hover{background:rgba(45,125,210,0.08);color:var(--white);border-left-color:var(--accent);}
+  .sb-nav li a.on{background:rgba(45,125,210,0.12);color:var(--accent-bright);border-left-color:var(--accent-bright);font-weight:500;}
+  .sb-nav li a.sub{padding-left:1.25rem;font-size:0.82rem;}
+  .sb-prog-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:100px;margin-top:0.5rem;overflow:hidden;}
+  .sb-prog-fill{height:100%;border-radius:100px;}
+  .sb-prog-label{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;display:flex;justify-content:space-between;margin-top:0.3rem;}
+
+  /* ── MAIN ── */
+  .main{padding:3rem 4rem;max-width:960px;}
+
+  /* ── PAGE HEADER ── */
+  .page-header{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);animation:fadeUp 0.6s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .page-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(45,125,210,0.1);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.25rem 0.8rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.08em;font-family:'DM Mono',monospace;margin-bottom:0.75rem;}
+  h1.page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.6rem;}
+  .page-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.7;max-width:620px;}
+
+  /* ── SECTION LABEL ── */
+  .sect-label{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:1.25rem;margin-top:2rem;display:flex;align-items:center;gap:0.6rem;}
+  .sect-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.3),transparent);}
+
+  /* ── DIVIDER ── */
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:2.5rem 0;}
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s;} .d2{transition-delay:0.12s;} .d3{transition-delay:0.18s;} .d4{transition-delay:0.24s;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;} .sidebar{display:none;} .main{padding:2rem 1.5rem;}
+  }
+
+  .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .mod-card{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;transition:all 0.25s;}
+  .mod-card:hover{border-color:rgba(45,125,210,0.35);transform:translateY(-2px);}
+  .mod-icon{font-size:1.6rem;margin-bottom:0.6rem;}
+  .mod-title{font-weight:700;font-size:0.92rem;margin-bottom:0.3rem;}
+  .mod-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.6;flex:1;}
+  .mod-status{margin-top:0.75rem;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;font-family:'DM Mono',monospace;}
+  .ms-live{color:var(--green);}
+  .phase-goal{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+  .pg-label{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.5rem;}
+  .pg-text{font-size:0.9rem;color:var(--text-mid);line-height:1.7;border-left:2px solid var(--accent);padding-left:0.85rem;}
+  .pg-list{list-style:none;display:flex;flex-direction:column;gap:0.4rem;}
+  .pg-list li{font-size:0.85rem;color:var(--text-mid);display:flex;gap:0.4rem;}
+  .pg-list li::before{content:'→';color:var(--accent-bright);font-size:0.78rem;flex-shrink:0;}
+  .anki-box{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-top:1.5rem;}
+  .anki-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+  .anki-title{font-weight:700;font-size:0.92rem;}
+  .anki-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;}
+  .anki-stat{text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:0.75rem;}
+  .anki-num{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--accent-bright);}
+  .anki-lbl{font-size:0.63rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace;margin-top:0.1rem;}
+  @media(max-width:900px){.module-grid,.phase-goal,.anki-stats{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+<nav>
+  <a href="orthoblueprint.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb"><a href="curriculum.html">Curriculum</a><span class="breadcrumb-arrow">›</span><span class="crumb-active">Phase 1</span></div>
+  <div class="nav-right">
+    <div class="nav-user"><div class="nav-avatar">JS</div><span>John S.</span></div>
+  </div>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Curriculum</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html">Overview</a></li>
+        <li><a href="phase-1.html" class="on">Phase 1 — Foundations</a></li>
+        <li><a href="phase-2.html" class="sub">Phase 2 — Clinical</a></li>
+        <li><a href="phase-3.html" class="sub">Phase 3 — Sub-I Prep</a></li>
+      </ul>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Phase 1 Modules</div>
+      <ul class="sb-nav">
+        <li><a href="#anatomy" class="sub">Bite-Sized Anatomy</a></li>
+        <li><a href="#xray" class="sub">X-Ray Fundamentals</a></li>
+        <li><a href="#cv" class="sub">CV Foundation</a></li>
+        <li><a href="#anki" class="sub">Phase 1 Anki Deck</a></li>
+      </ul>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Your Progress</div>
+      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:0.4rem;">
+        <strong style="color:var(--white);font-size:1.05rem;">1</strong> / 3 modules
+      </div>
+      <div class="sb-prog-bar"><div class="sb-prog-fill" style="width:33%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));"></div></div>
+      <div class="sb-prog-label"><span>33%</span><span style="color:var(--gold);">MS1/MS2</span></div>
+    </div>
+        <div class="sb-section">
+      <div class="sb-label">Member Pages</div>
+      <ul class="sb-nav">
+        <li><a href="curriculum.html" class="on">Curriculum</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+    <div class="page-header">
+      <div class="page-badge">Phase 1 · MS1 / MS2</div>
+      <h1 class="page-title">Foundations</h1>
+      <p class="page-desc">Build your orthopaedic base before you ever step on a rotation. Anatomy, imaging, and your CV — done right from day one.</p>
+    </div>
+    <div class="phase-goal reveal">
+      <div>
+        <div class="pg-label">Phase Goal</div>
+        <div class="pg-text">Be comfortable labeling basic osseous anatomy and identifying obvious fractures on plain films before you ever step on a clinical rotation.</div>
+      </div>
+      <div>
+        <div class="pg-label">What's Included</div>
+        <ul class="pg-list">
+          <li>Phase 1 Anki Deck — anatomy-focused (600+ cards)</li>
+          <li>Netter's Atlas — included with membership</li>
+          <li>ERAS-ready CV template download</li>
+          <li>X-Ray fundamentals video modules</li>
+          <li>Research &amp; mentorship forum access</li>
+          <li>Annual 1:1 CV audit (Blueprint plan+)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sect-label" id="anatomy">Modules</div>
+    <div class="module-grid">
+      <div class="mod-card reveal d1">
+        <div class="mod-icon">🦴</div>
+        <div class="mod-title">Bite-Sized Anatomy</div>
+        <div class="mod-desc">Bones, origins, insertions, neurovascular anatomy, and joint biomechanics — organized to stack directly on your MS1/MS2 MSK block.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
+      <div class="mod-card reveal d2" id="xray">
+        <div class="mod-icon">🩻</div>
+        <div class="mod-title">X-Ray Fundamentals</div>
+        <div class="mod-desc">Standard views by region, systematic reading approach, normal anatomy before pathology, and introduction to fracture pattern recognition.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
+      <div class="mod-card reveal d3" id="cv">
+        <div class="mod-icon">📄</div>
+        <div class="mod-title">CV Foundation</div>
+        <div class="mod-desc">ERAS-aligned CV template with 4-year longitudinal updating strategy and example bullets for research, presentations, and leadership.</div>
+        <div class="mod-status ms-live">✓ Unlocked</div>
+      </div>
+    </div>
+    <div class="anki-box reveal" id="anki">
+      <div class="anki-header">
+        <div class="anki-title">🃏 Phase 1 Anki Deck</div>
+        <span style="font-size:0.75rem;color:var(--green);font-family:'DM Mono',monospace;font-weight:600;">✓ Downloaded</span>
+      </div>
+      <div class="anki-stats">
+        <div class="anki-stat"><div class="anki-num">300+</div><div class="anki-lbl">Origins &amp; Insertions</div></div>
+        <div class="anki-stat"><div class="anki-num">200+</div><div class="anki-lbl">Innervations</div></div>
+        <div class="anki-stat"><div class="anki-num">100+</div><div class="anki-lbl">Imaging Cards</div></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <a href="phase-2.html" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold-light);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;">Continue to Phase 2 →</a>
+  </main>
+</div>
+<script>
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  });
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  }),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
