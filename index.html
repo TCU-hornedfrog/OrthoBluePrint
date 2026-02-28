@@ -7,655 +7,259 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #060e1e;
-    --navy-mid: #0c1830;
-    --navy-card: #0a1526;
-    --accent: #2d7dd2;
-    --accent-bright: #4fa3f7;
-    --accent-glow: rgba(79,163,247,0.18);
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-glow: rgba(201,168,76,0.15);
-    --white: #ffffff;
-    --text-muted: #6a7f9a;
-    --text-mid: #94aec9;
-    --border: rgba(45,125,210,0.12);
-    --border-bright: rgba(45,125,210,0.28);
-    --green: #4caf86;
-    --purple: #7c3aed;
-    --purple-bright: #a78bfa;
+    --navy:#060e1e; --navy-mid:#0c1830; --navy-card:#0a1526;
+    --accent:#2d7dd2; --accent-bright:#4fa3f7;
+    --gold:#c9a84c; --gold-light:#e8c97a;
+    --white:#ffffff; --text-muted:#6a7f9a; --text-mid:#94aec9;
+    --border:rgba(45,125,210,0.12); --border-bright:rgba(45,125,210,0.28);
+    --green:#4caf86; --green-soft:rgba(76,175,134,0.1);
+    --purple:#7c3aed; --purple-bright:#a78bfa; --red:#e05c5c;
   }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;overflow-x:hidden;}
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  /* BG */
+  .bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.5;}
+  .bg-orb-1{width:900px;height:900px;top:-300px;left:-200px;background:radial-gradient(circle,rgba(45,125,210,0.25) 0%,transparent 70%);animation:driftSlow 28s ease-in-out infinite alternate;}
+  .bg-orb-2{width:700px;height:700px;top:30%;right:-250px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);animation:driftSlow 35s ease-in-out infinite alternate-reverse;}
+  .bg-orb-3{width:500px;height:500px;bottom:10%;left:20%;background:radial-gradient(circle,rgba(124,58,237,0.1) 0%,transparent 70%);animation:driftSlow 22s ease-in-out infinite alternate;}
+  @keyframes driftSlow{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,60px) scale(1.08)}}
+  .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(45,125,210,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,125,210,0.03) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+  /* PROGRESS */
+  .progress-bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:200;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0%;transition:width 0.1s linear;}
 
-  /* ── AMBIENT BACKGROUND ── */
-  .bg-canvas {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .bg-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.5;
-  }
-  .bg-orb-1 {
-    width: 900px; height: 900px;
-    top: -300px; left: -200px;
-    background: radial-gradient(circle, rgba(45,125,210,0.25) 0%, transparent 70%);
-    animation: driftSlow 28s ease-in-out infinite alternate;
-  }
-  .bg-orb-2 {
-    width: 700px; height: 700px;
-    top: 30%; right: -250px;
-    background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
-    animation: driftSlow 35s ease-in-out infinite alternate-reverse;
-  }
-  .bg-orb-3 {
-    width: 500px; height: 500px;
-    bottom: 10%; left: 20%;
-    background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%);
-    animation: driftSlow 22s ease-in-out infinite alternate;
-  }
-  @keyframes driftSlow {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(40px, 60px) scale(1.08); }
-  }
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 3rem;height:62px;display:flex;align-items:center;gap:1rem;background:rgba(6,14,30,0.75);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border);transition:background 0.3s,border-color 0.3s;}
+  nav.scrolled{background:rgba(6,14,30,0.96);border-bottom-color:var(--border-bright);}
+  .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:0.6rem;flex-shrink:0;}
+  .nav-logo span{color:var(--gold);}
+  .nav-logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;box-shadow:0 0 16px rgba(45,125,210,0.4);}
+  .landing-nav-links{margin-left:auto;display:flex;gap:0.25rem;align-items:center;}
+  .landing-nav-links a{padding:0.45rem 1rem;border-radius:6px;font-size:0.84rem;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
+  .landing-nav-links a:hover{color:var(--white);background:rgba(255,255,255,0.05);}
+  .landing-nav-links a.cta{background:linear-gradient(135deg,rgba(45,125,210,0.2),rgba(45,125,210,0.1));border:1px solid rgba(45,125,210,0.35);color:var(--accent-bright);font-weight:600;margin-left:0.5rem;}
+  .landing-nav-links a.cta:hover{background:rgba(45,125,210,0.28);box-shadow:0 0 20px rgba(45,125,210,0.25);}
 
-  /* Subtle grid overlay */
-  .bg-grid {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(45,125,210,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(45,125,210,0.035) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
-  }
+  /* HERO */
+  .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9rem 2rem 5rem;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(45,125,210,0.1) 0%,transparent 100%),radial-gradient(ellipse 40% 30% at 80% 70%,rgba(201,168,76,0.06) 0%,transparent 100%);pointer-events:none;}
+  .hero-lines{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+  .hero-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(45,125,210,0.08),transparent);animation:lineFade 3s ease both;}
+  @keyframes lineFade{from{opacity:0}to{opacity:1}}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(45,125,210,0.08);border:1px solid rgba(45,125,210,0.2);border-radius:100px;padding:0.45rem 1.2rem;font-size:0.72rem;font-weight:600;color:var(--accent-bright);text-transform:uppercase;letter-spacing:0.12em;font-family:'DM Mono',monospace;margin-bottom:2rem;animation:fadeUp 0.8s ease 0.1s both;}
+  .hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-bright);animation:pulse 2s ease infinite;}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(79,163,247,0.4)}50%{opacity:0.7;box-shadow:0 0 0 6px rgba(79,163,247,0)}}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,6.5vw,5.5rem);font-weight:900;line-height:1.03;letter-spacing:-0.03em;margin-bottom:1.5rem;animation:fadeUp 0.8s ease 0.2s both;}
+  .hero h1 .line-1{display:block;color:var(--white);}
+  .hero h1 .line-2{display:block;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero-sub{font-size:1.1rem;color:var(--text-mid);line-height:1.8;max-width:560px;margin:0 auto 3rem;animation:fadeUp 0.8s ease 0.3s both;}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.8s ease 0.4s both;}
+  .btn-primary{background:linear-gradient(135deg,var(--accent) 0%,#1a5faa 100%);color:var(--white);padding:1rem 2.4rem;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 24px rgba(45,125,210,0.4),inset 0 1px 0 rgba(255,255,255,0.1);border:1px solid rgba(45,125,210,0.5);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(45,125,210,0.55);}
+  .btn-secondary{background:rgba(255,255,255,0.04);color:var(--text-mid);padding:1rem 2.4rem;border-radius:10px;font-weight:600;font-size:0.95rem;text-decoration:none;border:1px solid rgba(255,255,255,0.1);transition:all 0.25s;}
+  .btn-secondary:hover{color:var(--white);border-color:rgba(255,255,255,0.22);background:rgba(255,255,255,0.07);}
+  .hero-stats{display:flex;gap:3rem;justify-content:center;flex-wrap:wrap;margin-top:4.5rem;padding-top:2.5rem;border-top:1px solid rgba(255,255,255,0.06);animation:fadeUp 0.8s ease 0.6s both;}
+  .hero-stat{text-align:center;}
+  .hero-stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;background:linear-gradient(135deg,var(--white),var(--text-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:0.3rem;}
+  .hero-stat-label{font-size:0.72rem;color:var(--text-muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em;}
+  .hero-stat-divider{width:1px;background:rgba(255,255,255,0.08);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ── PROGRESS ── */
-  .progress-bar {
-    position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
-    width: 0%; transition: width 0.1s linear;
-  }
+  /* SECTION */
+  .section{position:relative;z-index:1;padding:6rem 3rem;max-width:1140px;margin:0 auto;}
+  .section-sep{position:relative;z-index:1;height:1px;background:linear-gradient(90deg,transparent,var(--border-bright),transparent);}
+  .section-badge{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--gold);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.6rem;}
+  .section-badge::before{content:'';width:20px;height:1px;background:var(--gold);opacity:0.6;}
+  .section h2{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;letter-spacing:-0.025em;line-height:1.1;margin-bottom:0.85rem;}
+  .section-desc{color:var(--text-mid);font-size:0.98rem;line-height:1.8;max-width:580px;margin-bottom:3.5rem;}
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 0 3rem;
-    height: 62px;
-    display: flex; align-items: center; gap: 1rem;
-    background: rgba(6,14,30,0.75);
-    backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid var(--border);
-    transition: background 0.3s;
-  }
-  nav.scrolled {
-    background: rgba(6,14,30,0.95);
-    border-bottom-color: var(--border-bright);
-  }
-  .nav-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem; font-weight: 700;
-    color: var(--white); text-decoration: none;
-    display: flex; align-items: center; gap: 0.6rem;
-    flex-shrink: 0;
-  }
-  .nav-logo span { color: var(--gold); }
-  .nav-logo-icon {
-    width: 30px; height: 30px;
-    background: linear-gradient(135deg, var(--accent), var(--gold));
-    border-radius: 7px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem;
-    box-shadow: 0 0 16px rgba(45,125,210,0.4);
-  }
-  .landing-nav-links {
-    margin-left: auto;
-    display: flex; gap: 0.25rem; align-items: center;
-  }
-  .landing-nav-links a {
-    padding: 0.45rem 1rem;
-    border-radius: 6px;
-    font-size: 0.84rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: all 0.2s;
-    letter-spacing: 0.01em;
-  }
-  .landing-nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.05); }
-  .landing-nav-links a.cta {
-    background: linear-gradient(135deg, rgba(45,125,210,0.2), rgba(45,125,210,0.1));
-    border: 1px solid rgba(45,125,210,0.35);
-    color: var(--accent-bright);
-    font-weight: 600;
-    margin-left: 0.5rem;
-  }
-  .landing-nav-links a.cta:hover {
-    background: rgba(45,125,210,0.25);
-    box-shadow: 0 0 20px rgba(45,125,210,0.25);
-  }
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:0.06s}.d2{transition-delay:0.14s}.d3{transition-delay:0.22s}.d4{transition-delay:0.30s}
 
-  /* ── HERO ── */
-  .hero {
-    position: relative; z-index: 1;
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 9rem 2rem 5rem;
-    overflow: hidden;
-  }
+  /* PROBLEM */
+  .problem-bg{position:relative;z-index:1;background:linear-gradient(135deg,rgba(224,92,92,0.04),rgba(45,125,210,0.04));border-top:1px solid rgba(224,92,92,0.1);border-bottom:1px solid rgba(224,92,92,0.08);}
+  .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+  .problem-left h2{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;letter-spacing:-0.02em;line-height:1.2;margin-bottom:1.25rem;}
+  .problem-left p{color:var(--text-mid);font-size:0.96rem;line-height:1.8;margin-bottom:0.9rem;}
+  .problem-left p strong{color:var(--white);}
+  .problem-cards{display:flex;flex-direction:column;gap:0.75rem;}
+  .problem-card{background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.15);border-radius:10px;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:0.85rem;}
+  .problem-card-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.05rem;}
+  .problem-card-text{font-size:0.87rem;color:var(--text-mid);line-height:1.6;}
+  .problem-card-text strong{color:#f0a0a0;}
 
-  /* Decorative anatomical lines */
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 70% 60% at 50% 30%, rgba(45,125,210,0.1) 0%, transparent 100%),
-      radial-gradient(ellipse 40% 30% at 80% 70%, rgba(201,168,76,0.06) 0%, transparent 100%);
-    pointer-events: none;
-  }
+  /* ABOUT */
+  .about-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+  .about-left{position:sticky;top:100px;}
+  .about-label{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--gold);margin-bottom:0.75rem;display:flex;align-items:center;gap:0.6rem;}
+  .about-label::before{content:'';width:20px;height:1px;background:var(--gold);opacity:0.6;}
+  .about-left h2{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;letter-spacing:-0.02em;line-height:1.15;margin-bottom:1rem;}
+  .about-left p{color:var(--text-mid);font-size:0.93rem;line-height:1.8;}
+  .about-right{display:flex;flex-direction:column;gap:1.25rem;}
+  .about-block{background:linear-gradient(135deg,rgba(255,255,255,0.025),rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:14px;padding:1.75rem;position:relative;overflow:hidden;transition:border-color 0.3s;}
+  .about-block:hover{border-color:var(--border-bright);}
+  .about-block-accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ab-color);border-radius:3px 0 0 3px;}
+  .about-block h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;}
+  .about-block p{font-size:0.86rem;color:var(--text-muted);line-height:1.7;}
 
-  /* Horizontal rule lines in hero background */
-  .hero-lines {
-    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-  }
-  .hero-line {
-    position: absolute; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(45,125,210,0.08), transparent);
-    animation: lineFade 3s ease both;
-  }
-  @keyframes lineFade { from { opacity: 0; } to { opacity: 1; } }
+  /* PHASE CARDS */
+  .phases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+  .phase-card{background:linear-gradient(160deg,rgba(255,255,255,0.035) 0%,rgba(255,255,255,0.015) 100%);border:1px solid var(--border);border-radius:20px;padding:2.25rem;position:relative;overflow:hidden;transition:all 0.35s cubic-bezier(0.23,1,0.32,1);display:flex;flex-direction:column;}
+  .phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc-accent);border-radius:20px 20px 0 0;}
+  .phase-card::after{content:'';position:absolute;inset:0;background:var(--pc-glow);opacity:0;border-radius:20px;transition:opacity 0.35s;pointer-events:none;}
+  .phase-card:hover{transform:translateY(-6px);border-color:var(--pc-border);box-shadow:0 20px 60px var(--pc-shadow);}
+  .phase-card:hover::after{opacity:1;}
+  .pc-deco-num{position:absolute;top:1.5rem;right:1.75rem;font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;color:var(--pc-color);opacity:0.06;line-height:1;pointer-events:none;user-select:none;}
+  .pc-icon{width:42px;height:42px;border-radius:10px;background:var(--pc-icon-bg);border:1px solid var(--pc-border-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1.25rem;box-shadow:0 4px 16px var(--pc-shadow);position:relative;z-index:1;}
+  .pc-num{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--pc-color);margin-bottom:0.4rem;position:relative;z-index:1;}
+  .pc-title{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:800;margin-bottom:0.25rem;position:relative;z-index:1;}
+  .pc-for{font-size:0.73rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:0.9rem;position:relative;z-index:1;}
+  .pc-desc{font-size:0.86rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.4rem;flex:1;position:relative;z-index:1;}
+  .pc-topics{list-style:none;display:flex;flex-direction:column;gap:0.35rem;margin-bottom:1.75rem;position:relative;z-index:1;}
+  .pc-topics li{font-size:0.82rem;color:var(--text-mid);display:flex;align-items:center;gap:0.5rem;}
+  .pc-topics li::before{content:'';width:14px;height:1px;background:var(--pc-color);flex-shrink:0;opacity:0.7;}
+  .pc-link{font-size:0.78rem;font-weight:700;color:var(--pc-color);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;position:relative;z-index:1;transition:gap 0.2s;}
+  .pc-link:hover{gap:0.65rem;}
+  .card-blue{--pc-accent:linear-gradient(90deg,var(--accent),var(--accent-bright));--pc-color:var(--accent-bright);--pc-border:rgba(45,125,210,0.35);--pc-border-light:rgba(45,125,210,0.25);--pc-icon-bg:rgba(45,125,210,0.12);--pc-glow:radial-gradient(ellipse at 50% 0%,rgba(45,125,210,0.08),transparent 70%);--pc-shadow:rgba(45,125,210,0.2);}
+  .card-gold{--pc-accent:linear-gradient(90deg,var(--gold),var(--gold-light));--pc-color:var(--gold-light);--pc-border:rgba(201,168,76,0.35);--pc-border-light:rgba(201,168,76,0.25);--pc-icon-bg:rgba(201,168,76,0.1);--pc-glow:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,0.07),transparent 70%);--pc-shadow:rgba(201,168,76,0.15);}
+  .card-purple{--pc-accent:linear-gradient(90deg,var(--purple),var(--purple-bright));--pc-color:var(--purple-bright);--pc-border:rgba(124,58,237,0.35);--pc-border-light:rgba(124,58,237,0.25);--pc-icon-bg:rgba(124,58,237,0.12);--pc-glow:radial-gradient(ellipse at 50% 0%,rgba(124,58,237,0.08),transparent 70%);--pc-shadow:rgba(124,58,237,0.15);}
 
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    background: rgba(45,125,210,0.08);
-    border: 1px solid rgba(45,125,210,0.2);
-    border-radius: 100px;
-    padding: 0.45rem 1.2rem;
-    font-size: 0.72rem; font-weight: 600;
-    color: var(--accent-bright);
-    text-transform: uppercase; letter-spacing: 0.12em;
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 2rem;
-    animation: fadeUp 0.8s ease 0.1s both;
-  }
-  .hero-eyebrow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent-bright);
-    animation: pulse 2s ease infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(79,163,247,0.4); }
-    50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(79,163,247,0); }
-  }
+  /* PHASE DEEP DIVE */
+  .phase-deep{position:relative;z-index:1;padding:5rem 3rem;max-width:1140px;margin:0 auto;}
+  .phase-deep-inner{display:grid;grid-template-columns:200px 1fr;gap:0;}
+  .phase-deep-spine{border-right:1px solid var(--border);padding-right:2.5rem;display:flex;flex-direction:column;gap:0;}
+  .spine-item{padding:1rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.2s;}
+  .spine-item:first-child{padding-top:0;}
+  .spine-num{font-family:'DM Mono',monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.2rem;}
+  .spine-title{font-size:0.85rem;font-weight:600;color:var(--text-muted);transition:color 0.2s;}
+  .spine-item.active .spine-title,.spine-item:hover .spine-title{color:var(--white);}
+  .spine-item.active{border-right:2px solid var(--spine-color,var(--accent-bright));margin-right:-1px;}
+  .phase-deep-content{padding-left:3rem;}
+  .pdc-panel{display:none;}
+  .pdc-panel.active{display:block;}
+  .pdc-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;}
+  .pdc-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;letter-spacing:-0.02em;margin-bottom:0.35rem;}
+  .pdc-for{font-size:0.8rem;color:var(--text-muted);font-family:'DM Mono',monospace;margin-bottom:1.25rem;}
+  .pdc-desc{color:var(--text-mid);font-size:0.94rem;line-height:1.8;margin-bottom:1.75rem;max-width:540px;}
+  .pdc-modules{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.75rem;}
+  .pdc-mod{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;transition:border-color 0.2s;}
+  .pdc-mod:hover{border-color:var(--border-bright);}
+  .pdc-mod-title{font-size:0.88rem;font-weight:600;margin-bottom:0.25rem;}
+  .pdc-mod-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.5;}
+  .pdc-includes{display:flex;flex-wrap:wrap;gap:0.5rem;}
+  .pdc-tag{font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:600;padding:0.25rem 0.75rem;border-radius:100px;border:1px solid;}
+  .tag-blue{background:rgba(45,125,210,0.1);border-color:rgba(45,125,210,0.25);color:var(--accent-bright);}
+  .tag-gold{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.25);color:var(--gold-light);}
+  .tag-purple{background:rgba(124,58,237,0.1);border-color:rgba(124,58,237,0.25);color:var(--purple-bright);}
+  .tag-green{background:rgba(76,175,134,0.1);border-color:rgba(76,175,134,0.25);color:var(--green);}
 
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 6.5vw, 5.5rem);
-    font-weight: 900;
-    line-height: 1.03;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.8s ease 0.2s both;
-  }
-  .hero h1 .line-1 { display: block; color: var(--white); }
-  .hero h1 .line-2 {
-    display: block;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-  }
-  .hero h1 .line-2::after {
-    content: '';
-    position: absolute; bottom: 4px; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.4;
-  }
+  /* FRAMEWORK */
+  .framework-bg{position:relative;z-index:1;background:linear-gradient(180deg,transparent,rgba(45,125,210,0.03),transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .framework-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+  .fw-step{padding:2.5rem 2rem;border-right:1px solid var(--border);transition:background 0.3s;}
+  .fw-step:last-child{border-right:none;}
+  .fw-step:hover{background:rgba(45,125,210,0.04);}
+  .fw-num{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;line-height:1;margin-bottom:0.6rem;opacity:0.12;}
+  .fw-step:nth-child(1) .fw-num{color:var(--accent-bright);}
+  .fw-step:nth-child(2) .fw-num{color:var(--gold-light);}
+  .fw-step:nth-child(3) .fw-num{color:var(--purple-bright);}
+  .fw-step:nth-child(4) .fw-num{color:var(--green);}
+  .fw-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;}
+  .fw-desc{font-size:0.83rem;color:var(--text-muted);line-height:1.65;}
+  .fw-tag{margin-top:0.85rem;font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;padding:0.2rem 0.6rem;border-radius:100px;display:inline-block;}
 
-  .hero-sub {
-    font-size: 1.1rem; color: var(--text-mid);
-    line-height: 1.8; max-width: 560px;
-    margin: 0 auto 3rem;
-    animation: fadeUp 0.8s ease 0.3s both;
-  }
+  /* REGIONS */
+  .regions-bg{position:relative;z-index:1;background:linear-gradient(180deg,transparent,rgba(45,125,210,0.025),transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .regions-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;}
+  .rp-card{background:linear-gradient(135deg,rgba(255,255,255,0.025),rgba(255,255,255,0.01));border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.25rem;text-decoration:none;color:inherit;transition:all 0.3s cubic-bezier(0.23,1,0.32,1);position:relative;overflow:hidden;}
+  .rp-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent-bright),transparent);opacity:0;transition:opacity 0.3s;}
+  .rp-card:hover{border-color:rgba(45,125,210,0.3);background:linear-gradient(135deg,rgba(45,125,210,0.06),rgba(45,125,210,0.02));transform:translateY(-3px);box-shadow:0 12px 40px rgba(45,125,210,0.12);}
+  .rp-card:hover::before{opacity:1;}
+  .rp-card.live{border-color:rgba(76,175,134,0.25);background:linear-gradient(135deg,rgba(76,175,134,0.06),rgba(76,175,134,0.01));}
+  .rp-card.live:hover{border-color:rgba(76,175,134,0.45);box-shadow:0 12px 40px rgba(76,175,134,0.12);}
+  .rp-num{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--text-muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em;}
+  .rp-name{font-weight:700;font-size:0.88rem;line-height:1.3;margin-bottom:0.35rem;}
+  .rp-count{font-size:0.7rem;color:var(--text-muted);font-family:'DM Mono',monospace;}
+  .rp-live{font-size:0.62rem;color:var(--green);font-family:'DM Mono',monospace;font-weight:700;margin-top:0.4rem;display:flex;align-items:center;gap:0.3rem;}
+  .rp-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
 
-  .hero-actions {
-    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
-    animation: fadeUp 0.8s ease 0.4s both;
-  }
+  /* COACHING */
+  .coaching-bg{position:relative;z-index:1;background:linear-gradient(135deg,rgba(124,58,237,0.05),rgba(45,125,210,0.03));border-top:1px solid rgba(124,58,237,0.12);}
+  .coaching-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+  .coach-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:1.75rem;transition:all 0.3s;position:relative;overflow:hidden;}
+  .coach-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cc-accent);}
+  .coach-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-3px);box-shadow:0 16px 40px rgba(124,58,237,0.1);}
+  .coach-phase{font-family:'DM Mono',monospace;font-size:0.63rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple-bright);margin-bottom:0.5rem;}
+  .coach-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;}
+  .coach-desc{font-size:0.84rem;color:var(--text-muted);line-height:1.65;}
 
-  .btn-primary {
-    background: linear-gradient(135deg, var(--accent) 0%, #1a5faa 100%);
-    color: var(--white); padding: 1rem 2.4rem;
-    border-radius: 10px; font-weight: 700; font-size: 0.95rem;
-    text-decoration: none; transition: all 0.25s;
-    box-shadow: 0 4px 24px rgba(45,125,210,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-    border: 1px solid rgba(45,125,210,0.5);
-    letter-spacing: 0.01em;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 36px rgba(45,125,210,0.55), inset 0 1px 0 rgba(255,255,255,0.15);
-  }
-  .btn-secondary {
-    background: rgba(255,255,255,0.04);
-    color: var(--text-mid); padding: 1rem 2.4rem;
-    border-radius: 10px; font-weight: 600; font-size: 0.95rem;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.25s;
-    backdrop-filter: blur(8px);
-  }
-  .btn-secondary:hover { color: var(--white); border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.07); }
+  /* TESTIMONIAL */
+  .testimonial-strip{position:relative;z-index:1;padding:5rem 3rem;background:linear-gradient(135deg,rgba(201,168,76,0.04),rgba(45,125,210,0.04));border-top:1px solid rgba(201,168,76,0.1);border-bottom:1px solid rgba(201,168,76,0.08);}
+  .testimonial-inner{max-width:800px;margin:0 auto;text-align:center;}
+  .testimonial-quote{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:400;font-style:italic;line-height:1.65;color:var(--text-mid);margin-bottom:1.5rem;position:relative;padding:0 1.5rem;}
+  .testimonial-quote::before{content:'\201C';font-size:5rem;line-height:0;color:var(--gold);opacity:0.25;position:absolute;top:1.2rem;left:0;font-family:'Playfair Display',serif;}
+  .testimonial-attr{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;justify-content:center;gap:0.75rem;}
+  .testimonial-attr::before,.testimonial-attr::after{content:'';flex:0 0 30px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4));}
+  .testimonial-attr::after{background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent);}
 
-  /* Hero stats bar */
-  .hero-stats {
-    display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
-    margin-top: 4.5rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    animation: fadeUp 0.8s ease 0.6s both;
-  }
-  .hero-stat { text-align: center; }
-  .hero-stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem; font-weight: 900;
-    background: linear-gradient(135deg, var(--white), var(--text-mid));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .hero-stat-label {
-    font-size: 0.72rem; color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase; letter-spacing: 0.1em;
-  }
-  .hero-stat-divider { width: 1px; background: rgba(255,255,255,0.08); }
+  /* CTA */
+  .cta-section{position:relative;z-index:1;padding:7rem 3rem;text-align:center;overflow:hidden;}
+  .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(45,125,210,0.09),transparent);pointer-events:none;}
+  .cta-section h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;letter-spacing:-0.025em;line-height:1.2;margin-bottom:1rem;}
+  .cta-section h2 span{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .cta-section p{color:var(--text-mid);font-size:1rem;line-height:1.75;max-width:480px;margin:0 auto 2.5rem;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  /* FOOTER */
+  footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);background:rgba(6,14,30,0.6);}
+  footer a{color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+  footer a:hover{color:var(--white);}
+  .footer-links{display:flex;gap:2rem;}
+  .footer-copy{font-family:'DM Mono',monospace;font-size:0.72rem;opacity:0.6;}
 
-  /* ── SECTION SHARED ── */
-  .section {
-    position: relative; z-index: 1;
-    padding: 6rem 3rem;
-    max-width: 1140px; margin: 0 auto;
+  @media(max-width:1000px){
+    .problem-grid,.about-inner{grid-template-columns:1fr;gap:2rem;}
+    .about-left{position:static;}
+    .phase-deep-inner{grid-template-columns:1fr;}
+    .phase-deep-spine{flex-direction:row;border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:1.5rem;margin-bottom:2rem;overflow-x:auto;gap:0.5rem;}
+    .spine-item{padding:0.5rem 1rem;border-bottom:none;border-radius:6px;white-space:nowrap;}
+    .spine-item.active{border-right:none;border-bottom:2px solid var(--accent-bright);}
+    .phase-deep-content{padding-left:0;}
+    .framework-steps,.coaching-grid,.phases-grid,.regions-preview{grid-template-columns:1fr 1fr;}
+    .fw-step:nth-child(2){border-right:none;}
   }
-  .section-sep {
-    position: relative; z-index: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
-  }
-  .section-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.14em;
-    color: var(--gold);
-    margin-bottom: 0.75rem;
-    display: flex; align-items: center; gap: 0.6rem;
-  }
-  .section-badge::before {
-    content: '';
-    width: 20px; height: 1px;
-    background: var(--gold); opacity: 0.6;
-  }
-  .section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.4rem; font-weight: 900;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
-    margin-bottom: 0.85rem;
-  }
-  .section-desc {
-    color: var(--text-mid); font-size: 0.98rem;
-    line-height: 1.8; max-width: 560px;
-    margin-bottom: 3.5rem;
-  }
-
-  /* ── REVEAL ── */
-  .reveal {
-    opacity: 0; transform: translateY(16px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .reveal.in { opacity: 1; transform: translateY(0); }
-  .d1 { transition-delay: 0.06s; } .d2 { transition-delay: 0.14s; }
-  .d3 { transition-delay: 0.22s; } .d4 { transition-delay: 0.30s; }
-
-  /* ── PHASE CARDS ── */
-  .phases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-
-  .phase-card {
-    background: linear-gradient(160deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 100%);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 2.25rem;
-    position: relative; overflow: hidden;
-    transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-    display: flex; flex-direction: column;
-  }
-  .phase-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--pc-accent);
-    border-radius: 20px 20px 0 0;
-  }
-  /* Glow on hover */
-  .phase-card::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--pc-glow);
-    opacity: 0; border-radius: 20px;
-    transition: opacity 0.35s;
-  }
-  .phase-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--pc-border);
-    box-shadow: 0 20px 60px var(--pc-shadow);
-  }
-  .phase-card:hover::after { opacity: 1; }
-
-  /* Phase number — big decorative */
-  .pc-deco-num {
-    position: absolute; top: 1.5rem; right: 1.75rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 5rem; font-weight: 900;
-    color: var(--pc-color); opacity: 0.06;
-    line-height: 1; pointer-events: none;
-    user-select: none;
-  }
-
-  .pc-icon {
-    width: 42px; height: 42px; border-radius: 10px;
-    background: var(--pc-icon-bg);
-    border: 1px solid var(--pc-border-light);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 4px 16px var(--pc-shadow);
-    position: relative; z-index: 1;
-  }
-  .pc-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.12em;
-    color: var(--pc-color); margin-bottom: 0.4rem;
-    position: relative; z-index: 1;
-  }
-  .pc-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem; font-weight: 800;
-    margin-bottom: 0.25rem;
-    position: relative; z-index: 1;
-  }
-  .pc-for {
-    font-size: 0.73rem; color: var(--text-muted);
-    font-family: 'DM Mono', monospace; margin-bottom: 0.9rem;
-    position: relative; z-index: 1;
-  }
-  .pc-desc {
-    font-size: 0.86rem; color: var(--text-muted);
-    line-height: 1.7; margin-bottom: 1.4rem;
-    flex: 1;
-    position: relative; z-index: 1;
-  }
-  .pc-topics {
-    list-style: none; display: flex; flex-direction: column;
-    gap: 0.35rem; margin-bottom: 1.75rem;
-    position: relative; z-index: 1;
-  }
-  .pc-topics li {
-    font-size: 0.82rem; color: var(--text-mid);
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-  .pc-topics li::before {
-    content: '';
-    width: 14px; height: 1px;
-    background: var(--pc-color);
-    flex-shrink: 0;
-    opacity: 0.7;
-  }
-  .pc-link {
-    font-size: 0.78rem; font-weight: 700;
-    color: var(--pc-color);
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    position: relative; z-index: 1;
-    transition: gap 0.2s;
-  }
-  .pc-link:hover { gap: 0.65rem; }
-
-  .card-blue {
-    --pc-accent: linear-gradient(90deg, var(--accent), var(--accent-bright));
-    --pc-color: var(--accent-bright);
-    --pc-border: rgba(45,125,210,0.35);
-    --pc-border-light: rgba(45,125,210,0.25);
-    --pc-icon-bg: rgba(45,125,210,0.12);
-    --pc-glow: radial-gradient(ellipse at 50% 0%, rgba(45,125,210,0.08), transparent 70%);
-    --pc-shadow: rgba(45,125,210,0.2);
-  }
-  .card-gold {
-    --pc-accent: linear-gradient(90deg, var(--gold), var(--gold-light));
-    --pc-color: var(--gold-light);
-    --pc-border: rgba(201,168,76,0.35);
-    --pc-border-light: rgba(201,168,76,0.25);
-    --pc-icon-bg: rgba(201,168,76,0.1);
-    --pc-glow: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.07), transparent 70%);
-    --pc-shadow: rgba(201,168,76,0.15);
-  }
-  .card-purple {
-    --pc-accent: linear-gradient(90deg, var(--purple), var(--purple-bright));
-    --pc-color: var(--purple-bright);
-    --pc-border: rgba(124,58,237,0.35);
-    --pc-border-light: rgba(124,58,237,0.25);
-    --pc-icon-bg: rgba(124,58,237,0.12);
-    --pc-glow: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.08), transparent 70%);
-    --pc-shadow: rgba(124,58,237,0.15);
-  }
-
-  /* ── REGIONS GRID ── */
-  .regions-bg {
-    position: relative; z-index: 1;
-    background: linear-gradient(180deg, transparent, rgba(45,125,210,0.025), transparent);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .regions-preview {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.85rem;
-  }
-  .rp-card {
-    background: linear-gradient(135deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
-    border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.4rem 1.25rem;
-    text-align: left;
-    text-decoration: none; color: inherit;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative; overflow: hidden;
-  }
-  .rp-card::before {
-    content: '';
-    position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .rp-card:hover {
-    border-color: rgba(45,125,210,0.3);
-    background: linear-gradient(135deg, rgba(45,125,210,0.06), rgba(45,125,210,0.02));
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(45,125,210,0.12);
-  }
-  .rp-card:hover::before { opacity: 1; }
-  .rp-card.live {
-    border-color: rgba(76,175,134,0.25);
-    background: linear-gradient(135deg, rgba(76,175,134,0.06), rgba(76,175,134,0.01));
-  }
-  .rp-card.live:hover {
-    border-color: rgba(76,175,134,0.45);
-    box-shadow: 0 12px 40px rgba(76,175,134,0.12);
-  }
-  .rp-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem; color: var(--text-muted);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase; letter-spacing: 0.1em;
-  }
-  .rp-name {
-    font-weight: 700; font-size: 0.88rem; line-height: 1.3;
-    margin-bottom: 0.35rem;
-  }
-  .rp-count {
-    font-size: 0.7rem; color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-  }
-  .rp-live {
-    font-size: 0.62rem; color: var(--green);
-    font-family: 'DM Mono', monospace; font-weight: 700;
-    margin-top: 0.4rem; display: flex; align-items: center; gap: 0.3rem;
-  }
-  .rp-live::before {
-    content: '';
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-  }
-
-  /* ── FEATURE ROW ── */
-  .feature-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-    margin-top: 1rem;
-  }
-  .feat {
-    background: linear-gradient(135deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
-    border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.75rem;
-    transition: all 0.3s;
-    position: relative; overflow: hidden;
-  }
-  .feat::after {
-    content: '';
-    position: absolute; top: 0; left: 0; width: 3px; height: 100%;
-    background: var(--feat-accent);
-    border-radius: 3px;
-  }
-  .feat:hover { border-color: rgba(255,255,255,0.12); transform: translateX(3px); }
-  .feat-icon { font-size: 1.5rem; margin-bottom: 0.9rem; }
-  .feat-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem; font-weight: 700;
-    margin-bottom: 0.4rem;
-  }
-  .feat-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.65; }
-
-  /* ── TESTIMONIAL ── */
-  .testimonial-strip {
-    position: relative; z-index: 1;
-    padding: 4rem 3rem;
-    background: linear-gradient(135deg, rgba(201,168,76,0.04), rgba(45,125,210,0.04));
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-  }
-  .testimonial-inner {
-    max-width: 800px; margin: 0 auto;
-    text-align: center;
-  }
-  .testimonial-quote {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.45rem; font-weight: 400; font-style: italic;
-    line-height: 1.65; color: var(--text-mid);
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
-  .testimonial-quote::before {
-    content: '\201C';
-    font-size: 5rem; line-height: 0;
-    color: var(--gold); opacity: 0.25;
-    position: absolute; top: 1.2rem; left: -1rem;
-    font-family: 'Playfair Display', serif;
-  }
-  .testimonial-attr {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.1em;
-    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-  }
-  .testimonial-attr::before, .testimonial-attr::after {
-    content: ''; flex: 0 0 30px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4));
-  }
-  .testimonial-attr::after {
-    background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    position: relative; z-index: 1;
-    border-top: 1px solid var(--border);
-    padding: 2.5rem 3rem;
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 0.82rem; color: var(--text-muted);
-    background: rgba(6,14,30,0.6);
-  }
-  footer a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-  footer a:hover { color: var(--white); }
-  .footer-links { display: flex; gap: 2rem; }
-  .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.72rem; opacity: 0.6; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .phases-grid, .regions-preview { grid-template-columns: 1fr 1fr; }
-    .section { padding: 4rem 1.5rem; }
-    .feature-row { grid-template-columns: 1fr; }
-    nav { padding: 0 1.5rem; }
-  }
-  @media (max-width: 600px) {
-    .phases-grid, .regions-preview { grid-template-columns: 1fr; }
-    .hero { padding: 7rem 1.5rem 3rem; }
-    .landing-nav-links { display: none; }
-    .hero-stats { gap: 1.5rem; }
-    .hero-stat-divider { display: none; }
+  @media(max-width:600px){
+    .phases-grid,.coaching-grid,.regions-preview,.pdc-modules{grid-template-columns:1fr;}
+    .framework-steps{grid-template-columns:1fr;}
+    .fw-step{border-right:none;border-bottom:1px solid var(--border);}
+    .fw-step:last-child{border-bottom:none;}
+    .hero{padding:7rem 1.5rem 3rem;}
+    .section,.phase-deep{padding:4rem 1.5rem;}
+    .landing-nav-links{display:none;}
+    .hero-stats{gap:1.5rem;}
+    .hero-stat-divider{display:none;}
+    nav{padding:0 1.5rem;}
   }
 </style>
 </head>
 <body>
 
-<!-- AMBIENT BACKGROUND -->
 <div class="bg-canvas">
   <div class="bg-orb bg-orb-1"></div>
   <div class="bg-orb bg-orb-2"></div>
   <div class="bg-orb bg-orb-3"></div>
 </div>
 <div class="bg-grid"></div>
-
-<!-- PROGRESS BAR -->
 <div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
 
-<!-- NAV -->
 <nav id="mainnav">
-  <a href="index.html" class="nav-logo">
-    <div class="nav-logo-icon">🦴</div>
-    Ortho<span>Blueprint</span>
-  </a>
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🦴</div>Ortho<span>Blueprint</span></a>
   <div class="landing-nav-links">
     <a href="phase-2.html">Curriculum</a>
     <a href="resources.html">Resources</a>
@@ -672,56 +276,96 @@
     <div class="hero-line" style="top:55%;animation-delay:0.6s;opacity:0.5;"></div>
     <div class="hero-line" style="top:75%;animation-delay:0.9s;opacity:0.3;"></div>
   </div>
-
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot"></span>
-    For Orthopaedic Surgery Applicants
-  </div>
-
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>For Orthopaedic Surgery Applicants</div>
   <h1>
     <span class="line-1">The Blueprint for</span>
     <span class="line-2">Matching Ortho</span>
   </h1>
-
-  <p class="hero-sub">
-    Anatomy foundations, region-by-region clinical orthopaedics, sub-I readiness, and near-peer coaching — built for medical students at every stage of the match journey.
-  </p>
-
+  <p class="hero-sub">A structured, start-to-finish system for medical students who are serious about orthopaedic surgery — from MS1 anatomy to sub-I readiness and match strategy.</p>
   <div class="hero-actions">
-    <a href="curriculum.html" class="btn-primary">Explore the Curriculum →</a>
+    <a href="phase-2.html" class="btn-primary">Explore the Curriculum →</a>
     <a href="community.html" class="btn-secondary">Join the Community</a>
   </div>
-
   <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="hero-stat-num">3</div>
-      <div class="hero-stat-label">Curriculum Phases</div>
-    </div>
+    <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Curriculum Phases</div></div>
     <div class="hero-stat-divider"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">80+</div>
-      <div class="hero-stat-label">Topic Modules</div>
-    </div>
+    <div class="hero-stat"><div class="hero-stat-num">80+</div><div class="hero-stat-label">Topic Modules</div></div>
     <div class="hero-stat-divider"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">8</div>
-      <div class="hero-stat-label">Anatomic Regions</div>
-    </div>
+    <div class="hero-stat"><div class="hero-stat-num">8</div><div class="hero-stat-label">Anatomic Regions</div></div>
     <div class="hero-stat-divider"></div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">1</div>
-      <div class="hero-stat-label">Goal: Match Ortho</div>
-    </div>
+    <div class="hero-stat"><div class="hero-stat-num">MS1→</div><div class="hero-stat-label">Match Day</div></div>
   </div>
 </section>
 
-<!-- PHASES -->
+<!-- PROBLEM -->
+<div class="section-sep"></div>
+<div class="problem-bg">
+  <div class="section">
+    <div class="problem-grid">
+      <div class="problem-left reveal">
+        <div class="section-badge" style="margin-bottom:0.75rem;">The Problem</div>
+        <h2>Ortho is the most competitive specialty.<br>There's no roadmap.</h2>
+        <p>Medical schools provide excellent general training — but they are not designed to prepare students for the specific demands of matching into orthopaedic surgery.</p>
+        <p><strong>The result?</strong> Students navigate fragmented advice, scattered resources, and informal mentorship — often unsure what truly matters or when to act.</p>
+        <p style="color:var(--text-mid);font-size:0.95rem;margin-top:1.25rem;font-style:italic;border-left:3px solid var(--gold);padding-left:1rem;">We built this because we lived it. OrthoBlueprint brings clarity where there is confusion.</p>
+      </div>
+      <div class="problem-cards reveal d2">
+        <div class="problem-card">
+          <span class="problem-card-icon">🔀</span>
+          <div class="problem-card-text"><strong>Fragmented guidance.</strong> Advice scattered across forums, attendings, and classmates — no structured path from MS1 through match day.</div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-icon">⏱️</span>
+          <div class="problem-card-text"><strong>Poor timing.</strong> Students act reactively — building CVs too late, reaching out for research too late, preparing for sub-Is too late.</div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-icon">🧭</span>
+          <div class="problem-card-text"><strong>No central resource.</strong> Nothing brings anatomy prep, clinical learning, sub-I readiness, and match strategy into one cohesive system.</div>
+        </div>
+        <div class="problem-card" style="background:rgba(76,175,134,0.06);border-color:rgba(76,175,134,0.2);">
+          <span class="problem-card-icon">✅</span>
+          <div class="problem-card-text" style="color:var(--text-mid);"><strong style="color:#7dd4b0;">OrthoBlueprint is that solution.</strong> A centralized, high-performance framework built by people who matched — for people who want to match.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section-sep"></div>
+<div class="section">
+  <div class="about-inner">
+    <div class="about-left reveal">
+      <div class="about-label">About Us</div>
+      <h2>Built by people who matched.</h2>
+      <p>OrthoBlueprint was created by individuals who have successfully matched into orthopaedic surgery. We lived the confusion, found what worked, and built the resource we wished we had.</p>
+    </div>
+    <div class="about-right">
+      <div class="about-block reveal d1" style="--ab-color:linear-gradient(180deg,var(--accent),var(--accent-bright));">
+        <div class="about-block-accent"></div>
+        <h3>Consolidates the strongest existing resources</h3>
+        <p>We've filtered what actually moves the needle — Netter's, OrthoBullets, PocketPimped, high-yield Anki — and organized them into a single, structured curriculum with no fluff.</p>
+      </div>
+      <div class="about-block reveal d2" style="--ab-color:linear-gradient(180deg,var(--gold),var(--gold-light));">
+        <div class="about-block-accent"></div>
+        <h3>Organized into a followable timeline</h3>
+        <p>From MS1 through sub-internship, each phase has a clear goal, clear deliverables, and a clear strategy. No guesswork. No reactive scrambling. Just disciplined, intentional preparation.</p>
+      </div>
+      <div class="about-block reveal d3" style="--ab-color:linear-gradient(180deg,var(--purple),var(--purple-bright));">
+        <div class="about-block-accent"></div>
+        <h3>Near-peer coaching at every stage</h3>
+        <p>Work directly with recent ortho matches who have been exactly where you are — for CV review, away rotation prep, interview strategy, and rank list guidance.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASES OVERVIEW -->
 <div class="section-sep"></div>
 <div class="section" id="phases">
   <div class="section-badge reveal">The Curriculum</div>
   <h2 class="reveal">Three Phases. One Match.</h2>
-  <p class="section-desc reveal">Work through the curriculum in order or jump to what you need now. Every phase is designed for the specific stage you're in.</p>
-
+  <p class="section-desc reveal">Work through the curriculum in order or jump to what you need now. Every phase is designed for the specific stage you're in — with structure, resources, and community built in.</p>
   <div class="phases-grid">
     <div class="phase-card card-blue reveal d1">
       <div class="pc-deco-num">01</div>
@@ -729,11 +373,11 @@
       <div class="pc-num">Phase 01</div>
       <div class="pc-title">Foundations</div>
       <div class="pc-for">MS1 / MS2</div>
-      <div class="pc-desc">Build your orthopaedic base before you ever step on a rotation. Anatomy, X-rays, and your CV — done right from day one.</div>
+      <div class="pc-desc">Build a strong, durable MSK anatomy and imaging base before you ever step on a rotation. Anatomy, X-rays, and your CV — done right from day one.</div>
       <ul class="pc-topics">
         <li>Bite-Sized Anatomy</li>
         <li>X-Ray Fundamentals</li>
-        <li>CV Foundation</li>
+        <li>CV Foundation + Template</li>
         <li>Phase 1 Anki Deck (600+ cards)</li>
       </ul>
       <a href="phase-1.html" class="pc-link">Enter Phase 1 →</a>
@@ -744,7 +388,7 @@
       <div class="pc-num">Phase 02</div>
       <div class="pc-title">Clinical Orthopaedics</div>
       <div class="pc-for">MS3</div>
-      <div class="pc-desc">Eight anatomic regions, every major pathology. The 4-step framework — Overview, Case, Imaging, Pocket Pimped.</div>
+      <div class="pc-desc">Eight anatomic regions, every major pathology. The 4-step learning framework — Overview, Case, Imaging, and Pocket Pimped questions.</div>
       <ul class="pc-topics">
         <li>8 Anatomic Regions</li>
         <li>80+ Topic Modules</li>
@@ -759,7 +403,7 @@
       <div class="pc-num">Phase 03</div>
       <div class="pc-title">Sub-I Readiness</div>
       <div class="pc-for">MS3 / MS4</div>
-      <div class="pc-desc">Surgical approaches, OR prep, away rotation strategy, interview prep — everything to make a lasting impression.</div>
+      <div class="pc-desc">Surgical approaches, OR prep, splinting, away rotation strategy, interview prep — everything to make a lasting impression on sub-Is.</div>
       <ul class="pc-topics">
         <li>Surgical Approaches</li>
         <li>30-Day Sub-I Bootcamp</li>
@@ -769,39 +413,123 @@
       <a href="phase-3.html" class="pc-link">Enter Phase 3 →</a>
     </div>
   </div>
+</div>
 
-  <!-- Feature callouts -->
-  <div class="feature-row" style="margin-top:2rem;">
-    <div class="feat reveal d1" style="--feat-accent: linear-gradient(180deg, var(--accent), var(--accent-bright));">
-      <div class="feat-icon">❓</div>
-      <div class="feat-title">Pocket Pimped</div>
-      <div class="feat-desc">Every topic ends with 5–6 attending-level pimp questions with tap-to-reveal answers. Train for rounds, not just exams.</div>
+<!-- PHASE DEEP DIVES -->
+<div class="section-sep"></div>
+<div class="phase-deep">
+  <div class="section-badge reveal" style="margin-bottom:0.75rem;">What's Inside</div>
+  <h2 class="reveal" style="margin-bottom:2.5rem;">Every Phase, In Detail</h2>
+  <div class="phase-deep-inner reveal">
+    <div class="phase-deep-spine">
+      <div class="spine-item active" style="--spine-color:var(--accent-bright);" onclick="switchPanel('p1',this)">
+        <div class="spine-num">Phase 01</div>
+        <div class="spine-title">Foundations</div>
+      </div>
+      <div class="spine-item" onclick="switchPanel('p2',this)">
+        <div class="spine-num">Phase 02</div>
+        <div class="spine-title">Clinical Ortho</div>
+      </div>
+      <div class="spine-item" onclick="switchPanel('p3',this)">
+        <div class="spine-num">Phase 03</div>
+        <div class="spine-title">Sub-I Ready</div>
+      </div>
     </div>
-    <div class="feat reveal d2" style="--feat-accent: linear-gradient(180deg, var(--gold), var(--gold-light));">
-      <div class="feat-icon">🃏</div>
-      <div class="feat-title">Integrated Anki Decks</div>
-      <div class="feat-desc">High-yield flashcard decks mapped directly to every phase of the curriculum — spaced repetition built in from day one.</div>
-    </div>
-    <div class="feat reveal d3" style="--feat-accent: linear-gradient(180deg, var(--purple), var(--purple-bright));">
-      <div class="feat-icon">🎯</div>
-      <div class="feat-title">Near-Peer Coaching</div>
-      <div class="feat-desc">Work with recent ortho matches who've been exactly where you are. Strategy, feedback, and accountability.</div>
-    </div>
-    <div class="feat reveal d4" style="--feat-accent: linear-gradient(180deg, var(--green), #6ad4a8);">
-      <div class="feat-icon">🔬</div>
-      <div class="feat-title">Case-Based Learning</div>
-      <div class="feat-desc">Every region builds through real clinical cases — mechanism, imaging, classification, and treatment in one cohesive framework.</div>
+    <div class="phase-deep-content">
+      <div class="pdc-panel active" id="panel-p1">
+        <div class="pdc-eyebrow" style="color:var(--accent-bright);">Phase 01 — Foundations</div>
+        <div class="pdc-title">Build the base. Build the CV.</div>
+        <div class="pdc-for">Target: MS1 / MS2 · Strategy: Slow &amp; Steady</div>
+        <div class="pdc-desc">Most students wait until MS3 to start thinking about ortho. The ones who match do not. Phase 1 is about building habits and foundations while the pressure is low — anatomy, imaging literacy, and a CV built for longitudinal updating over four years.</div>
+        <div class="pdc-modules">
+          <div class="pdc-mod"><div class="pdc-mod-title">🦴 Bite-Sized Anatomy</div><div class="pdc-mod-desc">Micro-learning sessions covering origins, insertions, innervations, joint biomechanics, and neurovascular anatomy — integrated with spaced repetition.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🩻 X-Ray Fundamentals</div><div class="pdc-mod-desc">Standard views, systematic reading approach, identifying normal anatomy before pathology, introduction to fracture patterns.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">📄 CV Template</div><div class="pdc-mod-desc">ERAS-aligned template built for 4-year longitudinal updating. Research descriptions, leadership roles, presentation formatting — done right from day one.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🃏 Phase 1 Anki Deck</div><div class="pdc-mod-desc">600+ cards covering MSK anatomy, imaging basics, and osseous landmarks. Designed to integrate with MS1/MS2 MSK blocks.</div></div>
+        </div>
+        <div class="pdc-includes">
+          <span class="pdc-tag tag-blue">600+ Anki Cards</span>
+          <span class="pdc-tag tag-gold">CV Template</span>
+          <span class="pdc-tag tag-blue">Netter's Atlas</span>
+          <span class="pdc-tag tag-green">Mentor Forum</span>
+          <span class="pdc-tag tag-blue">Annual CV Audit</span>
+        </div>
+      </div>
+      <div class="pdc-panel" id="panel-p2">
+        <div class="pdc-eyebrow" style="color:var(--gold-light);">Phase 02 — Clinical Orthopaedics</div>
+        <div class="pdc-title">Region by region. Case by case.</div>
+        <div class="pdc-for">Target: MS3 · Strategy: Progressive, Layered Learning</div>
+        <div class="pdc-desc">Phase 2 transitions you from anatomy to pathology and clinical reasoning. Eight anatomic regions, each covered with the same proven 4-step framework. You'll know how to present a case, read the films, and answer attending-level pimp questions.</div>
+        <div class="pdc-modules">
+          <div class="pdc-mod"><div class="pdc-mod-title">📋 Foundational Overview</div><div class="pdc-mod-desc">3–4 line summary, epidemiology, etiology, and high-yield mechanisms for every pathology.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🏥 Case-Based Presentation</div><div class="pdc-mod-desc">Classic board-style and real-world vignettes — chief complaint, history, exam findings — presented the way you'll encounter them on rounds.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🩻 Imaging Interpretation</div><div class="pdc-mod-desc">Stepwise interpretation guides with key radiographic findings and "what do you see?" pause questions.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">❓ Pocket Pimped</div><div class="pdc-mod-desc">Attending-level questions with tap-to-reveal answers covering management, operative indications, complications, and exam pearls.</div></div>
+        </div>
+        <div class="pdc-includes">
+          <span class="pdc-tag tag-gold">80+ Modules</span>
+          <span class="pdc-tag tag-gold">8 Regions</span>
+          <span class="pdc-tag tag-gold">Phase 2 Anki Deck</span>
+          <span class="pdc-tag tag-green">Live Teaching Nights</span>
+          <span class="pdc-tag tag-gold">Away Rotation Review</span>
+        </div>
+      </div>
+      <div class="pdc-panel" id="panel-p3">
+        <div class="pdc-eyebrow" style="color:var(--purple-bright);">Phase 03 — Sub-I Readiness</div>
+        <div class="pdc-title">From "what is it?" to "what do I do?"</div>
+        <div class="pdc-for">Target: MS3 / MS4 · Strategy: Surgical &amp; Strategic Readiness</div>
+        <div class="pdc-desc">Phase 3 is where everything comes together. You'll learn to function at a high level on orthopaedic sub-Is — surgical approaches, OR etiquette, splinting technique, case prep, and the interview strategy that closes the match.</div>
+        <div class="pdc-modules">
+          <div class="pdc-mod"><div class="pdc-mod-title">🔪 Surgical Approaches</div><div class="pdc-mod-desc">Common exposures by region, key structures at risk, patient positioning, and basic OR flow — so you know what's happening before you walk in.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🩹 Splinting &amp; Casting</div><div class="pdc-mod-desc">AO splint principles, common constructs, when to bivalve — with video modules so you're ready day one.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">📁 Case Prep Toolkit</div><div class="pdc-mod-desc">Structured case presentation template, pre-rounding checklist, imaging review checklist, and OR prep template.</div></div>
+          <div class="pdc-mod"><div class="pdc-mod-title">🎯 Match Strategy</div><div class="pdc-mod-desc">Interview prep packet, rank list construction, away rotation selection, thank you note templates, and anonymous sub-I experience board.</div></div>
+        </div>
+        <div class="pdc-includes">
+          <span class="pdc-tag tag-purple">30-Day Bootcamp</span>
+          <span class="pdc-tag tag-purple">Interview Packet</span>
+          <span class="pdc-tag tag-purple">Splint Card</span>
+          <span class="pdc-tag tag-green">Sub-I Forum</span>
+          <span class="pdc-tag tag-purple">Rank Strategy Guide</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- TESTIMONIAL -->
-<div class="testimonial-strip reveal">
-  <div class="testimonial-inner">
-    <div class="testimonial-quote">
-      The Pocket Pimped questions alone transformed how I performed on sub-Is. I stopped dreading rounds and started looking forward to them.
+<!-- 4-STEP FRAMEWORK -->
+<div class="section-sep"></div>
+<div class="framework-bg">
+  <div class="section">
+    <div class="section-badge reveal">Phase 2 Framework</div>
+    <h2 class="reveal">The 4-Step Learning Method</h2>
+    <p class="section-desc reveal">Every pathology in Phase 2 follows the same progressive structure — so the format is never a surprise and you can focus entirely on the content.</p>
+  </div>
+  <div class="framework-steps reveal">
+    <div class="fw-step">
+      <div class="fw-num">01</div>
+      <div class="fw-title">Foundational Overview</div>
+      <div class="fw-desc">3–4 line summary, epidemiology, etiology, and high-yield mechanism. The essential orientation before diving deeper.</div>
+      <span class="fw-tag tag-blue">Quick-skip option</span>
     </div>
-    <div class="testimonial-attr">MS4 — Matched Orthopaedic Surgery 2024</div>
+    <div class="fw-step">
+      <div class="fw-num">02</div>
+      <div class="fw-title">Case Presentation</div>
+      <div class="fw-desc">Classic vignette — chief complaint, history, physical exam. Presented exactly the way you'll encounter it on rounds and boards.</div>
+      <span class="fw-tag tag-gold">Board-style format</span>
+    </div>
+    <div class="fw-step">
+      <div class="fw-num">03</div>
+      <div class="fw-title">Imaging Interpretation</div>
+      <div class="fw-desc">Stepwise X-ray and imaging review with key findings highlighted. "What do you see?" prompts build your eye systematically.</div>
+      <span class="fw-tag tag-purple">Guided reading</span>
+    </div>
+    <div class="fw-step">
+      <div class="fw-num">04</div>
+      <div class="fw-title">Pocket Pimped</div>
+      <div class="fw-desc">Attending-level questions with tap-to-reveal answers. Management, indications, complications, and what your attendings actually ask.</div>
+      <span class="fw-tag tag-green">Tap to reveal</span>
+    </div>
   </div>
 </div>
 
@@ -812,52 +540,63 @@
     <h2 class="reveal">Eight Anatomic Regions</h2>
     <p class="section-desc reveal">Every major region covered with the same 4-step framework. Knee is live now — all regions releasing through 2025.</p>
     <div class="regions-preview">
-      <a href="spine/spine.html" class="rp-card reveal d1">
-        <div class="rp-num">Region 01</div>
-        <div class="rp-name">Spine</div>
-        <div class="rp-count">10 topics</div>
-      </a>
-      <a href="shoulder-elbow/shoulder-elbow.html" class="rp-card reveal d2">
-        <div class="rp-num">Region 02</div>
-        <div class="rp-name">Shoulder &amp; Elbow</div>
-        <div class="rp-count">13 topics</div>
-      </a>
-      <a href="hand-wrist/hand-wrist.html" class="rp-card reveal d3">
-        <div class="rp-num">Region 03</div>
-        <div class="rp-name">Hand &amp; Wrist</div>
-        <div class="rp-count">10 topics</div>
-      </a>
-      <a href="pelvis-hip/pelvis-hip.html" class="rp-card reveal d4">
-        <div class="rp-num">Region 04</div>
-        <div class="rp-name">Pelvis &amp; Hip</div>
-        <div class="rp-count">14 topics</div>
-      </a>
-      <a href="knee/knee.html" class="rp-card live reveal d1">
-        <div class="rp-num">Region 05</div>
-        <div class="rp-name">Knee</div>
-        <div class="rp-count">15 topics</div>
-        <div class="rp-live">Live Now</div>
-      </a>
-      <a href="foot-ankle/foot-ankle.html" class="rp-card reveal d2">
-        <div class="rp-num">Region 06</div>
-        <div class="rp-name">Foot &amp; Ankle</div>
-        <div class="rp-count">10 topics</div>
-      </a>
-      <a href="pediatric/pediatric.html" class="rp-card reveal d3">
-        <div class="rp-num">Region 07</div>
-        <div class="rp-name">Pediatric Ortho</div>
-        <div class="rp-count">10 topics</div>
-      </a>
-      <a href="tumor/tumor.html" class="rp-card reveal d4">
-        <div class="rp-num">Region 08</div>
-        <div class="rp-name">Tumor</div>
-        <div class="rp-count">9 topics</div>
-      </a>
+      <a href="spine/spine.html" class="rp-card reveal d1"><div class="rp-num">Region 01</div><div class="rp-name">Spine</div><div class="rp-count">10 topics</div></a>
+      <a href="shoulder-elbow/shoulder-elbow.html" class="rp-card reveal d2"><div class="rp-num">Region 02</div><div class="rp-name">Shoulder &amp; Elbow</div><div class="rp-count">13 topics</div></a>
+      <a href="hand-wrist/hand-wrist.html" class="rp-card reveal d3"><div class="rp-num">Region 03</div><div class="rp-name">Hand &amp; Wrist</div><div class="rp-count">10 topics</div></a>
+      <a href="pelvis-hip/pelvis-hip.html" class="rp-card reveal d4"><div class="rp-num">Region 04</div><div class="rp-name">Pelvis &amp; Hip</div><div class="rp-count">14 topics</div></a>
+      <a href="knee/knee.html" class="rp-card live reveal d1"><div class="rp-num">Region 05</div><div class="rp-name">Knee</div><div class="rp-count">15 topics</div><div class="rp-live">Live Now</div></a>
+      <a href="foot-ankle/foot-ankle.html" class="rp-card reveal d2"><div class="rp-num">Region 06</div><div class="rp-name">Foot &amp; Ankle</div><div class="rp-count">10 topics</div></a>
+      <a href="pediatric/pediatric.html" class="rp-card reveal d3"><div class="rp-num">Region 07</div><div class="rp-name">Pediatric Ortho</div><div class="rp-count">10 topics</div></a>
+      <a href="tumor/tumor.html" class="rp-card reveal d4"><div class="rp-num">Region 08</div><div class="rp-name">Tumor</div><div class="rp-count">9 topics</div></a>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- COACHING -->
+<div class="section-sep"></div>
+<div class="coaching-bg">
+  <div class="section">
+    <div class="section-badge reveal">Near-Peer Coaching</div>
+    <h2 class="reveal">Guidance from people who just did it.</h2>
+    <p class="section-desc reveal">Every phase of OrthoBlueprint includes access to near-peer coaching from individuals who have recently matched into orthopaedic surgery. Not generic advice — specific, strategic, and timely.</p>
+    <div class="coaching-grid">
+      <div class="coach-card reveal d1" style="--cc-accent:linear-gradient(90deg,var(--accent),var(--accent-bright));">
+        <div class="coach-phase">Phase 1 Coaching</div>
+        <div class="coach-title">Annual CV Audit</div>
+        <div class="coach-desc">1:1 CV review once per year — ERAS formatting, research descriptions, leadership bullet points, and longitudinal strategy tailored for MS1 and MS2.</div>
+      </div>
+      <div class="coach-card reveal d2" style="--cc-accent:linear-gradient(90deg,var(--gold),var(--gold-light));">
+        <div class="coach-phase">Phase 2 Coaching</div>
+        <div class="coach-title">Away Rotation Review</div>
+        <div class="coach-desc">Application strategy, program selection, geography vs. fit vs. signal — and how to make the most of every week on away rotation.</div>
+      </div>
+      <div class="coach-card reveal d3" style="--cc-accent:linear-gradient(90deg,var(--purple),var(--purple-bright));">
+        <div class="coach-phase">Phase 3 Coaching</div>
+        <div class="coach-title">Interview &amp; Rank Strategy</div>
+        <div class="coach-desc">Interview prep, rank list construction, red flags to watch for, and the strategic decisions that determine where — and whether — you match.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial-strip reveal">
+  <div class="testimonial-inner">
+    <div class="testimonial-quote">The Pocket Pimped questions alone transformed how I performed on sub-Is. I stopped dreading rounds and started looking forward to them.</div>
+    <div class="testimonial-attr">MS4 — Matched Orthopaedic Surgery 2024</div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="cta-section reveal">
+  <h2>No guesswork.<br><span>No scattered guidance.</span><br>Just the blueprint.</h2>
+  <p>A centralized, high-performance framework designed to help you build an exceptional orthopaedic application — with intention and discipline, from day one.</p>
+  <div class="cta-btns">
+    <a href="phase-1.html" class="btn-primary">Start the Curriculum →</a>
+    <a href="coaching.html" class="btn-secondary">Explore Coaching</a>
+  </div>
+</div>
+
 <footer>
   <a href="index.html" class="nav-logo" style="font-size:1rem;">
     <div class="nav-logo-icon" style="width:24px;height:24px;font-size:0.75rem;">🦴</div>
@@ -873,24 +612,21 @@
 </footer>
 
 <script>
-  // Progress bar
-  window.addEventListener('scroll', () => {
-    const d = document.documentElement;
-    const p = document.getElementById('progbar');
-    if (p) p.style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  window.addEventListener('scroll',()=>{
+    const d=document.documentElement;
+    const p=document.getElementById('progbar');
+    if(p) p.style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
   });
-
-  // Nav scroll state
-  const nav = document.getElementById('mainnav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Reveal on scroll
-  const obs = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('in');
-  }), { threshold: 0.07 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  const nav=document.getElementById('mainnav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.07});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  function switchPanel(id,el){
+    document.querySelectorAll('.pdc-panel').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.spine-item').forEach(s=>s.classList.remove('active'));
+    document.getElementById('panel-'+id).classList.add('active');
+    el.classList.add('active');
+  }
 </script>
 </body>
 </html>
