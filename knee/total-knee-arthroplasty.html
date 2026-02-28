@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Knee Arthroplasty — Knee — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628; --navy-mid: #122040; --navy-card: #0f1c35;
+    --blue: #1a3a6b; --accent: #2d7dd2; --accent-bright: #4fa3f7;
+    --gold: #c9a84c; --gold-light: #e8c97a; --cream: #f5f0e8;
+    --white: #ffffff; --text-muted: #7a8fa8; --text-mid: #94aec9;
+    --border: rgba(45,125,210,0.15);
+    --red: #e05c5c; --red-soft: rgba(224,92,92,0.12);
+    --green: #4caf86; --green-soft: rgba(76,175,134,0.12);
+    --yellow: #e8c97a; --yellow-soft: rgba(232,201,122,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2.5rem; display: flex; align-items: center; gap: 1rem; background: rgba(10,22,40,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-logo span { color: var(--gold); }
+  .nav-logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .nav-sep { color: var(--text-muted); font-size: 0.9rem; }
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--white); }
+  .breadcrumb .active { color: var(--accent-bright); font-weight: 500; }
+  .breadcrumb-arrow { font-size: 0.75rem; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; }
+  .sidebar { background: var(--navy-card); border-right: 1px solid var(--border); padding: 2.5rem 1.5rem; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; scrollbar-width: thin; }
+  .sidebar-section { margin-bottom: 2rem; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; }
+  .sidebar-nav li a { display: block; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: all 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a:hover { background: rgba(45,125,210,0.08); color: var(--white); border-left-color: var(--accent); }
+  .sidebar-nav li a.active { background: rgba(45,125,210,0.12); color: var(--accent-bright); border-left-color: var(--accent-bright); font-weight: 500; }
+  .sidebar-nav li a.sub { padding-left: 1.4rem; font-size: 0.8rem; }
+  .main { padding: 3rem 4rem; max-width: 900px; }
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); animation: fadeUp 0.6s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .page-phase { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(45,125,210,0.12); border: 1px solid rgba(45,125,210,0.25); border-radius: 100px; padding: 0.25rem 0.8rem; font-size: 0.72rem; font-weight: 600; color: var(--accent-bright); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; margin-bottom: 1rem; }
+  .page-region { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .page-def { color: var(--text-mid); font-size: 1rem; line-height: 1.7; max-width: 600px; border-left: 3px solid var(--accent); padding-left: 1rem; margin-top: 1.25rem; }
+  .meta-row { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .meta-tag { font-size: 0.78rem; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.4rem; }
+  .meta-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); }
+  .content-section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
+  h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.01em; }
+  .card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .card p { color: var(--text-mid); font-size: 0.92rem; line-height: 1.7; }
+  .alert { border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; font-size: 0.9rem; display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.6; }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .alert-red { background: var(--red-soft); border: 1px solid rgba(224,92,92,0.25); color: #f0a0a0; }
+  .alert-gold { background: var(--yellow-soft); border: 1px solid rgba(232,201,122,0.25); color: var(--gold-light); }
+  .alert-blue { background: rgba(45,125,210,0.1); border: 1px solid rgba(45,125,210,0.25); color: var(--accent-bright); }
+  .alert-green { background: var(--green-soft); border: 1px solid rgba(76,175,134,0.25); color: #7dd4b0; }
+  .bimodal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .bimodal-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.25s; }
+  .bimodal-card:hover { border-color: rgba(45,125,210,0.35); }
+  .bimodal-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .bimodal-card:first-child::after { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+  .bimodal-card:last-child::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .bimodal-type { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .bimodal-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+  .bimodal-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .table-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: rgba(45,125,210,0.1); }
+  thead th { padding: 0.85rem 1.25rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-bright); text-align: left; font-family: 'DM Mono', monospace; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  tbody td { padding: 0.85rem 1.25rem; font-size: 0.9rem; color: var(--text-mid); }
+  tbody td:first-child { color: var(--white); font-weight: 500; }
+  .deformity-tag { display: inline-block; background: rgba(224,92,92,0.12); border: 1px solid rgba(224,92,92,0.2); color: #f0a0a0; padding: 0.15rem 0.6rem; border-radius: 100px; font-size: 0.78rem; font-family: 'DM Mono', monospace; }
+  .ota-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .ota-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.25s; cursor: default; }
+  .ota-card:hover { transform: translateY(-3px); border-color: rgba(45,125,210,0.4); background: rgba(45,125,210,0.05); }
+  .ota-letter { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
+  .ota-card:nth-child(1) .ota-letter { color: var(--accent-bright); }
+  .ota-card:nth-child(2) .ota-letter { color: var(--gold); }
+  .ota-card:nth-child(3) .ota-letter { color: var(--red); }
+  .ota-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .ota-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .ota-hoffa { margin-top: 0.75rem; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.3); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.78rem; color: var(--gold-light); font-style: italic; }
+  .abi-bar { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .abi-track { position: relative; height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; margin: 1rem 0 0.5rem; }
+  .abi-fill-danger { position: absolute; left: 0; height: 100%; width: 30%; background: linear-gradient(90deg, var(--red), #e08a5c); border-radius: 100px; }
+  .abi-fill-safe { position: absolute; right: 0; height: 100%; width: 55%; background: linear-gradient(90deg, #6dcfaa, var(--green)); border-radius: 100px; }
+  .abi-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--text-muted); }
+  .abi-markers { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .abi-marker { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; }
+  .abi-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tx-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .tx-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.25s; }
+  .tx-card:hover { border-color: rgba(45,125,210,0.35); }
+  .tx-header { padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; user-select: none; }
+  .tx-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+  .tx-1 .tx-num { background: rgba(45,125,210,0.15); color: var(--accent-bright); }
+  .tx-2 .tx-num { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .tx-3 .tx-num { background: rgba(90,61,158,0.2); color: #b89ef0; }
+  .tx-title { font-weight: 700; font-size: 1rem; flex: 1; }
+  .tx-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .tx-chevron { color: var(--text-muted); font-size: 1.1rem; transition: transform 0.25s; }
+  .tx-card.open .tx-chevron { transform: rotate(180deg); }
+  .tx-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .tx-card.open .tx-body { display: block; }
+  .tx-section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 1rem 0 0.5rem; }
+  .tx-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .tx-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-mid); line-height: 1.5; }
+  .tx-list li::before { content: '→'; color: var(--accent-bright); flex-shrink: 0; font-size: 0.8rem; margin-top: 0.05rem; }
+  .tx-key-concept { margin-top: 1rem; background: rgba(45,125,210,0.08); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--accent-bright); line-height: 1.6; }
+  .comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .comp-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; transition: border-color 0.2s; }
+  .comp-card:hover { border-color: rgba(224,92,92,0.3); }
+  .comp-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+  .comp-badge { font-size: 0.65rem; font-weight: 600; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.1rem 0.45rem; border-radius: 100px; }
+  .comp-badge.common { background: var(--red-soft); color: #f0a0a0; border: 1px solid rgba(224,92,92,0.2); }
+  .comp-badge.early { background: rgba(232,201,122,0.1); color: var(--gold-light); border: 1px solid rgba(232,201,122,0.2); }
+  .comp-detail { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+  .pimp-section { background: linear-gradient(135deg, rgba(45,125,210,0.06), rgba(201,168,76,0.04)); border: 1px solid rgba(45,125,210,0.2); border-radius: 14px; padding: 2rem; }
+  .pimp-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .pimp-q-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pimp-q { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer; transition: border-color 0.2s; }
+  .pimp-q:hover { border-color: rgba(45,125,210,0.35); }
+  .pimp-q-text { font-size: 0.9rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .pimp-reveal { color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0; }
+  .pimp-q.active .pimp-reveal { color: var(--accent-bright); }
+  .pimp-answer { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.87rem; color: var(--text-mid); line-height: 1.65; }
+  .pimp-q.active .pimp-answer { display: block; }
+  .progress-bar { position: fixed; top: 60px; left: 0; right: 0; height: 2px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.1s linear; }
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 2.5rem 0; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 2rem 1.5rem; } .bimodal-grid, .ota-grid, .comp-grid { grid-template-columns: 1fr; } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  [id] { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>
+    Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb">
+    <a href="../phase-2.html">Phase 2</a>
+    <span class="breadcrumb-arrow">›</span>
+    <a href="knee.html">Knee</a>
+    <span class="breadcrumb-arrow">›</span>
+    <span class="active">Total Knee Arthroplasty</span>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">On This Page</div>
+      <ul class="sidebar-nav">
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#implants">Implant Design</a></li>
+        <li><a href="#indications">Indications & Contraindications</a></li>
+        <li><a href="#technique">Surgical Technique & Gap Balancing</a></li>
+        <li><a href="#complications">Complications</a></li>
+        <li><a href="#outcomes">Outcomes & Revision</a></li>
+        <li><a href="#pimp">Pocket Pimped ❓</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Knee Topics</div>
+      <ul class="sidebar-nav">
+        <li><a href="distal-femur-fractures.html" class="sub">★ Distal Femur Fractures</a></li>
+        <li><a href="tibial-plateau-fracture.html" class="sub">01. Tibial Plateau Fracture</a></li>
+        <li><a href="patella-fracture.html" class="sub">02. Patella Fracture</a></li>
+        <li><a href="knee-dislocation.html" class="sub">03. Knee Dislocation</a></li>
+        <li><a href="acl-tear.html" class="sub">04. ACL Tear</a></li>
+        <li><a href="pcl-injury.html" class="sub">05. PCL Injury</a></li>
+        <li><a href="mcl-lcl-injuries.html" class="sub">06. MCL & LCL Injuries</a></li>
+        <li><a href="posterolateral-corner.html" class="sub">07. Posterolateral Corner Injury</a></li>
+        <li><a href="meniscal-tears.html" class="sub">08. Meniscal Tears</a></li>
+        <li><a href="osteochondritis-dissecans.html" class="sub">09. Osteochondritis Dissecans</a></li>
+        <li><a href="patellar-tendon-rupture.html" class="sub">10. Patellar Tendon Rupture</a></li>
+        <li><a href="quadriceps-tendon-rupture.html" class="sub">11. Quadriceps Tendon Rupture</a></li>
+        <li><a href="patellar-tendinitis.html" class="sub">12. Patellar Tendinitis</a></li>
+        <li><a href="osgood-schlatter.html" class="sub">13. Osgood-Schlatter Disease</a></li>
+        <li><a href="knee-osteoarthritis.html" class="sub">14. Knee Osteoarthritis</a></li>
+        <li><a href="total-knee-arthroplasty.html" class="sub active">15. Total Knee Arthroplasty</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 2 Regions</div>
+      <ul class="sidebar-nav">
+        <li><a href="../spine/spine.html">Spine</a></li>
+        <li><a href="../shoulder-elbow/shoulder-elbow.html">Shoulder &amp; Elbow</a></li>
+        <li><a href="../hand-wrist/hand-wrist.html">Hand &amp; Wrist</a></li>
+        <li><a href="../pelvis-hip/pelvis-hip.html">Pelvis &amp; Hip</a></li>
+        <li><a href="knee.html" class="active">Knee</a></li>
+        <li><a href="../foot-ankle/foot-ankle.html">Foot &amp; Ankle</a></li>
+        <li><a href="../pediatric/pediatric.html">Pediatric Ortho</a></li>
+        <li><a href="../tumor/tumor.html">Tumor</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Member Pages</div>
+      <ul class="sidebar-nav">
+        <li><a href="../curriculum.html">Curriculum</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../community.html">Community</a></li>
+        <li><a href="../coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+
+    <div class="page-header" id="definition">
+      <div class="page-phase">Phase 2 — Clinical Orthopaedics</div>
+      <div class="page-region">Region 05 · Knee</div>
+      <h1>Total Knee Arthroplasty</h1>
+      <div class="page-def">
+        Surgical resurfacing of the distal femur, proximal tibia, and patella with prosthetic components to restore painless, functional knee motion in end-stage arthritis. One of the most successful elective operations in all of medicine.
+      </div>
+      <div class="meta-row">
+        <span class="meta-tag">~750,000 Per Year (US)</span>
+        <span class="meta-tag">Neutral Mechanical Axis</span>
+        <span class="meta-tag">Gap Balancing is Everything</span>
+      </div>
+    </div>
+
+    <div class="alert alert-gold reveal">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Key concept for the wards:</strong> The two goals of TKA are a <strong>neutral mechanical axis</strong> and <strong>balanced, equal flexion and extension gaps</strong>. If you understand these principles, you can follow any TKA conversation on rounds.</div>
+    </div>
+
+    <!-- IMPLANT DESIGN -->
+    <div class="content-section reveal" id="implants">
+      <div class="section-header"><span class="section-num">01</span><h2>Implant Design</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Component</th><th>Material</th><th>Function</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Femoral Component</td><td>Cobalt-chromium alloy</td><td>Resurfaces distal femur. Trochlear groove for patellar tracking. Cam post in PS designs.</td></tr>
+            <tr><td>Tibial Tray</td><td>Cobalt-chrome or titanium</td><td>Platform for polyethylene insert. Cemented or press-fit cementless.</td></tr>
+            <tr><td>Polyethylene (PE) Insert</td><td>Ultra-high molecular weight PE</td><td>Bearing surface between femur and tibia. Wear of this component drives late failure.</td></tr>
+            <tr><td>Patellar Button</td><td>Polyethylene</td><td>Resurfaces posterior patella. Patellar resurfacing is controversial — most US surgeons resurface routinely.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bimodal-grid" style="margin-top:1rem;">
+        <div class="bimodal-card">
+          <div class="bimodal-type">CR Design</div>
+          <div class="bimodal-label">Cruciate Retaining</div>
+          <div class="bimodal-detail">PCL preserved. More natural femoral rollback kinematics. Requires intact, functional PCL. Cannot be used if significant deformity requiring PCL release.</div>
+        </div>
+        <div class="bimodal-card">
+          <div class="bimodal-type">PS Design</div>
+          <div class="bimodal-label">Posterior Stabilized</div>
+          <div class="bimodal-detail">PCL sacrificed. Cam-post mechanism substitutes for PCL rollback. Preferred for severe deformity, PCL-deficient knees, inflammatory arthritis, and revision surgery.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- INDICATIONS -->
+    <div class="content-section reveal" id="indications">
+      <div class="section-header"><span class="section-num">02</span><h2>Indications &amp; Contraindications</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Indications</th><th>Contraindications</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>End-stage OA (KL Grade III–IV)</td><td>Active or recent periprosthetic joint infection</td></tr>
+            <tr><td>Failed nonoperative management (≥3–6 months)</td><td>Extensor mechanism dysfunction (unrepairable)</td></tr>
+            <tr><td>Functional impairment affecting quality of life</td><td>Neuropathic (Charcot) arthropathy</td></tr>
+            <tr><td>Inflammatory arthritis (RA, PsA, gout)</td><td>Significant peripheral vascular disease</td></tr>
+            <tr><td>Post-traumatic arthritis</td><td>BMI &gt;40 (relative — optimize first)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-blue" style="margin-top:0.75rem;">
+        <span class="alert-icon">💡</span>
+        <div>Patient selection is as important as surgical technique. Optimize BMI, HbA1c (&lt;7.5%), hemoglobin (&gt;12 g/dL), and smoking cessation before elective TKA — each significantly impacts infection and complication rates.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- TECHNIQUE -->
+    <div class="content-section reveal" id="technique">
+      <div class="section-header"><span class="section-num">03</span><h2>Surgical Technique &amp; Gap Balancing</h2></div>
+      <div class="card">
+        <p><strong style="color:var(--white);">Mechanical axis:</strong> A line from the center of the femoral head through the center of the knee to the center of the ankle. The goal is neutral (180°) — equal loading across both compartments. Malalignment accelerates PE wear and causes early loosening.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Technical Principle</th><th>Clinical Significance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Extension Gap</td><td>Space between distal femoral cut and proximal tibial cut at full extension. Must equal flexion gap.</td></tr>
+            <tr><td>Flexion Gap</td><td>Space at 90° flexion. Must equal extension gap for stability throughout ROM.</td></tr>
+            <tr><td>Femoral Rotation</td><td>Referenced to trans-epicondylar axis (TEA). Malrotation causes patellar maltracking and anterior knee pain.</td></tr>
+            <tr><td>Tibial Slope (3–7°)</td><td>Affects flexion and PCL tension. Excessive slope → instability in extension.</td></tr>
+            <tr><td>Patellar Tracking ("No Thumb" Test)</td><td>Patella should track centrally in the groove without holding it (thumb) after closure.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-gold" style="margin-top:0.75rem;">
+        <span class="alert-icon">💡</span>
+        <div>
+          <strong>Gap balancing simplified:</strong><br>
+          Tight in flexion → upsize femoral component or increase tibial slope<br>
+          Tight in extension → resect more distal femur or release posterior capsule<br>
+          Flexion gap &gt; extension gap → downsize femoral component or reduce tibial slope
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- COMPLICATIONS -->
+    <div class="content-section reveal" id="complications">
+      <div class="section-header"><span class="section-num">04</span><h2>Complications</h2></div>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <div class="comp-name">Stiffness / Arthrofibrosis <span class="comp-badge common">Most Common Early</span></div>
+          <div class="comp-detail">Goal is ≥90° flexion by 6 weeks. If inadequate ROM at 6–12 weeks despite PT, manipulation under anesthesia (MUA) is indicated before scar matures.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Periprosthetic Joint Infection (PJI)</div>
+          <div class="comp-detail">1–2% incidence. Most devastating complication. Early acute (&lt;3–4 weeks): DAIR (debridement, antibiotics, irrigation, retention). Late/chronic: 2-stage revision (explant + spacer → reimplant).</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Aseptic Loosening <span class="comp-badge common">Most Common Late</span></div>
+          <div class="comp-detail">PE wear generates debris → osteolysis → component migration. Most common cause of revision at 10–15 years. Improved PE formulations (highly cross-linked) have reduced this.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Instability</div>
+          <div class="comp-detail">Flexion or extension instability from gap imbalance, ligament injury, or component malposition. Most common indication for early revision after PJI.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Patellar Complications</div>
+          <div class="comp-detail">Maltracking (femoral rotational error most common), patellar fracture (stress riser at peg holes), patellar clunk (PS design — fibrous nodule in intercondylar box).</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Periprosthetic Fracture</div>
+          <div class="comp-detail">Distal femur most common. ORIF if implant stable and well-fixed. Revision arthroplasty if implant loose. Anterior femoral notching during TKA increases fracture risk.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- OUTCOMES -->
+    <div class="content-section reveal" id="outcomes">
+      <div class="section-header"><span class="section-num">05</span><h2>Outcomes &amp; Revision</h2></div>
+      <div class="card">
+        <p>TKA has ~750,000 procedures/year in the US with a 15-year implant survival of <strong style="color:var(--white);">85–95%</strong>. Patient satisfaction at 1 year: approximately 85–90%. The <strong style="color:var(--white);">most common causes of revision</strong> in order: aseptic loosening → infection → instability → stiffness → patellar complications. Revision TKA carries significantly higher complication rates than primary TKA.</p>
+      </div>
+      <div class="alert alert-blue">
+        <span class="alert-icon">💡</span>
+        <div>Young, active patients (&lt;55) and obese patients (BMI &gt;40) have substantially higher revision rates. These are not contraindications, but they must be counselled accordingly — TKA in a 45-year-old will likely require revision in their lifetime.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="pimp">
+      <div class="section-header"><span class="section-num">06</span><h2>Pocket Pimped</h2></div>
+      <div class="pimp-section">
+        <div class="pimp-title">❓ Attending-Level Questions</div>
+        <div class="pimp-q-list">
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Explain flexion and extension gap balancing. What happens if the flexion gap is larger than the extension gap?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The extension gap is the space between the distal femoral cut and the tibial cut with the knee at full extension. The flexion gap is the same space at 90° flexion. Equal, symmetric gaps produce a stable, well-balanced knee. If the flexion gap is larger than the extension gap, the knee is loose in flexion (posterior instability at 90°) — correct by upsizing the femoral component, reducing tibial slope, or tightening the posterior capsule.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the difference between CR and PS TKA designs? When would you choose PS?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">CR (cruciate-retaining): PCL is preserved, maintained for posterior rollback. Requires an intact, functional PCL. PS (posterior-stabilized): PCL is sacrificed; a cam-post mechanism substitutes for PCL function and drives femoral rollback. PS is preferred when: significant deformity requiring extensive soft tissue release (including PCL), PCL-deficient knee, inflammatory arthritis, or revision surgery. Long-term outcomes are comparable between the two designs.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the 2-stage revision protocol for periprosthetic joint infection?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Stage 1: Remove all components, thorough débridement of infected tissue, culture-directed antibiotic-loaded cement spacer (articulating or static), and 6 weeks of IV antibiotics based on organism. Stage 2: After confirmed eradication (negative ESR/CRP, negative joint aspiration), reimplant new components. DAIR (débridement, antibiotics, implant retention) is appropriate only for acute early infections (&lt;3–4 weeks) with a stable, well-fixed implant and susceptible organism.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What causes anterior knee pain after TKA and how does femoral component rotation factor in?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Anterior knee pain after TKA is most commonly due to patellar maltracking, which is usually caused by internal rotation of the femoral component. The femoral component should be rotated to the trans-epicondylar axis (TEA). Internal rotation causes the trochlear groove to shift medially, lateralizing the patella and increasing lateral facet contact pressure. The "no thumb" test intraoperatively — patella tracks centrally without lateral support — confirms correct rotational alignment.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is patellar clunk syndrome and in which TKA design does it occur?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Patellar clunk occurs in posterior-stabilized (PS) TKA designs. A fibrous nodule forms at the proximal pole of the patellar button at the attachment of the quadriceps tendon. As the knee extends from ~60° to 30°, this nodule catches on the anterior edge of the intercondylar cam box — creating a palpable, often audible clunk. Treatment is arthroscopic excision of the fibrous nodule. Seen less commonly with modern PS femoral component designs that have a more open box geometry.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is anterior femoral notching and why does it matter?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Anterior femoral notching occurs when the anterior femoral cutting guide removes too much bone from the anterior femoral cortex — creating a stress riser. This increases the risk of supracondylar periprosthetic fracture, particularly in osteoporotic patients. Notching of &gt;3 mm significantly elevates fracture risk. Prevention: careful sizing and positioning of the femoral component to avoid violating the anterior cortex.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const scrolled = el.scrollTop || document.body.scrollTop;
+    const total = el.scrollHeight - el.clientHeight;
+    document.getElementById('progbar').style.width = (scrolled / total * 100) + '%';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+  function toggleTx(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.tx-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const first = document.querySelector('.tx-card');
+    if (first) first.classList.add('open');
+  });
+  function togglePimp(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.pimp-q').forEach(q => q.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+  const sections = document.querySelectorAll('[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      else if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) link.classList.remove('active');
+    });
+  });
+</script>
+</body>
+</html>

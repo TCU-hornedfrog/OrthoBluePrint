@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patella Fracture — Knee — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628; --navy-mid: #122040; --navy-card: #0f1c35;
+    --blue: #1a3a6b; --accent: #2d7dd2; --accent-bright: #4fa3f7;
+    --gold: #c9a84c; --gold-light: #e8c97a; --cream: #f5f0e8;
+    --white: #ffffff; --text-muted: #7a8fa8; --text-mid: #94aec9;
+    --border: rgba(45,125,210,0.15);
+    --red: #e05c5c; --red-soft: rgba(224,92,92,0.12);
+    --green: #4caf86; --green-soft: rgba(76,175,134,0.12);
+    --yellow: #e8c97a; --yellow-soft: rgba(232,201,122,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2.5rem; display: flex; align-items: center; gap: 1rem; background: rgba(10,22,40,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-logo span { color: var(--gold); }
+  .nav-logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .nav-sep { color: var(--text-muted); font-size: 0.9rem; }
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--white); }
+  .breadcrumb .active { color: var(--accent-bright); font-weight: 500; }
+  .breadcrumb-arrow { font-size: 0.75rem; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; }
+  .sidebar { background: var(--navy-card); border-right: 1px solid var(--border); padding: 2.5rem 1.5rem; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; scrollbar-width: thin; }
+  .sidebar-section { margin-bottom: 2rem; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; }
+  .sidebar-nav li a { display: block; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: all 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a:hover { background: rgba(45,125,210,0.08); color: var(--white); border-left-color: var(--accent); }
+  .sidebar-nav li a.active { background: rgba(45,125,210,0.12); color: var(--accent-bright); border-left-color: var(--accent-bright); font-weight: 500; }
+  .sidebar-nav li a.sub { padding-left: 1.4rem; font-size: 0.8rem; }
+  .main { padding: 3rem 4rem; max-width: 900px; }
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); animation: fadeUp 0.6s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .page-phase { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(45,125,210,0.12); border: 1px solid rgba(45,125,210,0.25); border-radius: 100px; padding: 0.25rem 0.8rem; font-size: 0.72rem; font-weight: 600; color: var(--accent-bright); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; margin-bottom: 1rem; }
+  .page-region { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .page-def { color: var(--text-mid); font-size: 1rem; line-height: 1.7; max-width: 600px; border-left: 3px solid var(--accent); padding-left: 1rem; margin-top: 1.25rem; }
+  .meta-row { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .meta-tag { font-size: 0.78rem; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.4rem; }
+  .meta-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); }
+  .content-section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
+  h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.01em; }
+  .card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .card p { color: var(--text-mid); font-size: 0.92rem; line-height: 1.7; }
+  .alert { border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; font-size: 0.9rem; display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.6; }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .alert-red { background: var(--red-soft); border: 1px solid rgba(224,92,92,0.25); color: #f0a0a0; }
+  .alert-gold { background: var(--yellow-soft); border: 1px solid rgba(232,201,122,0.25); color: var(--gold-light); }
+  .alert-blue { background: rgba(45,125,210,0.1); border: 1px solid rgba(45,125,210,0.25); color: var(--accent-bright); }
+  .alert-green { background: var(--green-soft); border: 1px solid rgba(76,175,134,0.25); color: #7dd4b0; }
+  .bimodal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .bimodal-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.25s; }
+  .bimodal-card:hover { border-color: rgba(45,125,210,0.35); }
+  .bimodal-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .bimodal-card:first-child::after { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+  .bimodal-card:last-child::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .bimodal-type { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .bimodal-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+  .bimodal-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .table-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: rgba(45,125,210,0.1); }
+  thead th { padding: 0.85rem 1.25rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-bright); text-align: left; font-family: 'DM Mono', monospace; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  tbody td { padding: 0.85rem 1.25rem; font-size: 0.9rem; color: var(--text-mid); }
+  tbody td:first-child { color: var(--white); font-weight: 500; }
+  .deformity-tag { display: inline-block; background: rgba(224,92,92,0.12); border: 1px solid rgba(224,92,92,0.2); color: #f0a0a0; padding: 0.15rem 0.6rem; border-radius: 100px; font-size: 0.78rem; font-family: 'DM Mono', monospace; }
+  .ota-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .ota-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.25s; cursor: default; }
+  .ota-card:hover { transform: translateY(-3px); border-color: rgba(45,125,210,0.4); background: rgba(45,125,210,0.05); }
+  .ota-letter { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
+  .ota-card:nth-child(1) .ota-letter { color: var(--accent-bright); }
+  .ota-card:nth-child(2) .ota-letter { color: var(--gold); }
+  .ota-card:nth-child(3) .ota-letter { color: var(--red); }
+  .ota-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .ota-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .ota-hoffa { margin-top: 0.75rem; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.3); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.78rem; color: var(--gold-light); font-style: italic; }
+  .abi-bar { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .abi-track { position: relative; height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; margin: 1rem 0 0.5rem; }
+  .abi-fill-danger { position: absolute; left: 0; height: 100%; width: 30%; background: linear-gradient(90deg, var(--red), #e08a5c); border-radius: 100px; }
+  .abi-fill-safe { position: absolute; right: 0; height: 100%; width: 55%; background: linear-gradient(90deg, #6dcfaa, var(--green)); border-radius: 100px; }
+  .abi-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--text-muted); }
+  .abi-markers { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .abi-marker { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; }
+  .abi-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tx-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .tx-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.25s; }
+  .tx-card:hover { border-color: rgba(45,125,210,0.35); }
+  .tx-header { padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; user-select: none; }
+  .tx-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+  .tx-1 .tx-num { background: rgba(45,125,210,0.15); color: var(--accent-bright); }
+  .tx-2 .tx-num { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .tx-3 .tx-num { background: rgba(90,61,158,0.2); color: #b89ef0; }
+  .tx-title { font-weight: 700; font-size: 1rem; flex: 1; }
+  .tx-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .tx-chevron { color: var(--text-muted); font-size: 1.1rem; transition: transform 0.25s; }
+  .tx-card.open .tx-chevron { transform: rotate(180deg); }
+  .tx-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .tx-card.open .tx-body { display: block; }
+  .tx-section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 1rem 0 0.5rem; }
+  .tx-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .tx-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-mid); line-height: 1.5; }
+  .tx-list li::before { content: '→'; color: var(--accent-bright); flex-shrink: 0; font-size: 0.8rem; margin-top: 0.05rem; }
+  .tx-key-concept { margin-top: 1rem; background: rgba(45,125,210,0.08); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--accent-bright); line-height: 1.6; }
+  .comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .comp-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; transition: border-color 0.2s; }
+  .comp-card:hover { border-color: rgba(224,92,92,0.3); }
+  .comp-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+  .comp-badge { font-size: 0.65rem; font-weight: 600; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.1rem 0.45rem; border-radius: 100px; }
+  .comp-badge.common { background: var(--red-soft); color: #f0a0a0; border: 1px solid rgba(224,92,92,0.2); }
+  .comp-badge.early { background: rgba(232,201,122,0.1); color: var(--gold-light); border: 1px solid rgba(232,201,122,0.2); }
+  .comp-detail { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+  .pimp-section { background: linear-gradient(135deg, rgba(45,125,210,0.06), rgba(201,168,76,0.04)); border: 1px solid rgba(45,125,210,0.2); border-radius: 14px; padding: 2rem; }
+  .pimp-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .pimp-q-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pimp-q { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer; transition: border-color 0.2s; }
+  .pimp-q:hover { border-color: rgba(45,125,210,0.35); }
+  .pimp-q-text { font-size: 0.9rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .pimp-reveal { color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0; }
+  .pimp-q.active .pimp-reveal { color: var(--accent-bright); }
+  .pimp-answer { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.87rem; color: var(--text-mid); line-height: 1.65; }
+  .pimp-q.active .pimp-answer { display: block; }
+  .progress-bar { position: fixed; top: 60px; left: 0; right: 0; height: 2px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.1s linear; }
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 2.5rem 0; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 2rem 1.5rem; } .bimodal-grid, .ota-grid, .comp-grid { grid-template-columns: 1fr; } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  [id] { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>
+    Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb">
+    <a href="../phase-2.html">Phase 2</a>
+    <span class="breadcrumb-arrow">›</span>
+    <a href="knee.html">Knee</a>
+    <span class="breadcrumb-arrow">›</span>
+    <span class="active">Patella Fracture</span>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">On This Page</div>
+      <ul class="sidebar-nav">
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#epidemiology">Epidemiology & Mechanism</a></li>
+        <li><a href="#anatomy">Anatomy & Extensor Mechanism</a></li>
+        <li><a href="#classification">Fracture Patterns</a></li>
+        <li><a href="#presentation">Presentation</a></li>
+        <li><a href="#imaging">Imaging</a></li>
+        <li><a href="#treatment">Treatment</a></li>
+        <li><a href="#complications">Complications</a></li>
+        <li><a href="#pimp">Pocket Pimped ❓</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Knee Topics</div>
+      <ul class="sidebar-nav">
+        <li><a href="distal-femur-fractures.html" class="sub">★ Distal Femur Fractures</a></li>
+        <li><a href="tibial-plateau-fracture.html" class="sub">01. Tibial Plateau Fracture</a></li>
+        <li><a href="patella-fracture.html" class="sub active">02. Patella Fracture</a></li>
+        <li><a href="knee-dislocation.html" class="sub">03. Knee Dislocation</a></li>
+        <li><a href="acl-tear.html" class="sub">04. ACL Tear</a></li>
+        <li><a href="pcl-injury.html" class="sub">05. PCL Injury</a></li>
+        <li><a href="mcl-lcl-injuries.html" class="sub">06. MCL & LCL Injuries</a></li>
+        <li><a href="posterolateral-corner.html" class="sub">07. Posterolateral Corner Injury</a></li>
+        <li><a href="meniscal-tears.html" class="sub">08. Meniscal Tears</a></li>
+        <li><a href="osteochondritis-dissecans.html" class="sub">09. Osteochondritis Dissecans</a></li>
+        <li><a href="patellar-tendon-rupture.html" class="sub">10. Patellar Tendon Rupture</a></li>
+        <li><a href="quadriceps-tendon-rupture.html" class="sub">11. Quadriceps Tendon Rupture</a></li>
+        <li><a href="patellar-tendinitis.html" class="sub">12. Patellar Tendinitis</a></li>
+        <li><a href="osgood-schlatter.html" class="sub">13. Osgood-Schlatter Disease</a></li>
+        <li><a href="knee-osteoarthritis.html" class="sub">14. Knee Osteoarthritis</a></li>
+        <li><a href="total-knee-arthroplasty.html" class="sub">15. Total Knee Arthroplasty</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 2 Regions</div>
+      <ul class="sidebar-nav">
+        <li><a href="../spine/spine.html">Spine</a></li>
+        <li><a href="../shoulder-elbow/shoulder-elbow.html">Shoulder &amp; Elbow</a></li>
+        <li><a href="../hand-wrist/hand-wrist.html">Hand &amp; Wrist</a></li>
+        <li><a href="../pelvis-hip/pelvis-hip.html">Pelvis &amp; Hip</a></li>
+        <li><a href="knee.html" class="active">Knee</a></li>
+        <li><a href="../foot-ankle/foot-ankle.html">Foot &amp; Ankle</a></li>
+        <li><a href="../pediatric/pediatric.html">Pediatric Ortho</a></li>
+        <li><a href="../tumor/tumor.html">Tumor</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Member Pages</div>
+      <ul class="sidebar-nav">
+        <li><a href="../curriculum.html">Curriculum</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../community.html">Community</a></li>
+        <li><a href="../coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+
+    <div class="page-header" id="definition">
+      <div class="page-phase">Phase 2 — Clinical Orthopaedics</div>
+      <div class="page-region">Region 05 · Knee</div>
+      <h1>Patella Fracture</h1>
+      <div class="page-def">
+        Fractures of the patella — the largest sesamoid in the body — that may or may not disrupt the extensor mechanism of the knee. The critical question every time: is the extensor mechanism intact?
+      </div>
+      <div class="meta-row">
+        <span class="meta-tag">Extensor Mechanism Assessment</span>
+        <span class="meta-tag">Tension Band Wiring</span>
+        <span class="meta-tag">1% of All Skeletal Fractures</span>
+      </div>
+    </div>
+
+    <div class="alert alert-gold reveal">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Key concept:</strong> The extensor mechanism is the deciding factor — not displacement alone. A patient who can perform an active straight leg raise may be managed nonoperatively regardless of fracture gap.</div>
+    </div>
+
+    <div class="content-section reveal" id="epidemiology">
+      <div class="section-header"><span class="section-num">01</span><h2>Epidemiology &amp; Mechanism</h2></div>
+      <div class="bimodal-grid">
+        <div class="bimodal-card">
+          <div class="bimodal-type">Direct Mechanism</div>
+          <div class="bimodal-label">Fall / Dashboard Blow</div>
+          <div class="bimodal-detail">Direct blow to the anterior knee. Results in comminuted or stellate patterns. Overlying skin is often compromised — always inspect carefully for open fracture.</div>
+        </div>
+        <div class="bimodal-card">
+          <div class="bimodal-type">Indirect Mechanism</div>
+          <div class="bimodal-label">Eccentric Quadriceps Contraction</div>
+          <div class="bimodal-detail">Sudden deceleration or stumble with eccentric quad contraction. Results in a transverse fracture pattern at mid-patella. Extensor mechanism typically disrupted.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="anatomy">
+      <div class="section-header"><span class="section-num">02</span><h2>Anatomy &amp; Extensor Mechanism</h2></div>
+      <div class="card">
+        <p>The patella is a sesamoid within the quadriceps tendon. It improves the mechanical advantage of the quadriceps by 30–50% by increasing the lever arm at the knee. The complete extensor mechanism: <strong style="color:var(--white);">quadriceps → patella → patellar tendon → tibial tubercle</strong>. Disruption anywhere in this chain eliminates active extension.</p>
+      </div>
+      <div class="alert alert-blue">
+        <span class="alert-icon">💡</span>
+        <div>The medial and lateral retinaculum can maintain extensor mechanism continuity even with a displaced transverse fracture. This is why the straight leg raise test — not X-ray displacement — determines operative indication.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="classification">
+      <div class="section-header"><span class="section-num">03</span><h2>Fracture Patterns</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pattern</th><th>Mechanism</th><th>Key Points</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Transverse</td><td>Indirect — eccentric quad</td><td>Most common. Mid-patella. Extensor mechanism often disrupted.</td></tr>
+            <tr><td>Comminuted / Stellate</td><td>Direct blow</td><td>Dashboard / fall. Articular surface disrupted. May need patellectomy.</td></tr>
+            <tr><td>Vertical</td><td>Direct</td><td>Rare. Lateral border most common. Extensor mechanism usually intact.</td></tr>
+            <tr><td>Polar (Proximal / Distal)</td><td>Indirect avulsion</td><td>Small fragment + large cartilaginous component. Common in young athletes.</td></tr>
+            <tr><td>Osteochondral</td><td>Lateral patellar dislocation</td><td>Medial facet sheared off during dislocation. Loose body in joint. Often missed on plain film.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="presentation">
+      <div class="section-header"><span class="section-num">04</span><h2>Presentation</h2></div>
+      <div class="card">
+        <p>Anterior knee pain, swelling, and bruising after mechanism of injury. Palpable defect at the fracture site in displaced fractures. <strong style="color:var(--white);">The critical exam finding: can the patient actively extend the knee against gravity?</strong> Inability to do so — the extensor mechanism is disrupted and surgery is required.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="imaging">
+      <div class="section-header"><span class="section-num">05</span><h2>Imaging</h2></div>
+      <div class="card">
+        <p><strong style="color:var(--white);">X-rays:</strong> AP + lateral + Merchant (axial/sunrise) view. The lateral view best shows transverse fractures and patellar height. The Merchant view evaluates vertical fractures and patellofemoral alignment.</p>
+      </div>
+      <div class="alert alert-gold">
+        <span class="alert-icon">🩻</span>
+        <div><strong>Bipartite patella:</strong> Superolateral location, smooth corticated edges, bilateral in ~50%. Do NOT mistake for fracture. Compare contralateral knee — the location is consistent in bipartite patella.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="treatment">
+      <div class="section-header"><span class="section-num">06</span><h2>Treatment</h2></div>
+      <div class="tx-grid">
+        <div class="tx-card tx-1" id="tx1">
+          <div class="tx-header" onclick="toggleTx('tx1')">
+            <div class="tx-num">01</div>
+            <div>
+              <div class="tx-title">Nonoperative</div>
+              <div class="tx-subtitle">Intact extensor mechanism, &lt;3mm step, &lt;2mm gap</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Criteria (all must be met)</div>
+            <ul class="tx-list">
+              <li>Patient can perform active straight leg raise</li>
+              <li>&lt;3 mm articular step-off</li>
+              <li>&lt;2 mm fracture gap</li>
+            </ul>
+            <div class="tx-section-label">Management</div>
+            <ul class="tx-list">
+              <li>Cylinder cast or hinged knee brace in extension × 4–6 weeks</li>
+              <li>Progressive weight bearing and ROM after immobilization</li>
+            </ul>
+            <div class="tx-key-concept">The intact extensor mechanism is the deciding factor — not radiographic displacement alone. Always test the SLR before deciding on management.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-2" id="tx2">
+          <div class="tx-header" onclick="toggleTx('tx2')">
+            <div class="tx-num">02</div>
+            <div>
+              <div class="tx-title">Tension Band Wiring — ORIF</div>
+              <div class="tx-subtitle">Displaced transverse fractures with disrupted extensor mechanism</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Biomechanical Principle</div>
+            <ul class="tx-list">
+              <li>Converts tensile forces on the anterior patella into compressive forces at the articular surface during knee flexion</li>
+              <li>Longitudinal K-wires or cannulated screws + figure-of-8 wire anteriorly</li>
+            </ul>
+            <div class="tx-section-label">Technical Key</div>
+            <ul class="tx-list">
+              <li>Figure-of-8 wire must be placed <strong>anterior to the mid-axis</strong> of the patella to function as a true tension band</li>
+              <li>Wire placed posteriorly fails to compress the articular surface</li>
+            </ul>
+            <div class="tx-key-concept">Wire position is everything. Anterior to mid-axis = compression at joint. Posterior to mid-axis = distraction at joint. This is a classic pimp point.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-3" id="tx3">
+          <div class="tx-header" onclick="toggleTx('tx3')">
+            <div class="tx-num">03</div>
+            <div>
+              <div class="tx-title">Partial / Total Patellectomy</div>
+              <div class="tx-subtitle">Severely comminuted, unreconstructable fractures</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Indications</div>
+            <ul class="tx-list">
+              <li>Severely comminuted fracture not amenable to internal fixation</li>
+              <li>Poor bone quality — hardware cannot be held</li>
+              <li>Failed prior fixation</li>
+            </ul>
+            <div class="tx-section-label">Tradeoffs</div>
+            <ul class="tx-list">
+              <li>Partial preferred — preserves lever arm and quadriceps strength</li>
+              <li>Total patellectomy reduces quadriceps strength by 30–50%</li>
+            </ul>
+            <div class="tx-key-concept">Preserve as much patella as possible — even a partial patella maintains significantly more quadriceps mechanical advantage than total patellectomy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="complications">
+      <div class="section-header"><span class="section-num">07</span><h2>Complications</h2></div>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <div class="comp-name">Hardware Irritation <span class="comp-badge common">Most Common</span></div>
+          <div class="comp-detail">K-wire migration and prominent hardware are the most common complication of tension band wiring. Often requires hardware removal at 12 months.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Loss of Reduction</div>
+          <div class="comp-detail">Wire placed posterior to mid-axis fails to compress the articular surface. Construct fails under early ROM loading.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Extensor Lag</div>
+          <div class="comp-detail">Inability to fully extend the knee. Related to inadequate repair, insufficient rehabilitation, or quadriceps weakness.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Patellofemoral Arthritis</div>
+          <div class="comp-detail">Articular malreduction or comminution leads to post-traumatic arthritis at the patellofemoral joint.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">AVN of Patella Fragment</div>
+          <div class="comp-detail">Rare. Blood supply enters distally and proximally. Displaced fractures can devascularize a fragment.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Wound Dehiscence</div>
+          <div class="comp-detail">Thin skin directly over the patella is at risk, especially with direct mechanism injuries with skin contusion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="pimp">
+      <div class="section-header"><span class="section-num">08</span><h2>Pocket Pimped</h2></div>
+      <div class="pimp-section">
+        <div class="pimp-title">❓ Attending-Level Questions</div>
+        <div class="pimp-q-list">
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the single most important factor in deciding operative vs. nonoperative management?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The integrity of the extensor mechanism — not radiographic displacement. If the patient can actively extend the knee against gravity (positive straight leg raise), the extensor mechanism is intact and nonoperative management is appropriate provided the articular step is &lt;3 mm and gap &lt;2 mm. A displaced fracture with intact retinaculum can still be managed nonoperatively.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Explain the biomechanical principle of tension band wiring and why wire position matters.</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The anterior surface of the patella is under tension during knee flexion due to quadriceps pull. Placing a figure-of-8 wire on the anterior surface converts this tension into compression at the articular surface — promoting fracture healing. The wire must be anterior to the mid-axis of the patella. If placed posteriorly (closer to the articular surface), it acts as a fulcrum and distracts the articular surface rather than compressing it.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is a bipartite patella and how do you differentiate it from a fracture?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">A bipartite patella is a developmental variant where the superolateral pole fails to fuse — present in ~2–3% of the population. Key distinguishing features: superolateral location (consistent), smooth corticated edges (no sharp fracture line), bilateral in approximately 50% of cases, and the patient often has no history of acute trauma. Fractures have sharp, irregular edges and correlate with the mechanism and point of tenderness.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>How much does total patellectomy reduce quadriceps strength and why?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Total patellectomy reduces quadriceps strength by approximately 30–50%. The patella functions as a sesamoid that anteriorly displaces the patellar tendon from the knee's center of rotation, increasing the lever arm of the quadriceps. Without the patella, the tendon lies closer to the joint's axis of rotation and generates less torque per unit of muscle force — particularly affecting terminal extension.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is a sleeve fracture of the patella and why is it commonly missed?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">A pediatric injury where the cartilaginous sleeve of the distal patellar pole is avulsed, carrying only a tiny osseous fragment. On X-ray, the bony fragment looks small and inconsequential — but it carries a large cartilaginous component. The key finding is patella alta (proximal retraction of the patella) with a small distal bony fragment. Missed diagnoses result in chronic extensor mechanism insufficiency.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the most common complication requiring reoperation after tension band wiring?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Hardware irritation — K-wire migration and prominence of the figure-of-8 wire beneath the thin anterior patellar skin. The wires can migrate proximally or distally and cause pain with kneeling, clothing friction, or scar irritation. Hardware removal at approximately 12 months after confirmed healing is commonly performed and provides reliable symptom relief.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const scrolled = el.scrollTop || document.body.scrollTop;
+    const total = el.scrollHeight - el.clientHeight;
+    document.getElementById('progbar').style.width = (scrolled / total * 100) + '%';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+  function toggleTx(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.tx-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const first = document.querySelector('.tx-card');
+    if (first) first.classList.add('open');
+  });
+  function togglePimp(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.pimp-q').forEach(q => q.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+  const sections = document.querySelectorAll('[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      else if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) link.classList.remove('active');
+    });
+  });
+</script>
+</body>
+</html>

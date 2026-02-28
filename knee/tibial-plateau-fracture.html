@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tibial Plateau Fracture — Knee — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628; --navy-mid: #122040; --navy-card: #0f1c35;
+    --blue: #1a3a6b; --accent: #2d7dd2; --accent-bright: #4fa3f7;
+    --gold: #c9a84c; --gold-light: #e8c97a; --cream: #f5f0e8;
+    --white: #ffffff; --text-muted: #7a8fa8; --text-mid: #94aec9;
+    --border: rgba(45,125,210,0.15);
+    --red: #e05c5c; --red-soft: rgba(224,92,92,0.12);
+    --green: #4caf86; --green-soft: rgba(76,175,134,0.12);
+    --yellow: #e8c97a; --yellow-soft: rgba(232,201,122,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2.5rem; display: flex; align-items: center; gap: 1rem; background: rgba(10,22,40,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-logo span { color: var(--gold); }
+  .nav-logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .nav-sep { color: var(--text-muted); font-size: 0.9rem; }
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--white); }
+  .breadcrumb .active { color: var(--accent-bright); font-weight: 500; }
+  .breadcrumb-arrow { font-size: 0.75rem; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; }
+  .sidebar { background: var(--navy-card); border-right: 1px solid var(--border); padding: 2.5rem 1.5rem; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; scrollbar-width: thin; }
+  .sidebar-section { margin-bottom: 2rem; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; }
+  .sidebar-nav li a { display: block; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: all 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a:hover { background: rgba(45,125,210,0.08); color: var(--white); border-left-color: var(--accent); }
+  .sidebar-nav li a.active { background: rgba(45,125,210,0.12); color: var(--accent-bright); border-left-color: var(--accent-bright); font-weight: 500; }
+  .sidebar-nav li a.sub { padding-left: 1.4rem; font-size: 0.8rem; }
+  .main { padding: 3rem 4rem; max-width: 900px; }
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); animation: fadeUp 0.6s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .page-phase { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(45,125,210,0.12); border: 1px solid rgba(45,125,210,0.25); border-radius: 100px; padding: 0.25rem 0.8rem; font-size: 0.72rem; font-weight: 600; color: var(--accent-bright); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; margin-bottom: 1rem; }
+  .page-region { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .page-def { color: var(--text-mid); font-size: 1rem; line-height: 1.7; max-width: 600px; border-left: 3px solid var(--accent); padding-left: 1rem; margin-top: 1.25rem; }
+  .meta-row { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .meta-tag { font-size: 0.78rem; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.4rem; }
+  .meta-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); }
+  .content-section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
+  h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.01em; }
+  .card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .card p { color: var(--text-mid); font-size: 0.92rem; line-height: 1.7; }
+  .alert { border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; font-size: 0.9rem; display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.6; }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .alert-red { background: var(--red-soft); border: 1px solid rgba(224,92,92,0.25); color: #f0a0a0; }
+  .alert-gold { background: var(--yellow-soft); border: 1px solid rgba(232,201,122,0.25); color: var(--gold-light); }
+  .alert-blue { background: rgba(45,125,210,0.1); border: 1px solid rgba(45,125,210,0.25); color: var(--accent-bright); }
+  .alert-green { background: var(--green-soft); border: 1px solid rgba(76,175,134,0.25); color: #7dd4b0; }
+  .bimodal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .bimodal-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.25s; }
+  .bimodal-card:hover { border-color: rgba(45,125,210,0.35); }
+  .bimodal-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .bimodal-card:first-child::after { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+  .bimodal-card:last-child::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .bimodal-type { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .bimodal-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+  .bimodal-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .table-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: rgba(45,125,210,0.1); }
+  thead th { padding: 0.85rem 1.25rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-bright); text-align: left; font-family: 'DM Mono', monospace; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  tbody td { padding: 0.85rem 1.25rem; font-size: 0.9rem; color: var(--text-mid); }
+  tbody td:first-child { color: var(--white); font-weight: 500; }
+  .deformity-tag { display: inline-block; background: rgba(224,92,92,0.12); border: 1px solid rgba(224,92,92,0.2); color: #f0a0a0; padding: 0.15rem 0.6rem; border-radius: 100px; font-size: 0.78rem; font-family: 'DM Mono', monospace; }
+  .ota-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .ota-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.25s; cursor: default; }
+  .ota-card:hover { transform: translateY(-3px); border-color: rgba(45,125,210,0.4); background: rgba(45,125,210,0.05); }
+  .ota-letter { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
+  .ota-card:nth-child(1) .ota-letter { color: var(--accent-bright); }
+  .ota-card:nth-child(2) .ota-letter { color: var(--gold); }
+  .ota-card:nth-child(3) .ota-letter { color: var(--red); }
+  .ota-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .ota-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .ota-hoffa { margin-top: 0.75rem; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.3); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.78rem; color: var(--gold-light); font-style: italic; }
+  .abi-bar { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .abi-track { position: relative; height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; margin: 1rem 0 0.5rem; }
+  .abi-fill-danger { position: absolute; left: 0; height: 100%; width: 30%; background: linear-gradient(90deg, var(--red), #e08a5c); border-radius: 100px; }
+  .abi-fill-safe { position: absolute; right: 0; height: 100%; width: 55%; background: linear-gradient(90deg, #6dcfaa, var(--green)); border-radius: 100px; }
+  .abi-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--text-muted); }
+  .abi-markers { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .abi-marker { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; }
+  .abi-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tx-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .tx-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.25s; }
+  .tx-card:hover { border-color: rgba(45,125,210,0.35); }
+  .tx-header { padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; user-select: none; }
+  .tx-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+  .tx-1 .tx-num { background: rgba(45,125,210,0.15); color: var(--accent-bright); }
+  .tx-2 .tx-num { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .tx-3 .tx-num { background: rgba(90,61,158,0.2); color: #b89ef0; }
+  .tx-title { font-weight: 700; font-size: 1rem; flex: 1; }
+  .tx-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .tx-chevron { color: var(--text-muted); font-size: 1.1rem; transition: transform 0.25s; }
+  .tx-card.open .tx-chevron { transform: rotate(180deg); }
+  .tx-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .tx-card.open .tx-body { display: block; }
+  .tx-section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 1rem 0 0.5rem; }
+  .tx-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .tx-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-mid); line-height: 1.5; }
+  .tx-list li::before { content: '→'; color: var(--accent-bright); flex-shrink: 0; font-size: 0.8rem; margin-top: 0.05rem; }
+  .tx-key-concept { margin-top: 1rem; background: rgba(45,125,210,0.08); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--accent-bright); line-height: 1.6; }
+  .comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .comp-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; transition: border-color 0.2s; }
+  .comp-card:hover { border-color: rgba(224,92,92,0.3); }
+  .comp-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+  .comp-badge { font-size: 0.65rem; font-weight: 600; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.1rem 0.45rem; border-radius: 100px; }
+  .comp-badge.common { background: var(--red-soft); color: #f0a0a0; border: 1px solid rgba(224,92,92,0.2); }
+  .comp-badge.early { background: rgba(232,201,122,0.1); color: var(--gold-light); border: 1px solid rgba(232,201,122,0.2); }
+  .comp-detail { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+  .pimp-section { background: linear-gradient(135deg, rgba(45,125,210,0.06), rgba(201,168,76,0.04)); border: 1px solid rgba(45,125,210,0.2); border-radius: 14px; padding: 2rem; }
+  .pimp-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .pimp-q-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pimp-q { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer; transition: border-color 0.2s; }
+  .pimp-q:hover { border-color: rgba(45,125,210,0.35); }
+  .pimp-q-text { font-size: 0.9rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .pimp-reveal { color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0; }
+  .pimp-q.active .pimp-reveal { color: var(--accent-bright); }
+  .pimp-answer { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.87rem; color: var(--text-mid); line-height: 1.65; }
+  .pimp-q.active .pimp-answer { display: block; }
+  .progress-bar { position: fixed; top: 60px; left: 0; right: 0; height: 2px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.1s linear; }
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 2.5rem 0; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 2rem 1.5rem; } .bimodal-grid, .ota-grid, .comp-grid { grid-template-columns: 1fr; } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  [id] { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>
+    Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb">
+    <a href="../phase-2.html">Phase 2</a>
+    <span class="breadcrumb-arrow">›</span>
+    <a href="knee.html">Knee</a>
+    <span class="breadcrumb-arrow">›</span>
+    <span class="active">Tibial Plateau Fracture</span>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">On This Page</div>
+      <ul class="sidebar-nav">
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#epidemiology">Epidemiology</a></li>
+        <li><a href="#anatomy">Anatomy & Deforming Forces</a></li>
+        <li><a href="#classification">Schatzker Classification</a></li>
+        <li><a href="#presentation">Presentation</a></li>
+        <li><a href="#imaging">Imaging</a></li>
+        <li><a href="#treatment">Treatment</a></li>
+        <li><a href="#complications">Complications</a></li>
+        <li><a href="#pimp">Pocket Pimped ❓</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Knee Topics</div>
+      <ul class="sidebar-nav">
+        <li><a href="distal-femur-fractures.html" class="sub">★ Distal Femur Fractures</a></li>
+        <li><a href="tibial-plateau-fracture.html" class="sub active">01. Tibial Plateau Fracture</a></li>
+        <li><a href="patella-fracture.html" class="sub">02. Patella Fracture</a></li>
+        <li><a href="knee-dislocation.html" class="sub">03. Knee Dislocation</a></li>
+        <li><a href="acl-tear.html" class="sub">04. ACL Tear</a></li>
+        <li><a href="pcl-injury.html" class="sub">05. PCL Injury</a></li>
+        <li><a href="mcl-lcl-injuries.html" class="sub">06. MCL & LCL Injuries</a></li>
+        <li><a href="posterolateral-corner.html" class="sub">07. Posterolateral Corner Injury</a></li>
+        <li><a href="meniscal-tears.html" class="sub">08. Meniscal Tears</a></li>
+        <li><a href="osteochondritis-dissecans.html" class="sub">09. Osteochondritis Dissecans</a></li>
+        <li><a href="patellar-tendon-rupture.html" class="sub">10. Patellar Tendon Rupture</a></li>
+        <li><a href="quadriceps-tendon-rupture.html" class="sub">11. Quadriceps Tendon Rupture</a></li>
+        <li><a href="patellar-tendinitis.html" class="sub">12. Patellar Tendinitis</a></li>
+        <li><a href="osgood-schlatter.html" class="sub">13. Osgood-Schlatter Disease</a></li>
+        <li><a href="knee-osteoarthritis.html" class="sub">14. Knee Osteoarthritis</a></li>
+        <li><a href="total-knee-arthroplasty.html" class="sub">15. Total Knee Arthroplasty</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 2 Regions</div>
+      <ul class="sidebar-nav">
+        <li><a href="../spine/spine.html">Spine</a></li>
+        <li><a href="../shoulder-elbow/shoulder-elbow.html">Shoulder &amp; Elbow</a></li>
+        <li><a href="../hand-wrist/hand-wrist.html">Hand &amp; Wrist</a></li>
+        <li><a href="../pelvis-hip/pelvis-hip.html">Pelvis &amp; Hip</a></li>
+        <li><a href="knee.html" class="active">Knee</a></li>
+        <li><a href="../foot-ankle/foot-ankle.html">Foot &amp; Ankle</a></li>
+        <li><a href="../pediatric/pediatric.html">Pediatric Ortho</a></li>
+        <li><a href="../tumor/tumor.html">Tumor</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Member Pages</div>
+      <ul class="sidebar-nav">
+        <li><a href="../curriculum.html">Curriculum</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../community.html">Community</a></li>
+        <li><a href="../coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header" id="definition">
+      <div class="page-phase">Phase 2 — Clinical Orthopaedics</div>
+      <div class="page-region">Region 05 · Knee</div>
+      <h1>Tibial Plateau Fracture</h1>
+      <div class="page-def">
+        Intra-articular fractures involving one or both condyles of the proximal tibia. Tibial plateau fractures compromise knee stability, alignment, and articular congruity — all of which must be restored for a good outcome.
+      </div>
+      <div class="meta-row">
+        <span class="meta-tag">Schatzker Classification</span>
+        <span class="meta-tag">Axial + Valgus Force</span>
+        <span class="meta-tag">Compartment Syndrome Risk</span>
+      </div>
+    </div>
+
+    <div class="alert alert-gold reveal">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Key concept:</strong> Lateral plateau = valgus + axial load (most common). Medial plateau = high energy only. Always rule out compartment syndrome, popliteal artery injury, and peroneal nerve injury.</div>
+    </div>
+
+    <!-- EPIDEMIOLOGY -->
+    <div class="content-section reveal" id="epidemiology">
+      <div class="section-header"><span class="section-num">01</span><h2>Epidemiology</h2></div>
+      <div class="bimodal-grid">
+        <div class="bimodal-card">
+          <div class="bimodal-type">Population 1</div>
+          <div class="bimodal-label">Young Males — High Energy</div>
+          <div class="bimodal-detail">MVA, pedestrian vs. vehicle, fall from height. Bicondylar and comminuted patterns. Associated ligamentous and neurovascular injuries are common.</div>
+        </div>
+        <div class="bimodal-card">
+          <div class="bimodal-type">Population 2</div>
+          <div class="bimodal-label">Elderly Females — Low Energy</div>
+          <div class="bimodal-detail">Fall from standing with axial and valgus force. Lateral plateau depression on osteoporotic bone. Schatzker I–III most common in this group.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ANATOMY -->
+    <div class="content-section reveal" id="anatomy">
+      <div class="section-header"><span class="section-num">02</span><h2>Anatomy &amp; Deforming Forces</h2></div>
+      <div class="card">
+        <p><strong style="color:var(--white);">Lateral plateau</strong> is convex and weaker — fractured more often. <strong style="color:var(--white);">Medial plateau</strong> is concave and stronger — fracture implies high-energy injury. The posterior tibial slope (~10°) must be restored to maintain normal knee kinematics.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Force Vector</th><th>Resulting Deformity</th><th>Typical Pattern</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Axial + Valgus</td><td><span class="deformity-tag">Lateral Depression / Split</span></td><td>Schatzker I–III</td></tr>
+            <tr><td>Pure Axial (High Energy)</td><td><span class="deformity-tag">Bicondylar Split</span></td><td>Schatzker V–VI</td></tr>
+            <tr><td>Varus (Very High Energy)</td><td><span class="deformity-tag">Medial Plateau Fracture</span></td><td>Schatzker IV</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-red" style="margin-top:0.75rem;">
+        <span class="alert-icon">🚨</span>
+        <div><strong>Schatzker IV (medial plateau):</strong> High rate of popliteal artery injury and common peroneal nerve injury. Check ABI and dorsiflexion strength on every patient.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- CLASSIFICATION -->
+    <div class="content-section reveal" id="classification">
+      <div class="section-header"><span class="section-num">03</span><h2>Schatzker Classification — Know This Cold</h2></div>
+      <div class="ota-grid">
+        <div class="ota-card">
+          <div class="ota-letter">I</div>
+          <div class="ota-label">Lateral Split</div>
+          <div class="ota-desc">Pure split of lateral plateau. Good bone, young patient. No depression.</div>
+        </div>
+        <div class="ota-card">
+          <div class="ota-letter">II</div>
+          <div class="ota-label">Split-Depression</div>
+          <div class="ota-desc">Lateral split with central depression. Most common overall pattern.</div>
+        </div>
+        <div class="ota-card">
+          <div class="ota-letter">III</div>
+          <div class="ota-label">Pure Depression</div>
+          <div class="ota-desc">Central depression only, no peripheral split. Elderly, osteoporotic bone.</div>
+        </div>
+      </div>
+      <div class="ota-grid" style="margin-top:1rem;">
+        <div class="ota-card">
+          <div class="ota-letter" style="color:var(--red);">IV</div>
+          <div class="ota-label">Medial Plateau</div>
+          <div class="ota-desc">High energy. Popliteal artery and peroneal nerve at risk.</div>
+          <div class="ota-hoffa">Vascular exam is mandatory with every Schatzker IV.</div>
+        </div>
+        <div class="ota-card">
+          <div class="ota-letter" style="color:var(--red);">V</div>
+          <div class="ota-label">Bicondylar</div>
+          <div class="ota-desc">Both plateaus fractured, metaphysis still attached to diaphysis.</div>
+        </div>
+        <div class="ota-card">
+          <div class="ota-letter" style="color:var(--red);">VI</div>
+          <div class="ota-label">Bicondylar + Dissociation</div>
+          <div class="ota-desc">Articular block fully separated from diaphysis. Highest energy, worst soft tissue injury.</div>
+        </div>
+      </div>
+      <div class="alert alert-gold" style="margin-top:1rem;">
+        <span class="alert-icon">💡</span>
+        <div>Operative threshold: <strong>&gt;3 mm articular depression</strong> or <strong>&gt;5 mm condylar widening</strong> in most patients. Lower threshold in young, active patients.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- PRESENTATION -->
+    <div class="content-section reveal" id="presentation">
+      <div class="section-header"><span class="section-num">04</span><h2>Presentation &amp; Must-Not-Miss</h2></div>
+      <div class="card">
+        <p>Painful, swollen knee following mechanism. Hemarthrosis is classic. Inability to weight bear. <strong style="color:var(--white);">Always examine all four compartments of the leg</strong> — anterior compartment syndrome is a real risk with high-energy bicondylar fractures.</p>
+      </div>
+      <div class="alert alert-red">
+        <span class="alert-icon">🚨</span>
+        <div>
+          <strong>Must not miss:</strong><br>
+          • Compartment syndrome — 5 Ps (pain, pressure, paresthesia, paralysis, pallor)<br>
+          • Popliteal artery injury — check ABI bilaterally; ABI &lt;0.9 → CTA/angiography<br>
+          • Common peroneal nerve — dorsiflexion and first web space sensation
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- IMAGING -->
+    <div class="content-section reveal" id="imaging">
+      <div class="section-header"><span class="section-num">05</span><h2>Imaging</h2></div>
+      <div class="card">
+        <p><strong style="color:var(--white);">X-rays:</strong> AP + lateral of the knee. Obtain full-length tibia films to rule out ipsilateral shaft fracture. Look for a lipohemarthrosis on the lateral view — fat-fluid level in the suprapatellar pouch confirms intra-articular fracture.</p>
+      </div>
+      <div class="alert alert-gold">
+        <span class="alert-icon">🩻</span>
+        <div><strong>CT scan is mandatory</strong> for all tibial plateau fractures. Defines degree of depression, condylar split, and comminution. Essential for operative planning — you cannot adequately plan without it.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- TREATMENT -->
+    <div class="content-section reveal" id="treatment">
+      <div class="section-header"><span class="section-num">06</span><h2>Treatment</h2></div>
+      <div class="alert alert-blue" style="margin-bottom:1.25rem;">
+        <span class="alert-icon">📌</span>
+        <div><strong>Staged approach for high-energy bicondylar fractures:</strong> Spanning external fixator acutely → ORIF once soft tissue swelling resolves (wrinkle sign returns, typically 7–14 days).</div>
+      </div>
+      <div class="tx-grid">
+        <div class="tx-card tx-1" id="tx1">
+          <div class="tx-header" onclick="toggleTx('tx1')">
+            <div class="tx-num">01</div>
+            <div>
+              <div class="tx-title">ORIF — Lateral Buttress Plate</div>
+              <div class="tx-subtitle">Schatzker I–IV with displacement</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Technique</div>
+            <ul class="tx-list">
+              <li>Elevate depressed fragment through a cortical window</li>
+              <li>Bone graft or substitute to fill the void — it will not heal otherwise</li>
+              <li>Lateral buttress plate for lateral patterns; medial plate for Schatzker IV</li>
+            </ul>
+            <div class="tx-key-concept">Restore the articular surface first. The subchondral void after elevation must be filled or the reduction will collapse.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-2" id="tx2">
+          <div class="tx-header" onclick="toggleTx('tx2')">
+            <div class="tx-num">02</div>
+            <div>
+              <div class="tx-title">Dual Plating (Medial + Lateral)</div>
+              <div class="tx-subtitle">Schatzker V–VI bicondylar patterns</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Approach</div>
+            <ul class="tx-list">
+              <li>Staged: spanning ex-fix acutely → definitive fixation at 7–14 days</li>
+              <li>Dual incisions — lateral and posteromedial</li>
+              <li>The posteromedial fragment must be directly addressed — it cannot be captured through a lateral approach alone</li>
+            </ul>
+            <div class="tx-key-concept">The posteromedial fragment is the keystone. Neglecting it leads to varus collapse and construct failure.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-3" id="tx3">
+          <div class="tx-header" onclick="toggleTx('tx3')">
+            <div class="tx-num">03</div>
+            <div>
+              <div class="tx-title">Nonoperative</div>
+              <div class="tx-subtitle">Nondisplaced fractures or non-ambulatory patients</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Indications</div>
+            <ul class="tx-list">
+              <li>&lt;3 mm depression, no condylar widening, stable to valgus/varus stress</li>
+              <li>Non-ambulatory or prohibitive surgical risk</li>
+            </ul>
+            <div class="tx-key-concept">Hinged knee brace + non-weight bearing 6–12 weeks. Requires close radiographic follow-up to monitor for displacement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- COMPLICATIONS -->
+    <div class="content-section reveal" id="complications">
+      <div class="section-header"><span class="section-num">07</span><h2>Complications</h2></div>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <div class="comp-name">Knee Stiffness <span class="comp-badge common">Most Common</span></div>
+          <div class="comp-detail">Related to prolonged immobilization and soft tissue trauma. Early ROM is critical after fixation.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Post-Traumatic Arthritis</div>
+          <div class="comp-detail">Direct result of articular cartilage injury at the time of fracture. Risk increases with depression &gt;3 mm or malreduction.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Compartment Syndrome <span class="comp-badge early">Early</span></div>
+          <div class="comp-detail">Anterior compartment most commonly affected. High-energy bicondylar fractures at highest risk. Emergent four-compartment fasciotomy required.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Vascular Injury <span class="comp-badge early">Early</span></div>
+          <div class="comp-detail">Popliteal artery most at risk with Schatzker IV (medial plateau). ABI &lt;0.9 → emergent angiography.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Wound Complications</div>
+          <div class="comp-detail">Staged approach dramatically reduces wound breakdown risk in bicondylar fractures with poor soft tissue envelopes.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Malunion / Varus Collapse</div>
+          <div class="comp-detail">Failure to address the posteromedial fragment in Schatzker V/VI is the most common cause of late varus deformity.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- POCKET PIMPED -->
+    <div class="content-section reveal" id="pimp">
+      <div class="section-header"><span class="section-num">08</span><h2>Pocket Pimped</h2></div>
+      <div class="pimp-section">
+        <div class="pimp-title">❓ Attending-Level Questions</div>
+        <div class="pimp-q-list">
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the operative threshold for articular depression in a tibial plateau fracture?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Generally &gt;3 mm of articular depression or &gt;5 mm of condylar widening — but threshold is lower in young, active patients where any malalignment accelerates post-traumatic arthritis. Always factor in patient age, activity level, and bone quality.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Why do you stage high-energy bicondylar tibial plateau fractures rather than fix them acutely?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Significant soft tissue swelling with fracture blisters makes early definitive ORIF high-risk for wound complications and deep infection. A spanning external fixator restores length and alignment while the soft tissue envelope recovers. Definitive ORIF is performed at 7–14 days once the "wrinkle sign" returns — indicating soft tissue edema has resolved sufficiently.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Where is the posteromedial fragment and why does it matter so much in Schatzker V/VI?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The posteromedial fragment is the posterior and medial portion of the tibial plateau. It cannot be visualized or fixed through a standard lateral approach. If not addressed with a separate posteromedial incision and plate, the construct will fail in varus — the most common cause of malunion in bicondylar tibial plateau fractures.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is a lipohemarthrosis and what does it tell you on X-ray?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">A fat-fluid level in the suprapatellar pouch seen on a cross-table lateral X-ray. Fat from ruptured marrow rises above the blood layer, creating a horizontal interface. Its presence confirms an intra-articular fracture even when the fracture line is subtle — mandating CT imaging.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What nerve is at risk with a Schatzker IV medial plateau fracture and what is your exam?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The common peroneal nerve wraps around the fibular neck and is at risk with high-energy medial plateau and knee dislocation patterns. Examine motor function (ankle dorsiflexion — EHL, tibialis anterior) and sensation (first dorsal web space). Document this on every patient before and after reduction.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>You fill the void beneath an elevated plateau fragment with bone graft — why is this mandatory?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">After elevating a depressed fragment, a subchondral void remains. This void will not fill with bone — it will collapse under weight bearing, re-depressing the articular surface. Bone graft or substitute (calcium phosphate, bone marrow aspirate + allograft) provides structural support to maintain reduction until healing occurs.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const scrolled = el.scrollTop || document.body.scrollTop;
+    const total = el.scrollHeight - el.clientHeight;
+    document.getElementById('progbar').style.width = (scrolled / total * 100) + '%';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+  function toggleTx(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.tx-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const first = document.querySelector('.tx-card');
+    if (first) first.classList.add('open');
+  });
+  function togglePimp(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.pimp-q').forEach(q => q.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+  const sections = document.querySelectorAll('[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      else if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) link.classList.remove('active');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knee Dislocation — Knee — OrthoBlueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628; --navy-mid: #122040; --navy-card: #0f1c35;
+    --blue: #1a3a6b; --accent: #2d7dd2; --accent-bright: #4fa3f7;
+    --gold: #c9a84c; --gold-light: #e8c97a; --cream: #f5f0e8;
+    --white: #ffffff; --text-muted: #7a8fa8; --text-mid: #94aec9;
+    --border: rgba(45,125,210,0.15);
+    --red: #e05c5c; --red-soft: rgba(224,92,92,0.12);
+    --green: #4caf86; --green-soft: rgba(76,175,134,0.12);
+    --yellow: #e8c97a; --yellow-soft: rgba(232,201,122,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); line-height: 1.6; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2.5rem; display: flex; align-items: center; gap: 1rem; background: rgba(10,22,40,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .nav-logo span { color: var(--gold); }
+  .nav-logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .nav-sep { color: var(--text-muted); font-size: 0.9rem; }
+  .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--white); }
+  .breadcrumb .active { color: var(--accent-bright); font-weight: 500; }
+  .breadcrumb-arrow { font-size: 0.75rem; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; padding-top: 60px; }
+  .sidebar { background: var(--navy-card); border-right: 1px solid var(--border); padding: 2.5rem 1.5rem; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; scrollbar-width: thin; }
+  .sidebar-section { margin-bottom: 2rem; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; }
+  .sidebar-nav li a { display: block; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: all 0.2s; border-left: 2px solid transparent; }
+  .sidebar-nav li a:hover { background: rgba(45,125,210,0.08); color: var(--white); border-left-color: var(--accent); }
+  .sidebar-nav li a.active { background: rgba(45,125,210,0.12); color: var(--accent-bright); border-left-color: var(--accent-bright); font-weight: 500; }
+  .sidebar-nav li a.sub { padding-left: 1.4rem; font-size: 0.8rem; }
+  .main { padding: 3rem 4rem; max-width: 900px; }
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); animation: fadeUp 0.6s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .page-phase { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(45,125,210,0.12); border: 1px solid rgba(45,125,210,0.25); border-radius: 100px; padding: 0.25rem 0.8rem; font-size: 0.72rem; font-weight: 600; color: var(--accent-bright); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; margin-bottom: 1rem; }
+  .page-region { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'DM Mono', monospace; }
+  h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .page-def { color: var(--text-mid); font-size: 1rem; line-height: 1.7; max-width: 600px; border-left: 3px solid var(--accent); padding-left: 1rem; margin-top: 1.25rem; }
+  .meta-row { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .meta-tag { font-size: 0.78rem; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 0.4rem; }
+  .meta-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-bright); }
+  .content-section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); padding: 0.2rem 0.5rem; border-radius: 4px; }
+  h2 { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; letter-spacing: -0.01em; }
+  .card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .card p { color: var(--text-mid); font-size: 0.92rem; line-height: 1.7; }
+  .alert { border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; font-size: 0.9rem; display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.6; }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .alert-red { background: var(--red-soft); border: 1px solid rgba(224,92,92,0.25); color: #f0a0a0; }
+  .alert-gold { background: var(--yellow-soft); border: 1px solid rgba(232,201,122,0.25); color: var(--gold-light); }
+  .alert-blue { background: rgba(45,125,210,0.1); border: 1px solid rgba(45,125,210,0.25); color: var(--accent-bright); }
+  .alert-green { background: var(--green-soft); border: 1px solid rgba(76,175,134,0.25); color: #7dd4b0; }
+  .bimodal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .bimodal-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.25s; }
+  .bimodal-card:hover { border-color: rgba(45,125,210,0.35); }
+  .bimodal-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .bimodal-card:first-child::after { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
+  .bimodal-card:last-child::after { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+  .bimodal-type { font-family: 'DM Mono', monospace; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .bimodal-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; }
+  .bimodal-detail { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+  .table-wrap { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: rgba(45,125,210,0.1); }
+  thead th { padding: 0.85rem 1.25rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-bright); text-align: left; font-family: 'DM Mono', monospace; }
+  tbody tr { border-top: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:hover { background: rgba(255,255,255,0.025); }
+  tbody td { padding: 0.85rem 1.25rem; font-size: 0.9rem; color: var(--text-mid); }
+  tbody td:first-child { color: var(--white); font-weight: 500; }
+  .deformity-tag { display: inline-block; background: rgba(224,92,92,0.12); border: 1px solid rgba(224,92,92,0.2); color: #f0a0a0; padding: 0.15rem 0.6rem; border-radius: 100px; font-size: 0.78rem; font-family: 'DM Mono', monospace; }
+  .ota-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .ota-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.25s; cursor: default; }
+  .ota-card:hover { transform: translateY(-3px); border-color: rgba(45,125,210,0.4); background: rgba(45,125,210,0.05); }
+  .ota-letter { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
+  .ota-card:nth-child(1) .ota-letter { color: var(--accent-bright); }
+  .ota-card:nth-child(2) .ota-letter { color: var(--gold); }
+  .ota-card:nth-child(3) .ota-letter { color: var(--red); }
+  .ota-label { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .ota-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+  .ota-hoffa { margin-top: 0.75rem; background: rgba(201,168,76,0.08); border: 1px dashed rgba(201,168,76,0.3); border-radius: 8px; padding: 0.6rem 0.75rem; font-size: 0.78rem; color: var(--gold-light); font-style: italic; }
+  .abi-bar { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+  .abi-track { position: relative; height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; margin: 1rem 0 0.5rem; }
+  .abi-fill-danger { position: absolute; left: 0; height: 100%; width: 30%; background: linear-gradient(90deg, var(--red), #e08a5c); border-radius: 100px; }
+  .abi-fill-safe { position: absolute; right: 0; height: 100%; width: 55%; background: linear-gradient(90deg, #6dcfaa, var(--green)); border-radius: 100px; }
+  .abi-labels { display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--text-muted); }
+  .abi-markers { display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .abi-marker { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; }
+  .abi-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .tx-grid { display: flex; flex-direction: column; gap: 1rem; }
+  .tx-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: border-color 0.25s; }
+  .tx-card:hover { border-color: rgba(45,125,210,0.35); }
+  .tx-header { padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; user-select: none; }
+  .tx-num { width: 32px; height: 32px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; font-family: 'DM Mono', monospace; }
+  .tx-1 .tx-num { background: rgba(45,125,210,0.15); color: var(--accent-bright); }
+  .tx-2 .tx-num { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .tx-3 .tx-num { background: rgba(90,61,158,0.2); color: #b89ef0; }
+  .tx-title { font-weight: 700; font-size: 1rem; flex: 1; }
+  .tx-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .tx-chevron { color: var(--text-muted); font-size: 1.1rem; transition: transform 0.25s; }
+  .tx-card.open .tx-chevron { transform: rotate(180deg); }
+  .tx-body { display: none; padding: 0 1.5rem 1.5rem; border-top: 1px solid var(--border); }
+  .tx-card.open .tx-body { display: block; }
+  .tx-section-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 1rem 0 0.5rem; }
+  .tx-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .tx-list li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.88rem; color: var(--text-mid); line-height: 1.5; }
+  .tx-list li::before { content: '→'; color: var(--accent-bright); flex-shrink: 0; font-size: 0.8rem; margin-top: 0.05rem; }
+  .tx-key-concept { margin-top: 1rem; background: rgba(45,125,210,0.08); border-left: 3px solid var(--accent); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--accent-bright); line-height: 1.6; }
+  .comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .comp-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; transition: border-color 0.2s; }
+  .comp-card:hover { border-color: rgba(224,92,92,0.3); }
+  .comp-name { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; flex-wrap: wrap; }
+  .comp-badge { font-size: 0.65rem; font-weight: 600; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.1rem 0.45rem; border-radius: 100px; }
+  .comp-badge.common { background: var(--red-soft); color: #f0a0a0; border: 1px solid rgba(224,92,92,0.2); }
+  .comp-badge.early { background: rgba(232,201,122,0.1); color: var(--gold-light); border: 1px solid rgba(232,201,122,0.2); }
+  .comp-detail { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+  .pimp-section { background: linear-gradient(135deg, rgba(45,125,210,0.06), rgba(201,168,76,0.04)); border: 1px solid rgba(45,125,210,0.2); border-radius: 14px; padding: 2rem; }
+  .pimp-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .pimp-q-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .pimp-q { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; cursor: pointer; transition: border-color 0.2s; }
+  .pimp-q:hover { border-color: rgba(45,125,210,0.35); }
+  .pimp-q-text { font-size: 0.9rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .pimp-reveal { color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0; }
+  .pimp-q.active .pimp-reveal { color: var(--accent-bright); }
+  .pimp-answer { display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.87rem; color: var(--text-mid); line-height: 1.65; }
+  .pimp-q.active .pimp-answer { display: block; }
+  .progress-bar { position: fixed; top: 60px; left: 0; right: 0; height: 2px; z-index: 99; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.1s linear; }
+  .section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 2.5rem 0; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 2rem 1.5rem; } .bimodal-grid, .ota-grid, .comp-grid { grid-template-columns: 1fr; } }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  [id] { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progbar"></div></div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">
+    <div class="nav-logo-icon">🦴</div>
+    Ortho<span>Blueprint</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <div class="breadcrumb">
+    <a href="../phase-2.html">Phase 2</a>
+    <span class="breadcrumb-arrow">›</span>
+    <a href="knee.html">Knee</a>
+    <span class="breadcrumb-arrow">›</span>
+    <span class="active">Knee Dislocation</span>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">On This Page</div>
+      <ul class="sidebar-nav">
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#epidemiology">Epidemiology & Mechanism</a></li>
+        <li><a href="#anatomy">Anatomy — Why Vascular Injury</a></li>
+        <li><a href="#classification">Classification</a></li>
+        <li><a href="#presentation">Presentation & Vascular Exam</a></li>
+        <li><a href="#imaging">Imaging</a></li>
+        <li><a href="#treatment">Treatment</a></li>
+        <li><a href="#complications">Complications</a></li>
+        <li><a href="#pimp">Pocket Pimped ❓</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Knee Topics</div>
+      <ul class="sidebar-nav">
+        <li><a href="distal-femur-fractures.html" class="sub">★ Distal Femur Fractures</a></li>
+        <li><a href="tibial-plateau-fracture.html" class="sub">01. Tibial Plateau Fracture</a></li>
+        <li><a href="patella-fracture.html" class="sub">02. Patella Fracture</a></li>
+        <li><a href="knee-dislocation.html" class="sub active">03. Knee Dislocation</a></li>
+        <li><a href="acl-tear.html" class="sub">04. ACL Tear</a></li>
+        <li><a href="pcl-injury.html" class="sub">05. PCL Injury</a></li>
+        <li><a href="mcl-lcl-injuries.html" class="sub">06. MCL & LCL Injuries</a></li>
+        <li><a href="posterolateral-corner.html" class="sub">07. Posterolateral Corner Injury</a></li>
+        <li><a href="meniscal-tears.html" class="sub">08. Meniscal Tears</a></li>
+        <li><a href="osteochondritis-dissecans.html" class="sub">09. Osteochondritis Dissecans</a></li>
+        <li><a href="patellar-tendon-rupture.html" class="sub">10. Patellar Tendon Rupture</a></li>
+        <li><a href="quadriceps-tendon-rupture.html" class="sub">11. Quadriceps Tendon Rupture</a></li>
+        <li><a href="patellar-tendinitis.html" class="sub">12. Patellar Tendinitis</a></li>
+        <li><a href="osgood-schlatter.html" class="sub">13. Osgood-Schlatter Disease</a></li>
+        <li><a href="knee-osteoarthritis.html" class="sub">14. Knee Osteoarthritis</a></li>
+        <li><a href="total-knee-arthroplasty.html" class="sub">15. Total Knee Arthroplasty</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Phase 2 Regions</div>
+      <ul class="sidebar-nav">
+        <li><a href="../spine/spine.html">Spine</a></li>
+        <li><a href="../shoulder-elbow/shoulder-elbow.html">Shoulder &amp; Elbow</a></li>
+        <li><a href="../hand-wrist/hand-wrist.html">Hand &amp; Wrist</a></li>
+        <li><a href="../pelvis-hip/pelvis-hip.html">Pelvis &amp; Hip</a></li>
+        <li><a href="knee.html" class="active">Knee</a></li>
+        <li><a href="../foot-ankle/foot-ankle.html">Foot &amp; Ankle</a></li>
+        <li><a href="../pediatric/pediatric.html">Pediatric Ortho</a></li>
+        <li><a href="../tumor/tumor.html">Tumor</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Member Pages</div>
+      <ul class="sidebar-nav">
+        <li><a href="../curriculum.html">Curriculum</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../community.html">Community</a></li>
+        <li><a href="../coaching.html">Coaching</a></li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main">
+
+    <div class="page-header" id="definition">
+      <div class="page-phase">Phase 2 — Clinical Orthopaedics</div>
+      <div class="page-region">Region 05 · Knee</div>
+      <h1>Knee Dislocation</h1>
+      <div class="page-def">
+        Complete disruption of the tibiofemoral articulation requiring injury to at least two major ligamentous complexes. A limb-threatening injury — the popliteal artery is tethered and cannot escape. Up to 50% reduce spontaneously before presentation.
+      </div>
+      <div class="meta-row">
+        <span class="meta-tag">Vascular Emergency</span>
+        <span class="meta-tag">Multi-Ligament Injury</span>
+        <span class="meta-tag">ABI on Every Patient</span>
+      </div>
+    </div>
+
+    <div class="alert alert-red reveal">
+      <span class="alert-icon">🚨</span>
+      <div><strong>This is a vascular emergency until proven otherwise.</strong> The popliteal artery is tethered at the adductor hiatus proximally and the anterior tibial takeoff distally — it cannot escape. Obtain bilateral ABI on every patient. ABI &lt;0.9 → emergent CTA or angiography.</div>
+    </div>
+
+    <div class="content-section reveal" id="epidemiology">
+      <div class="section-header"><span class="section-num">01</span><h2>Epidemiology &amp; Mechanism</h2></div>
+      <div class="bimodal-grid">
+        <div class="bimodal-card">
+          <div class="bimodal-type">High Energy</div>
+          <div class="bimodal-label">MVA / Contact Sports</div>
+          <div class="bimodal-detail">Motor vehicle accidents, dashboard injuries, high-energy contact. Both cruciate ligaments typically disrupted. Full deformity often visible on arrival.</div>
+        </div>
+        <div class="bimodal-card">
+          <div class="bimodal-type">Low Energy (Ultra-Low)</div>
+          <div class="bimodal-label">Morbidly Obese Patients</div>
+          <div class="bimodal-detail">BMI &gt;40. Simple fall or misstep. Popliteal artery injury equally likely despite trivial mechanism. Do not underestimate these patients — they are a distinct, high-risk population.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="anatomy">
+      <div class="section-header"><span class="section-num">02</span><h2>Anatomy — Why Vascular Injury is Unavoidable</h2></div>
+      <div class="card">
+        <p>The popliteal artery is uniquely vulnerable because it is tethered at two points: <strong style="color:var(--accent-bright);">proximally</strong> where it passes through the adductor hiatus, and <strong style="color:var(--accent-bright);">distally</strong> where it divides into the anterior tibial artery and tibioperoneal trunk. Unlike the brachial artery in elbow dislocations, the popliteal artery cannot slip away from the deforming force — it stretches, tears, or sustains an intimal injury.</p>
+      </div>
+      <div class="alert alert-gold">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Intimal tear pearl:</strong> An intimal tear can initially present with a palpable pulse and normal ABI — yet progress to thrombosis and ischemia over hours. Serial vascular exams are mandatory for 24 hours after reduction.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="classification">
+      <div class="section-header"><span class="section-num">03</span><h2>Classification</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Direction</th><th>Frequency</th><th>Key Association</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Anterior</td><td>Most common (~40%)</td><td>Hyperextension. Highest popliteal artery injury rate.</td></tr>
+            <tr><td>Posterior</td><td>2nd most common (~33%)</td><td>Dashboard injury — direct posterior tibial force.</td></tr>
+            <tr><td>Lateral</td><td>Less common</td><td>Peroneal nerve at high risk. PLC injury.</td></tr>
+            <tr><td>Medial</td><td>Less common</td><td>MCL and posteromedial capsule disruption.</td></tr>
+            <tr><td>Rotatory (Posterolateral)</td><td>Least common</td><td>Irreducible — medial femoral condyle buttonholes through capsule. Dimple sign.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-gold" style="margin-top:0.75rem;">
+        <span class="alert-icon">💡</span>
+        <div><strong>Schenck KD Classification:</strong> KD-I (one cruciate intact) → KD-V (fracture-dislocation). More useful for surgical planning. KD-III must specify MCL (KD-IIIM) or PLC (KD-IIIL) involvement.</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="presentation">
+      <div class="section-header"><span class="section-num">04</span><h2>Presentation &amp; Vascular Exam</h2></div>
+      <div class="card">
+        <p>Obvious deformity if not yet reduced. Massive hemarthrosis. <strong style="color:var(--white);">Up to 50% reduce spontaneously before ED arrival</strong> — a grossly unstable knee with multi-ligamentous laxity after an appropriate mechanism is a dislocation until proven otherwise. Never dismiss gross multiplanar laxity.</p>
+      </div>
+      <div class="abi-bar">
+        <div style="font-weight:600;font-size:0.9rem;margin-bottom:0.25rem;">Ankle-Brachial Index (ABI) Interpretation</div>
+        <div class="abi-track">
+          <div class="abi-fill-danger"></div>
+          <div class="abi-fill-safe"></div>
+        </div>
+        <div class="abi-labels"><span>0</span><span>0.9</span><span>1.2+</span></div>
+        <div class="abi-markers">
+          <div class="abi-marker">
+            <div class="abi-dot" style="background:var(--red);"></div>
+            <span style="font-size:0.82rem;color:#f0a0a0;"><strong>&lt;0.9</strong> → Emergent CTA or angiography</span>
+          </div>
+          <div class="abi-marker">
+            <div class="abi-dot" style="background:var(--green);"></div>
+            <span style="font-size:0.82rem;color:#7dd4b0;"><strong>≥0.9</strong> → Serial exams × 24 hours</span>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-red">
+        <span class="alert-icon">🚨</span>
+        <div>
+          <strong>Hard signs of ischemia → OR immediately, skip CTA:</strong><br>
+          Absent distal pulse · Expanding hematoma · Bruit over popliteal fossa · Pallor / mottling · Paralysis / paresthesias distal to knee
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="imaging">
+      <div class="section-header"><span class="section-num">05</span><h2>Imaging</h2></div>
+      <div class="card">
+        <p><strong style="color:var(--white);">X-rays:</strong> AP + lateral to confirm reduction and identify associated fractures (Segond fracture, fibular head avulsion = PLC injury). <strong style="color:var(--white);">MRI:</strong> After vascular clearance and stable reduction — defines all ligamentous injuries for surgical planning. <strong style="color:var(--white);">CTA:</strong> For ABI &lt;0.9 or equivocal exam.</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="treatment">
+      <div class="section-header"><span class="section-num">06</span><h2>Treatment</h2></div>
+      <div class="tx-grid">
+        <div class="tx-card tx-1" id="tx1">
+          <div class="tx-header" onclick="toggleTx('tx1')">
+            <div class="tx-num">01</div>
+            <div>
+              <div class="tx-title">Acute: Reduction + Vascular Management</div>
+              <div class="tx-subtitle">Immediate priority — within minutes to hours</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Steps</div>
+            <ul class="tx-list">
+              <li>Closed reduction under sedation — longitudinal traction + correction of deformity</li>
+              <li>Splint at 20° flexion post-reduction</li>
+              <li>Obtain bilateral ABI immediately post-reduction</li>
+              <li>Arterial repair or bypass if ischemia confirmed — viable window is 6–8 hours</li>
+            </ul>
+            <div class="tx-key-concept">Irreducible dislocation → suspect posterolateral rotatory pattern (femoral condyle buttonholed through capsule). Do NOT force — proceed to open reduction.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-2" id="tx2">
+          <div class="tx-header" onclick="toggleTx('tx2')">
+            <div class="tx-num">02</div>
+            <div>
+              <div class="tx-title">Multi-Ligament Reconstruction</div>
+              <div class="tx-subtitle">Definitive surgical treatment — timing is debated</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Timing Principles</div>
+            <ul class="tx-list">
+              <li><strong>PLC injuries:</strong> Early repair within 2–3 weeks (heals poorly with delay)</li>
+              <li><strong>Cruciates:</strong> Delayed reconstruction at 6–8 weeks reduces stiffness risk</li>
+              <li>Vascular repair takes absolute priority — ligament reconstruction follows when safe</li>
+            </ul>
+            <div class="tx-section-label">Surgical Priorities</div>
+            <ul class="tx-list">
+              <li>Address all injured structures — missing the PLC is the most common cause of reconstruction failure</li>
+              <li>PLC does not heal without surgery — it must be reconstructed</li>
+            </ul>
+            <div class="tx-key-concept">The PLC must always be addressed. Reconstructing cruciates in the presence of a neglected PLC injury leads to early graft failure from uncorrected varus/rotational instability.</div>
+          </div>
+        </div>
+        <div class="tx-card tx-3" id="tx3">
+          <div class="tx-header" onclick="toggleTx('tx3')">
+            <div class="tx-num">03</div>
+            <div>
+              <div class="tx-title">Nonoperative (Selected Cases)</div>
+              <div class="tx-subtitle">KD-I, elderly low-demand patients, vascular repair cases</div>
+            </div>
+            <span class="tx-chevron">▼</span>
+          </div>
+          <div class="tx-body">
+            <div class="tx-section-label">Candidates</div>
+            <ul class="tx-list">
+              <li>KD-I (one cruciate intact) — may do well with rehabilitation</li>
+              <li>Elderly, low-demand patients unwilling or unfit for extensive reconstruction</li>
+              <li>Patients who required vascular repair — staged approach with ligamentous rehab first</li>
+            </ul>
+            <div class="tx-key-concept">Most knee dislocations in active patients require surgical reconstruction for functional stability. Nonoperative management reliably produces chronic instability.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="complications">
+      <div class="section-header"><span class="section-num">07</span><h2>Complications</h2></div>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <div class="comp-name">Popliteal Artery Injury <span class="comp-badge early">Limb-Threatening</span></div>
+          <div class="comp-detail">5–40% incidence. Delayed diagnosis causes limb loss. Intimal tears present with normal pulse initially — serial exams mandatory.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Peroneal Nerve Injury</div>
+          <div class="comp-detail">20–40% incidence. Complete peroneal palsy has poor prognosis — only 30–40% recovery. AFO for foot drop. Lateral and posterolateral dislocations at highest risk.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Knee Stiffness <span class="comp-badge common">Most Common Long-Term</span></div>
+          <div class="comp-detail">Arthrofibrosis after multi-ligament reconstruction. Aggressive early ROM protocol is essential. Goal: 90° by 6 weeks.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Missed PLC Injury → Graft Failure</div>
+          <div class="comp-detail">The most common cause of failed multi-ligament reconstruction. Unrecognized PLC injury causes varus/rotational instability that stretches out cruciates.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">Post-Traumatic Arthritis</div>
+          <div class="comp-detail">Cartilage damage at time of dislocation and chronic instability episodes accelerate degeneration.</div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-name">DVT / Pulmonary Embolism</div>
+          <div class="comp-detail">High-energy trauma, immobility, and vascular injury significantly increase VTE risk. Chemoprophylaxis when safe.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="content-section reveal" id="pimp">
+      <div class="section-header"><span class="section-num">08</span><h2>Pocket Pimped</h2></div>
+      <div class="pimp-section">
+        <div class="pimp-title">❓ Attending-Level Questions</div>
+        <div class="pimp-q-list">
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Why is the popliteal artery specifically at risk in knee dislocations compared to other joints?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The popliteal artery is tethered at two anatomical fixed points — proximally at the adductor hiatus (Hunter's canal) and distally at its bifurcation into the anterior tibial artery and tibioperoneal trunk. Unlike vessels at other joints that can slide away from deforming forces, the popliteal artery is constrained at both ends and must absorb the entire displacement force — resulting in stretch injury, intimal tear, or complete rupture.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is an irreducible knee dislocation and what is the pathoanatomy?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">A posterolateral rotatory dislocation in which the medial femoral condyle buttonholes through the posteromedial capsule, trapping it between the condyle and the tibia. The MCL acts as a noose around the condyle. Closed reduction is impossible and risks neurovascular injury. The dimple sign (skin puckering at the posteromedial knee) is pathognomonic. Treatment: open reduction through a medial approach.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>A knee dislocation has been reduced, the pulse is present, and the ABI is 0.92. Are you done?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">No. An intimal tear can present initially with a palpable pulse and borderline ABI but progress to thrombosis and occlusion over 6–24 hours. Serial neurovascular exams every 2–4 hours for 24 hours are mandatory. Any deterioration — new pain, paresthesias, change in pulse quality — requires immediate vascular surgery consultation and emergent angiography.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>Why must the PLC be addressed in multi-ligament reconstruction, and when should it be repaired vs. reconstructed?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">The posterolateral corner heals extremely poorly without surgery due to its complex three-dimensional anatomy and poor blood supply. Unaddressed PLC instability causes chronic varus and external rotation laxity that places excessive tensile load on any cruciate graft — leading to early failure. Repair is possible and preferred within 2–3 weeks of injury (tissue quality still adequate). After 3 weeks, scarring and retraction require reconstruction (LaPrade fibular-based technique).</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the ischemia window for popliteal artery repair after knee dislocation?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">6–8 hours of warm ischemia time. Beyond this window, irreversible muscle and nerve ischemia occurs in the leg and foot. After 8 hours, amputation rates rise dramatically. Skeletal stabilization (external fixator) is performed simultaneously with or just after vascular repair to prevent re-injury to the reconstructed artery.</div>
+          </div>
+
+          <div class="pimp-q" onclick="togglePimp(this)">
+            <div class="pimp-q-text">
+              <span>What is the Schenck KD classification and what does KD-IIIL mean?</span>
+              <span class="pimp-reveal">Tap to reveal</span>
+            </div>
+            <div class="pimp-answer">Schenck's classification grades knee dislocations by ligament injury. KD-I: one cruciate intact. KD-II: both cruciates, collaterals intact. KD-IIIM: both cruciates + MCL. KD-IIIL: both cruciates + PLC (lateral structures). KD-IV: all four major ligaments. KD-V: fracture-dislocation. KD-IIIL (PLC involvement) carries the worst prognosis for peroneal nerve injury and chronic instability if the PLC is missed.</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const scrolled = el.scrollTop || document.body.scrollTop;
+    const total = el.scrollHeight - el.clientHeight;
+    document.getElementById('progbar').style.width = (scrolled / total * 100) + '%';
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => obs.observe(el));
+  function toggleTx(id) {
+    const card = document.getElementById(id);
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.tx-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const first = document.querySelector('.tx-card');
+    if (first) first.classList.add('open');
+  });
+  function togglePimp(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.pimp-q').forEach(q => q.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+  const sections = document.querySelectorAll('[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    document.querySelectorAll('.sidebar-nav a').forEach(link => {
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      else if (link.getAttribute('href') && link.getAttribute('href').startsWith('#')) link.classList.remove('active');
+    });
+  });
+</script>
+</body>
+</html>
